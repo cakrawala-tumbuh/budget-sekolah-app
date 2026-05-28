@@ -255,6 +255,7 @@ export interface UPComponent {
 
 export interface UPSimulation {
   components: UPComponent[];
+  allocated_components: UPComponent[];
   total_up_cost: number;
   parent_allocated_up_cost: number;
   new_investment_dep: number;
@@ -274,6 +275,7 @@ export interface USComponent {
 
 export interface USSimulation {
   components: USComponent[];
+  allocated_components: USComponent[];
   total_us_cost: number;
   parent_allocated_us_cost: number;
   total_students: number;

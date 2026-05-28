@@ -110,12 +110,22 @@ export default function SimulationPage({ params }: Props) {
                       {up.old_asset_dep > 0 && (
                         <p>Depresiasi aset lama: <strong>{formatCurrency(up.old_asset_dep)}</strong></p>
                       )}
+                      {up.parent_allocated_up_cost > 0 && (
+                        <p>
+                          Alokasi biaya dari Cabang/Pusat:{" "}
+                          <strong>{formatCurrency(up.parent_allocated_up_cost)}</strong>
+                        </p>
+                      )}
                     </div>
                   </CardHeader>
                   <CardContent>
                     <UPSimulationTable
                       components={up.components}
+                      allocatedComponents={up.allocated_components}
                       newStudentCount={up.new_student_count}
+                      totalOwnCost={up.total_up_cost - up.parent_allocated_up_cost}
+                      newInvestmentDep={up.new_investment_dep}
+                      oldAssetDep={up.old_asset_dep}
                       totalUpCostWithDep={up.total_up_cost_with_dep}
                       finalUpRate={up.final_up_rate}
                     />
@@ -141,12 +151,20 @@ export default function SimulationPage({ params }: Props) {
                         {" — "}
                         Tarif US: <strong>{formatCurrency(us.final_us_rate)}</strong> / siswa / bulan
                       </p>
+                      {us.parent_allocated_us_cost > 0 && (
+                        <p>
+                          Alokasi biaya dari Cabang/Pusat:{" "}
+                          <strong>{formatCurrency(us.parent_allocated_us_cost)}</strong>
+                        </p>
+                      )}
                     </div>
                   </CardHeader>
                   <CardContent>
                     <USSimulationTable
                       components={us.components}
+                      allocatedComponents={us.allocated_components}
                       totalStudents={us.total_students}
+                      totalOwnCost={us.total_us_cost - us.parent_allocated_us_cost}
                       totalUsCost={us.total_us_cost}
                       finalUsRate={us.final_us_rate}
                     />
