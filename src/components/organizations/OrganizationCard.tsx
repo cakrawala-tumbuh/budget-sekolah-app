@@ -63,7 +63,11 @@ export function OrganizationCard({ org, onDelete }: OrganizationCardProps) {
             variant="ghost"
             size="sm"
             className="text-destructive hover:text-destructive"
-            onClick={() => onDelete(org.id)}
+            onClick={() => {
+              if (window.confirm(`Hapus organisasi "${org.name}"?`)) {
+                onDelete(org.id);
+              }
+            }}
           >
             Hapus
           </Button>
