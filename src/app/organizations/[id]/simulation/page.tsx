@@ -20,6 +20,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { BudgetSummaryCard } from "@/components/simulation/BudgetSummaryCard";
 import { SimulationTable } from "@/components/simulation/SimulationTable";
+import { UPSimulationTable } from "@/components/simulation/UPSimulationTable";
+import { USSimulationTable } from "@/components/simulation/USSimulationTable";
 import { formatCurrency, formatNumber } from "@/lib/utils";
 
 interface Props {
@@ -94,18 +96,25 @@ export default function SimulationPage({ params }: Props) {
                 <Card>
                   <CardHeader>
                     <CardTitle className="text-base">
-                      Komponen Uang Pangkal
+                      Simulasi Uang Pangkal
                     </CardTitle>
                     <div className="text-sm text-muted-foreground space-y-1">
-                      <p>Siswa baru: <strong>{formatNumber(up.new_student_count)}</strong></p>
-                      <p>Tarif UP: <strong>{formatCurrency(up.final_up_rate)}</strong> / siswa</p>
+                      <p>
+                        Siswa baru: <strong>{formatNumber(up.new_student_count)}</strong>
+                        {" — "}
+                        Tarif UP: <strong>{formatCurrency(up.final_up_rate)}</strong> / siswa
+                      </p>
+                      {up.new_investment_dep > 0 && (
+                        <p>Depresiasi investasi baru: <strong>{formatCurrency(up.new_investment_dep)}</strong></p>
+                      )}
                     </div>
                   </CardHeader>
                   <CardContent>
-                    <SimulationTable
-                      rows={up.components}
-                      totalLabel="Total Biaya UP"
-                      totalAmount={up.total_up_cost_with_dep}
+                    <UPSimulationTable
+                      components={up.components}
+                      newStudentCount={up.new_student_count}
+                      totalUpCostWithDep={up.total_up_cost_with_dep}
+                      finalUpRate={up.final_up_rate}
                     />
                   </CardContent>
                 </Card>
@@ -121,18 +130,22 @@ export default function SimulationPage({ params }: Props) {
                 <Card>
                   <CardHeader>
                     <CardTitle className="text-base">
-                      Komponen Uang Sekolah
+                      Simulasi Uang Sekolah
                     </CardTitle>
                     <div className="text-sm text-muted-foreground space-y-1">
-                      <p>Total siswa: <strong>{formatNumber(us.total_students)}</strong></p>
-                      <p>Tarif US: <strong>{formatCurrency(us.final_us_rate)}</strong> / bulan</p>
+                      <p>
+                        Total siswa: <strong>{formatNumber(us.total_students)}</strong>
+                        {" — "}
+                        Tarif US: <strong>{formatCurrency(us.final_us_rate)}</strong> / siswa / bulan
+                      </p>
                     </div>
                   </CardHeader>
                   <CardContent>
-                    <SimulationTable
-                      rows={us.components}
-                      totalLabel="Total Biaya US"
-                      totalAmount={us.total_us_cost}
+                    <USSimulationTable
+                      components={us.components}
+                      totalStudents={us.total_students}
+                      totalUsCost={us.total_us_cost}
+                      finalUsRate={us.final_us_rate}
                     />
                   </CardContent>
                 </Card>

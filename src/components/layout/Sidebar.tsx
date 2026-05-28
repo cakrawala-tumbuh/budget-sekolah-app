@@ -41,9 +41,10 @@ const adminNavItems: {
   },
   {
     label: "Simulasi",
-    href: "/organizations",
+    href: "/simulation",
     icon: TrendingUp,
-    matchActive: (pathname) => pathname.includes("/simulation"),
+    matchActive: (pathname) =>
+      pathname.startsWith("/simulation") || pathname.includes("/simulation"),
   },
   {
     label: "Pengguna",
