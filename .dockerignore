@@ -1,0 +1,27 @@
+# Build artifacts & deps
+node_modules
+.next
+out
+dist
+
+# Dev / tooling
+.git
+.gitignore
+*.md
+*.log
+.env*.local
+.env.development
+.env.test
+
+# IDE
+.vscode
+.idea
+
+# Tests
+coverage
+src/__tests__
+
+# Docker files themselves (tidak perlu di dalam image)
+Dockerfile
+docker-compose*.yml
+.dockerignore
