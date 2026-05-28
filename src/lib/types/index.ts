@@ -258,6 +258,7 @@ export interface UPSimulation {
   total_up_cost: number;
   parent_allocated_up_cost: number;
   new_investment_dep: number;
+  old_asset_dep: number;
   total_up_cost_with_dep: number;
   new_student_count: number;
   auto_up_rate: number;

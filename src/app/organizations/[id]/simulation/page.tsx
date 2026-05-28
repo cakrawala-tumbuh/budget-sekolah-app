@@ -107,6 +107,9 @@ export default function SimulationPage({ params }: Props) {
                       {up.new_investment_dep > 0 && (
                         <p>Depresiasi investasi baru: <strong>{formatCurrency(up.new_investment_dep)}</strong></p>
                       )}
+                      {up.old_asset_dep > 0 && (
+                        <p>Depresiasi aset lama: <strong>{formatCurrency(up.old_asset_dep)}</strong></p>
+                      )}
                     </div>
                   </CardHeader>
                   <CardContent>
