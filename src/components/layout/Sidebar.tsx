@@ -1,5 +1,6 @@
 "use client";
 
+import React from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import {
@@ -25,16 +26,24 @@ const navItems = [
   },
 ];
 
-const adminNavItems = [
+const adminNavItems: {
+  label: string;
+  href: string;
+  icon: React.ComponentType<{ className?: string }>;
+  matchActive?: (pathname: string) => boolean;
+}[] = [
   {
     label: "Organisasi",
     href: "/organizations",
     icon: Building2,
+    matchActive: (pathname) =>
+      pathname.startsWith("/organizations") && !pathname.includes("/simulation"),
   },
   {
     label: "Simulasi",
     href: "/organizations",
     icon: TrendingUp,
+    matchActive: (pathname) => pathname.includes("/simulation"),
   },
   {
     label: "Pengguna",
@@ -175,7 +184,9 @@ export function Sidebar({ onClose }: SidebarProps) {
             <ul className="space-y-1">
               {adminNavItems.map((item) => {
                 const Icon = item.icon;
-                const isActive = pathname.startsWith(item.href);
+                const isActive = item.matchActive
+                  ? item.matchActive(pathname)
+                  : pathname.startsWith(item.href);
                 return (
                   <li key={item.label}>
                     <Link
