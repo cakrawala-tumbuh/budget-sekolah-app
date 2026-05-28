@@ -21,15 +21,12 @@ const AuthContext = createContext<AuthContextValue | null>(null);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<AuthUser | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(() => !!getStoredToken());
 
   // Validate stored token on mount
   useEffect(() => {
     const token = getStoredToken();
-    if (!token) {
-      setLoading(false);
-      return;
-    }
+    if (!token) return;
     getMeApi()
       .then((me) => setUser(me))
       .catch(() => clearStoredToken())
