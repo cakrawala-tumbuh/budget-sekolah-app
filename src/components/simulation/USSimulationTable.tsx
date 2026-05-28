@@ -42,11 +42,11 @@ export function USSimulationTable({
               </TableCell>
               <TableCell>{row.description ?? "-"}</TableCell>
               <TableCell className="text-right tabular-nums">
-                {formatCurrency(row.amount ?? 0)}
+                {formatCurrency(row.total ?? 0)}
               </TableCell>
               <TableCell className="text-right tabular-nums">
                 {totalStudents > 0
-                  ? formatCurrency((row.amount ?? 0) / (totalStudents * 12))
+                  ? formatCurrency((row.total ?? 0) / (totalStudents * 12))
                   : "-"}
               </TableCell>
             </TableRow>

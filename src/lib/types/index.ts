@@ -250,7 +250,7 @@ export interface DepreciationOldAssetUpdate {
 export interface UPComponent {
   account_code: string;
   description: string;
-  amount: number;
+  total: number;
 }
 
 export interface UPSimulation {
@@ -268,7 +268,7 @@ export interface UPSimulation {
 export interface USComponent {
   account_code: string;
   description: string;
-  amount: number;
+  total: number;
 }
 
 export interface USSimulation {

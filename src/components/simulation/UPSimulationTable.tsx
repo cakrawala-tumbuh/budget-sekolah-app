@@ -42,11 +42,11 @@ export function UPSimulationTable({
               </TableCell>
               <TableCell>{row.description ?? "-"}</TableCell>
               <TableCell className="text-right tabular-nums">
-                {formatCurrency(row.amount ?? 0)}
+                {formatCurrency(row.total ?? 0)}
               </TableCell>
               <TableCell className="text-right tabular-nums">
                 {newStudentCount > 0
-                  ? formatCurrency((row.amount ?? 0) / newStudentCount)
+                  ? formatCurrency((row.total ?? 0) / newStudentCount)
                   : "-"}
               </TableCell>
             </TableRow>
