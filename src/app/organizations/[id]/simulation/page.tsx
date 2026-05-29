@@ -223,16 +223,23 @@ export default function SimulationPage({ params }: Props) {
               <Card>
                 <CardHeader>
                   <CardTitle className="text-base">Alokasi Kontribusi</CardTitle>
+                  <div className="text-sm text-muted-foreground space-y-1">
+                    <p>
+                      Total biaya US: <strong>{formatCurrency(allocation.total_base_cost_us)}</strong>
+                      {" — "}
+                      Total biaya UP: <strong>{formatCurrency(allocation.total_base_cost_up)}</strong>
+                    </p>
+                  </div>
                 </CardHeader>
                 <CardContent>
                   <SimulationTable
-                    rows={allocation.items.map((item) => ({
-                      account_code: item.target_type,
-                      description: item.target_org,
-                      amount: item.total,
+                    rows={allocation.units.map((unit) => ({
+                      account_code: `${(unit.pct_us * 100).toFixed(1)}%`,
+                      description: unit.from_organization_name,
+                      amount: unit.contribution_us + unit.contribution_up,
                     }))}
                     totalLabel="Total Kontribusi"
-                    totalAmount={allocation.total_allocation}
+                    totalAmount={allocation.total_contribution_us + allocation.total_contribution_up}
                   />
                 </CardContent>
               </Card>

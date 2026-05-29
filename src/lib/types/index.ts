@@ -312,17 +312,24 @@ export interface ExpenseSimulation {
   total: number;
 }
 
-export interface AllocationItem {
-  target_org: string;
-  target_type: string;
-  up_amount: number;
-  us_amount: number;
-  total: number;
+export interface UnitAllocationDetail {
+  from_organization_id: number;
+  from_organization_name: string;
+  total_students: number;
+  new_students: number;
+  pct_us: number;
+  pct_up: number;
+  contribution_us: number;
+  contribution_up: number;
 }
 
 export interface AllocationSimulation {
-  items: AllocationItem[];
-  total_allocation: number;
+  total_base_cost_us: number;
+  total_base_cost_up: number;
+  units: UnitAllocationDetail[];
+  total_contribution_us: number;
+  total_contribution_up: number;
+  is_valid: boolean;
 }
 
 export interface DepreciationItem {
