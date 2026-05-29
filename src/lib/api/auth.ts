@@ -23,10 +23,7 @@ export async function loginApi(credentials: LoginCredentials): Promise<TokenResp
     password: credentials.password,
   });
 
-  const API_BASE_URL =
-    process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";
-
-  const res = await fetch(`${API_BASE_URL}/auth/login`, {
+  const res = await fetch(`/api/proxy/auth/login`, {
     method: "POST",
     headers: { "Content-Type": "application/x-www-form-urlencoded" },
     body: body.toString(),

@@ -165,7 +165,9 @@ export default function AlokasiUPPage({ params }: Props) {
   const selectedCatId = watchCat("expense_category_id");
 
   const upPeaList = peaList?.filter((p) => p.affects_up) ?? [];
-  const usedCatIds = new Set(upPeaList.map((p) => p.expense_category_id));
+  // Gunakan SEMUA peaList (bukan hanya affects_up) karena unique constraint di DB
+  // adalah pada (parent_org_id, expense_category_id) — satu kategori hanya boleh satu kali.
+  const usedCatIds = new Set(peaList?.map((p) => p.expense_category_id) ?? []);
   const availableCategories = expenseCategories?.filter((c) => !usedCatIds.has(c.id)) ?? [];
 
   // PUSAT → semua UNIT di seluruh sistem; CABANG → UNIT anak langsung
@@ -221,13 +223,17 @@ export default function AlokasiUPPage({ params }: Props) {
   }
 
   const handleAddCategory = async (v: AddCategoryValues) => {
-    await createPea.mutateAsync({
-      expense_category_id: v.expense_category_id,
-      affects_up: true,
-      is_active: true,
-    });
-    setShowAddCategory(false);
-    resetCat();
+    try {
+      await createPea.mutateAsync({
+        expense_category_id: v.expense_category_id,
+        affects_up: true,
+        is_active: true,
+      });
+      setShowAddCategory(false);
+      resetCat();
+    } catch {
+      // error ditampilkan via createPea.error di bawah
+    }
   };
 
   const handleSaveAlloc = async (unitId: number, v: AllocValues) => {
@@ -452,6 +458,11 @@ export default function AlokasiUPPage({ params }: Props) {
               {catErrors.expense_category_id && (
                 <p className="text-xs text-destructive">
                   {catErrors.expense_category_id.message}
+                </p>
+              )}
+              {createPea.error && (
+                <p className="text-xs text-destructive">
+                  {createPea.error.message}
                 </p>
               )}
             </div>
