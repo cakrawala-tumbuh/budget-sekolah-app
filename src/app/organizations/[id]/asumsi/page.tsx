@@ -70,8 +70,8 @@ export default function AsumsiPage({ params }: Props) {
       new_student_count: 0,
       returning_student_count: 0,
       staff_count: 0,
-      override_up_rate: "",
-      override_us_rate: "",
+      override_up_rate: null,
+      override_us_rate: null,
     },
   });
 
@@ -88,8 +88,8 @@ export default function AsumsiPage({ params }: Props) {
         new_student_count: assumption.new_student_count,
         returning_student_count: assumption.returning_student_count,
         staff_count: assumption.staff_count,
-        override_up_rate: assumption.override_up_rate ?? "",
-        override_us_rate: assumption.override_us_rate ?? "",
+        override_up_rate: assumption.override_up_rate ?? null,
+        override_us_rate: assumption.override_us_rate ?? null,
       });
     }
   }, [assumption, reset]);
