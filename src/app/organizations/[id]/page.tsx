@@ -14,6 +14,7 @@ import {
   School,
   BarChart3,
   ClipboardList,
+  Users,
 } from "lucide-react";
 import { useOrganization } from "@/hooks/useOrganizations";
 import { Button } from "@/components/ui/button";
@@ -87,6 +88,25 @@ export default function OrganizationDetailPage({ params }: Props) {
           </Button>
         </div>
       </div>
+
+      {/* Asumsi Siswa — hanya untuk UNIT */}
+      {org.org_type === "UNIT" && (
+        <div className="mb-4">
+          <Link href={`/organizations/${org.id}/asumsi`}>
+            <Card className="hover:shadow-md transition-shadow cursor-pointer border-sky-200">
+              <CardContent className="flex items-center gap-4 py-4">
+                <Users className="h-7 w-7 text-sky-600 shrink-0" />
+                <div>
+                  <p className="font-medium text-sm">Asumsi Siswa</p>
+                  <p className="text-xs text-muted-foreground">
+                    Sebaran siswa per kelas, jumlah siswa baru/lama, dan override tarif UP/US
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
+          </Link>
+        </div>
+      )}
 
       {/* Entry Navigation Cards */}
       <div className="grid gap-3 grid-cols-2 md:grid-cols-3 lg:grid-cols-5 mb-6">
