@@ -100,6 +100,38 @@ export interface UnitAssumptionUpdate {
   override_activity_grade_6?: number | null;
 }
 
+// ── Grade Config ──────────────────────────────────────────────────────────────
+
+export interface GradeSlot {
+  slot: number;
+  label: string;
+}
+
+export interface GradeConfig {
+  id: number;
+  organization_id: number;
+  num_grades: number;
+  grade_1_label: string | null;
+  grade_2_label: string | null;
+  grade_3_label: string | null;
+  grade_4_label: string | null;
+  grade_5_label: string | null;
+  grade_6_label: string | null;
+  active_grades: GradeSlot[];
+  created_at: string;
+  updated_at: string;
+}
+
+export interface GradeConfigUpdate {
+  num_grades?: number;
+  grade_1_label?: string | null;
+  grade_2_label?: string | null;
+  grade_3_label?: string | null;
+  grade_4_label?: string | null;
+  grade_5_label?: string | null;
+  grade_6_label?: string | null;
+}
+
 export interface GradeAllocation {
   id: number;
   budget_entry_id: number;

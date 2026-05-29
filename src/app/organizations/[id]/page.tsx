@@ -15,6 +15,7 @@ import {
   BarChart3,
   ClipboardList,
   Users,
+  ListOrdered,
 } from "lucide-react";
 import { useOrganization } from "@/hooks/useOrganizations";
 import { Button } from "@/components/ui/button";
@@ -89,9 +90,9 @@ export default function OrganizationDetailPage({ params }: Props) {
         </div>
       </div>
 
-      {/* Asumsi Siswa — hanya untuk UNIT */}
+      {/* Asumsi Siswa & Konfigurasi Kelas — hanya untuk UNIT */}
       {org.org_type === "UNIT" && (
-        <div className="mb-4">
+        <div className="mb-4 grid gap-3 grid-cols-1 sm:grid-cols-2">
           <Link href={`/organizations/${org.id}/asumsi`}>
             <Card className="hover:shadow-md transition-shadow cursor-pointer border-sky-200">
               <CardContent className="flex items-center gap-4 py-4">
@@ -100,6 +101,19 @@ export default function OrganizationDetailPage({ params }: Props) {
                   <p className="font-medium text-sm">Asumsi Siswa</p>
                   <p className="text-xs text-muted-foreground">
                     Sebaran siswa per kelas, jumlah siswa baru/lama, dan override tarif UP/US
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
+          </Link>
+          <Link href={`/organizations/${org.id}/grade-config`}>
+            <Card className="hover:shadow-md transition-shadow cursor-pointer border-indigo-200">
+              <CardContent className="flex items-center gap-4 py-4">
+                <ListOrdered className="h-7 w-7 text-indigo-600 shrink-0" />
+                <div>
+                  <p className="font-medium text-sm">Label Kelas</p>
+                  <p className="text-xs text-muted-foreground">
+                    Jumlah tingkat dan nama label per kelas (mis. Kelas 7–9 untuk SMP)
                   </p>
                 </div>
               </CardContent>
