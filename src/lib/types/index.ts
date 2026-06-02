@@ -287,12 +287,15 @@ export interface UPComponent {
 
 export interface UPSimulation {
   components: UPComponent[];
-  allocated_components: UPComponent[];
+  cabang_allocated_components: UPComponent[];
+  pusat_allocated_components: UPComponent[];
   total_up_cost: number;
-  parent_allocated_up_cost: number;
+  cabang_allocated_up_cost: number;
+  pusat_allocated_up_cost: number;
   new_investment_dep: number;
   old_asset_dep: number;
-  parent_allocated_old_asset_dep: number;
+  cabang_allocated_old_asset_dep: number;
+  pusat_allocated_old_asset_dep: number;
   total_up_cost_with_dep: number;
   new_student_count: number;
   auto_up_rate: number;
@@ -308,9 +311,11 @@ export interface USComponent {
 
 export interface USSimulation {
   components: USComponent[];
-  allocated_components: USComponent[];
+  cabang_allocated_components: USComponent[];
+  pusat_allocated_components: USComponent[];
   total_us_cost: number;
-  parent_allocated_us_cost: number;
+  cabang_allocated_us_cost: number;
+  pusat_allocated_us_cost: number;
   total_students: number;
   months: number;
   auto_us_rate: number;

@@ -12,32 +12,57 @@ import type { UPComponent } from "@/lib/types";
 
 interface Props {
   components: UPComponent[];
-  allocatedComponents: UPComponent[];
+  cabangAllocatedComponents: UPComponent[];
+  pusatAllocatedComponents: UPComponent[];
   newStudentCount: number;
   totalOwnCost: number;
   newInvestmentDep: number;
   oldAssetDep: number;
-  parentAllocatedOldAssetDep: number;
+  cabangAllocatedOldAssetDep: number;
+  pusatAllocatedOldAssetDep: number;
   totalUpCostWithDep: number;
   finalUpRate: number;
 }
 
 export function UPSimulationTable({
   components,
-  allocatedComponents,
+  cabangAllocatedComponents,
+  pusatAllocatedComponents,
   newStudentCount,
   totalOwnCost,
   newInvestmentDep,
   oldAssetDep,
-  parentAllocatedOldAssetDep,
+  cabangAllocatedOldAssetDep,
+  pusatAllocatedOldAssetDep,
   totalUpCostWithDep,
   finalUpRate,
 }: Props) {
+  const perStudent = (value: number) =>
+    newStudentCount > 0 ? formatCurrency(value / newStudentCount) : "-";
+
   const hasExtra =
     newInvestmentDep > 0 ||
     oldAssetDep > 0 ||
-    parentAllocatedOldAssetDep > 0 ||
-    allocatedComponents.length > 0;
+    cabangAllocatedOldAssetDep > 0 ||
+    pusatAllocatedOldAssetDep > 0 ||
+    cabangAllocatedComponents.length > 0 ||
+    pusatAllocatedComponents.length > 0;
+
+  const renderAllocRows = (rows: UPComponent[], keyPrefix: string) =>
+    rows.map((row, i) => (
+      <TableRow key={`${keyPrefix}-${i}`} className="text-muted-foreground italic">
+        <TableCell className="font-mono text-xs">
+          {row.account_code?.replace("ALLOC:", "") ?? "-"}
+        </TableCell>
+        <TableCell>{row.description ?? "-"}</TableCell>
+        <TableCell className="text-right tabular-nums">
+          {formatCurrency(row.total ?? 0)}
+        </TableCell>
+        <TableCell className="text-right tabular-nums">
+          {perStudent(row.total ?? 0)}
+        </TableCell>
+      </TableRow>
+    ));
 
   return (
     <div className="overflow-x-auto">
@@ -61,9 +86,7 @@ export function UPSimulationTable({
                 {formatCurrency(row.total ?? 0)}
               </TableCell>
               <TableCell className="text-right tabular-nums">
-                {newStudentCount > 0
-                  ? formatCurrency((row.total ?? 0) / newStudentCount)
-                  : "-"}
+                {perStudent(row.total ?? 0)}
               </TableCell>
             </TableRow>
           ))}
@@ -78,14 +101,12 @@ export function UPSimulationTable({
                 {formatCurrency(totalOwnCost)}
               </TableCell>
               <TableCell className="text-right tabular-nums text-sm">
-                {newStudentCount > 0
-                  ? formatCurrency(totalOwnCost / newStudentCount)
-                  : "-"}
+                {perStudent(totalOwnCost)}
               </TableCell>
             </TableRow>
           )}
 
-          {/* Depresiasi */}
+          {/* Depresiasi aset unit sendiri */}
           {newInvestmentDep > 0 && (
             <TableRow className="text-muted-foreground italic">
               <TableCell className="font-mono text-xs">DEP-NEW</TableCell>
@@ -94,9 +115,7 @@ export function UPSimulationTable({
                 {formatCurrency(newInvestmentDep)}
               </TableCell>
               <TableCell className="text-right tabular-nums">
-                {newStudentCount > 0
-                  ? formatCurrency(newInvestmentDep / newStudentCount)
-                  : "-"}
+                {perStudent(newInvestmentDep)}
               </TableCell>
             </TableRow>
           )}
@@ -108,45 +127,40 @@ export function UPSimulationTable({
                 {formatCurrency(oldAssetDep)}
               </TableCell>
               <TableCell className="text-right tabular-nums">
-                {newStudentCount > 0
-                  ? formatCurrency(oldAssetDep / newStudentCount)
-                  : "-"}
+                {perStudent(oldAssetDep)}
               </TableCell>
             </TableRow>
           )}
 
-          {parentAllocatedOldAssetDep > 0 && (
+          {/* Alokasi depresiasi aset lama dari Cabang (terpisah dari Pusat) */}
+          {cabangAllocatedOldAssetDep > 0 && (
             <TableRow className="text-muted-foreground italic">
-              <TableCell className="font-mono text-xs">DEP-OLD-INDUK</TableCell>
-              <TableCell>Depresiasi Aset Lama Cabang/Pusat</TableCell>
+              <TableCell className="font-mono text-xs">DEP-OLD-CABANG</TableCell>
+              <TableCell>Depresiasi Aset Lama Cabang</TableCell>
               <TableCell className="text-right tabular-nums">
-                {formatCurrency(parentAllocatedOldAssetDep)}
+                {formatCurrency(cabangAllocatedOldAssetDep)}
               </TableCell>
               <TableCell className="text-right tabular-nums">
-                {newStudentCount > 0
-                  ? formatCurrency(parentAllocatedOldAssetDep / newStudentCount)
-                  : "-"}
+                {perStudent(cabangAllocatedOldAssetDep)}
+              </TableCell>
+            </TableRow>
+          )}
+          {pusatAllocatedOldAssetDep > 0 && (
+            <TableRow className="text-muted-foreground italic">
+              <TableCell className="font-mono text-xs">DEP-OLD-PUSAT</TableCell>
+              <TableCell>Depresiasi Aset Lama Pusat</TableCell>
+              <TableCell className="text-right tabular-nums">
+                {formatCurrency(pusatAllocatedOldAssetDep)}
+              </TableCell>
+              <TableCell className="text-right tabular-nums">
+                {perStudent(pusatAllocatedOldAssetDep)}
               </TableCell>
             </TableRow>
           )}
 
-          {/* Alokasi dari Cabang/Pusat */}
-          {allocatedComponents.map((row, i) => (
-            <TableRow key={`alloc-${i}`} className="text-muted-foreground italic">
-              <TableCell className="font-mono text-xs">
-                {row.account_code?.replace("ALLOC:", "") ?? "-"}
-              </TableCell>
-              <TableCell>{row.description ?? "-"}</TableCell>
-              <TableCell className="text-right tabular-nums">
-                {formatCurrency(row.total ?? 0)}
-              </TableCell>
-              <TableCell className="text-right tabular-nums">
-                {newStudentCount > 0
-                  ? formatCurrency((row.total ?? 0) / newStudentCount)
-                  : "-"}
-              </TableCell>
-            </TableRow>
-          ))}
+          {/* Alokasi biaya dari Cabang (terpisah dari Pusat) */}
+          {renderAllocRows(cabangAllocatedComponents, "cabang")}
+          {renderAllocRows(pusatAllocatedComponents, "pusat")}
         </TableBody>
         <TableFooter>
           <TableRow>

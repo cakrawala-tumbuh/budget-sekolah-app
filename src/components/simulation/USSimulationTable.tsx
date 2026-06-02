@@ -12,7 +12,8 @@ import type { USComponent } from "@/lib/types";
 
 interface Props {
   components: USComponent[];
-  allocatedComponents: USComponent[];
+  cabangAllocatedComponents: USComponent[];
+  pusatAllocatedComponents: USComponent[];
   totalStudents: number;
   totalOwnCost: number;
   totalUsCost: number;
@@ -21,13 +22,34 @@ interface Props {
 
 export function USSimulationTable({
   components,
-  allocatedComponents,
+  cabangAllocatedComponents,
+  pusatAllocatedComponents,
   totalStudents,
   totalOwnCost,
   totalUsCost,
   finalUsRate,
 }: Props) {
-  const hasAllocation = allocatedComponents.length > 0;
+  const perStudentMonth = (value: number) =>
+    totalStudents > 0 ? formatCurrency(value / (totalStudents * 12)) : "-";
+
+  const hasAllocation =
+    cabangAllocatedComponents.length > 0 || pusatAllocatedComponents.length > 0;
+
+  const renderAllocRows = (rows: USComponent[], keyPrefix: string) =>
+    rows.map((row, i) => (
+      <TableRow key={`${keyPrefix}-${i}`} className="text-muted-foreground italic">
+        <TableCell className="font-mono text-xs">
+          {row.account_code?.replace("ALLOC:", "") ?? "-"}
+        </TableCell>
+        <TableCell>{row.description ?? "-"}</TableCell>
+        <TableCell className="text-right tabular-nums">
+          {formatCurrency(row.total ?? 0)}
+        </TableCell>
+        <TableCell className="text-right tabular-nums">
+          {perStudentMonth(row.total ?? 0)}
+        </TableCell>
+      </TableRow>
+    ));
 
   return (
     <div className="overflow-x-auto">
@@ -51,9 +73,7 @@ export function USSimulationTable({
                 {formatCurrency(row.total ?? 0)}
               </TableCell>
               <TableCell className="text-right tabular-nums">
-                {totalStudents > 0
-                  ? formatCurrency((row.total ?? 0) / (totalStudents * 12))
-                  : "-"}
+                {perStudentMonth(row.total ?? 0)}
               </TableCell>
             </TableRow>
           ))}
@@ -68,30 +88,14 @@ export function USSimulationTable({
                 {formatCurrency(totalOwnCost)}
               </TableCell>
               <TableCell className="text-right tabular-nums text-sm">
-                {totalStudents > 0
-                  ? formatCurrency(totalOwnCost / (totalStudents * 12))
-                  : "-"}
+                {perStudentMonth(totalOwnCost)}
               </TableCell>
             </TableRow>
           )}
 
-          {/* Alokasi dari Cabang/Pusat */}
-          {allocatedComponents.map((row, i) => (
-            <TableRow key={`alloc-${i}`} className="text-muted-foreground italic">
-              <TableCell className="font-mono text-xs">
-                {row.account_code?.replace("ALLOC:", "") ?? "-"}
-              </TableCell>
-              <TableCell>{row.description ?? "-"}</TableCell>
-              <TableCell className="text-right tabular-nums">
-                {formatCurrency(row.total ?? 0)}
-              </TableCell>
-              <TableCell className="text-right tabular-nums">
-                {totalStudents > 0
-                  ? formatCurrency((row.total ?? 0) / (totalStudents * 12))
-                  : "-"}
-              </TableCell>
-            </TableRow>
-          ))}
+          {/* Alokasi biaya dari Cabang (terpisah dari Pusat) */}
+          {renderAllocRows(cabangAllocatedComponents, "cabang")}
+          {renderAllocRows(pusatAllocatedComponents, "pusat")}
         </TableBody>
         <TableFooter>
           <TableRow>

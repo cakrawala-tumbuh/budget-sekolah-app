@@ -110,16 +110,28 @@ export default function SimulationPage({ params }: Props) {
                       {up.old_asset_dep > 0 && (
                         <p>Depresiasi aset lama: <strong>{formatCurrency(up.old_asset_dep)}</strong></p>
                       )}
-                      {up.parent_allocated_old_asset_dep > 0 && (
+                      {up.cabang_allocated_old_asset_dep > 0 && (
                         <p>
-                          Depresiasi aset lama Cabang/Pusat:{" "}
-                          <strong>{formatCurrency(up.parent_allocated_old_asset_dep)}</strong>
+                          Depresiasi aset lama Cabang:{" "}
+                          <strong>{formatCurrency(up.cabang_allocated_old_asset_dep)}</strong>
                         </p>
                       )}
-                      {up.parent_allocated_up_cost > 0 && (
+                      {up.pusat_allocated_old_asset_dep > 0 && (
                         <p>
-                          Alokasi biaya dari Cabang/Pusat:{" "}
-                          <strong>{formatCurrency(up.parent_allocated_up_cost)}</strong>
+                          Depresiasi aset lama Pusat:{" "}
+                          <strong>{formatCurrency(up.pusat_allocated_old_asset_dep)}</strong>
+                        </p>
+                      )}
+                      {up.cabang_allocated_up_cost > 0 && (
+                        <p>
+                          Alokasi biaya dari Cabang:{" "}
+                          <strong>{formatCurrency(up.cabang_allocated_up_cost)}</strong>
+                        </p>
+                      )}
+                      {up.pusat_allocated_up_cost > 0 && (
+                        <p>
+                          Alokasi biaya dari Pusat:{" "}
+                          <strong>{formatCurrency(up.pusat_allocated_up_cost)}</strong>
                         </p>
                       )}
                     </div>
@@ -127,12 +139,18 @@ export default function SimulationPage({ params }: Props) {
                   <CardContent>
                     <UPSimulationTable
                       components={up.components}
-                      allocatedComponents={up.allocated_components}
+                      cabangAllocatedComponents={up.cabang_allocated_components}
+                      pusatAllocatedComponents={up.pusat_allocated_components}
                       newStudentCount={up.new_student_count}
-                      totalOwnCost={up.total_up_cost - up.parent_allocated_up_cost}
+                      totalOwnCost={
+                        up.total_up_cost -
+                        up.cabang_allocated_up_cost -
+                        up.pusat_allocated_up_cost
+                      }
                       newInvestmentDep={up.new_investment_dep}
                       oldAssetDep={up.old_asset_dep}
-                      parentAllocatedOldAssetDep={up.parent_allocated_old_asset_dep}
+                      cabangAllocatedOldAssetDep={up.cabang_allocated_old_asset_dep}
+                      pusatAllocatedOldAssetDep={up.pusat_allocated_old_asset_dep}
                       totalUpCostWithDep={up.total_up_cost_with_dep}
                       finalUpRate={up.final_up_rate}
                     />
@@ -158,10 +176,16 @@ export default function SimulationPage({ params }: Props) {
                         {" — "}
                         Tarif US: <strong>{formatCurrency(us.final_us_rate)}</strong> / siswa / bulan
                       </p>
-                      {us.parent_allocated_us_cost > 0 && (
+                      {us.cabang_allocated_us_cost > 0 && (
                         <p>
-                          Alokasi biaya dari Cabang/Pusat:{" "}
-                          <strong>{formatCurrency(us.parent_allocated_us_cost)}</strong>
+                          Alokasi biaya dari Cabang:{" "}
+                          <strong>{formatCurrency(us.cabang_allocated_us_cost)}</strong>
+                        </p>
+                      )}
+                      {us.pusat_allocated_us_cost > 0 && (
+                        <p>
+                          Alokasi biaya dari Pusat:{" "}
+                          <strong>{formatCurrency(us.pusat_allocated_us_cost)}</strong>
                         </p>
                       )}
                     </div>
@@ -169,9 +193,14 @@ export default function SimulationPage({ params }: Props) {
                   <CardContent>
                     <USSimulationTable
                       components={us.components}
-                      allocatedComponents={us.allocated_components}
+                      cabangAllocatedComponents={us.cabang_allocated_components}
+                      pusatAllocatedComponents={us.pusat_allocated_components}
                       totalStudents={us.total_students}
-                      totalOwnCost={us.total_us_cost - us.parent_allocated_us_cost}
+                      totalOwnCost={
+                        us.total_us_cost -
+                        us.cabang_allocated_us_cost -
+                        us.pusat_allocated_us_cost
+                      }
                       totalUsCost={us.total_us_cost}
                       finalUsRate={us.final_us_rate}
                     />
