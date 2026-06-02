@@ -102,9 +102,34 @@ export default function SimulationPage({ params }: Props) {
                     <div className="text-sm text-muted-foreground space-y-1">
                       <p>
                         Siswa baru: <strong>{formatNumber(up.new_student_count)}</strong>
-                        {" — "}
-                        Tarif UP: <strong>{formatCurrency(up.final_up_rate)}</strong> / siswa
                       </p>
+                      <p>
+                        Tarif UP otomatis:{" "}
+                        <strong>{formatCurrency(up.auto_up_rate)}</strong> / siswa
+                        {" → "}
+                        Pendapatan{" "}
+                        <strong>{formatCurrency(up.auto_up_revenue)}</strong>
+                      </p>
+                      {Math.abs(up.final_up_rate - up.auto_up_rate) > 0.5 && (
+                        <p className="text-blue-600">
+                          Tarif UP override:{" "}
+                          <strong>{formatCurrency(up.final_up_rate)}</strong> / siswa
+                          {" → "}
+                          Pendapatan{" "}
+                          <strong>{formatCurrency(up.total_up_revenue)}</strong>
+                          <span className="block text-xs text-muted-foreground">
+                            Override mengganti komponen biaya; depresiasi{" "}
+                            {formatCurrency(
+                              (up.new_investment_dep +
+                                up.old_asset_dep +
+                                up.cabang_allocated_old_asset_dep +
+                                up.pusat_allocated_old_asset_dep) /
+                                (up.new_student_count || 1),
+                            )}
+                            /siswa tetap ditambahkan ke tarif.
+                          </span>
+                        </p>
+                      )}
                       {up.new_investment_dep > 0 && (
                         <p>Depresiasi investasi baru: <strong>{formatCurrency(up.new_investment_dep)}</strong></p>
                       )}
@@ -153,6 +178,7 @@ export default function SimulationPage({ params }: Props) {
                       cabangAllocatedOldAssetDep={up.cabang_allocated_old_asset_dep}
                       pusatAllocatedOldAssetDep={up.pusat_allocated_old_asset_dep}
                       totalUpCostWithDep={up.total_up_cost_with_dep}
+                      autoUpRate={up.auto_up_rate}
                       finalUpRate={up.final_up_rate}
                     />
                   </CardContent>
@@ -174,9 +200,23 @@ export default function SimulationPage({ params }: Props) {
                     <div className="text-sm text-muted-foreground space-y-1">
                       <p>
                         Total siswa: <strong>{formatNumber(us.total_students)}</strong>
-                        {" — "}
-                        Tarif US: <strong>{formatCurrency(us.final_us_rate)}</strong> / siswa / bulan
                       </p>
+                      <p>
+                        Tarif US otomatis:{" "}
+                        <strong>{formatCurrency(us.auto_us_rate)}</strong> / siswa / bulan
+                        {" → "}
+                        Pendapatan{" "}
+                        <strong>{formatCurrency(us.auto_us_revenue)}</strong>
+                      </p>
+                      {Math.abs(us.final_us_rate - us.auto_us_rate) > 0.5 && (
+                        <p className="text-blue-600">
+                          Tarif US override:{" "}
+                          <strong>{formatCurrency(us.final_us_rate)}</strong> / siswa / bulan
+                          {" → "}
+                          Pendapatan{" "}
+                          <strong>{formatCurrency(us.total_us_revenue)}</strong>
+                        </p>
+                      )}
                       {us.cabang_allocated_us_cost > 0 && (
                         <p>
                           Alokasi biaya dari Cabang:{" "}
@@ -203,6 +243,7 @@ export default function SimulationPage({ params }: Props) {
                         us.pusat_allocated_us_cost
                       }
                       totalUsCost={us.total_us_cost}
+                      autoUsRate={us.auto_us_rate}
                       finalUsRate={us.final_us_rate}
                     />
                   </CardContent>

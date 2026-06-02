@@ -17,6 +17,7 @@ interface Props {
   totalStudents: number;
   totalOwnCost: number;
   totalUsCost: number;
+  autoUsRate: number;
   finalUsRate: number;
 }
 
@@ -27,10 +28,15 @@ export function USSimulationTable({
   totalStudents,
   totalOwnCost,
   totalUsCost,
+  autoUsRate,
   finalUsRate,
 }: Props) {
   const perStudentMonth = (value: number) =>
     totalStudents > 0 ? formatCurrency(value / (totalStudents * 12)) : "-";
+
+  // Override aktif jika tarif final berbeda dari tarif otomatis (hasil kalkulasi).
+  const hasOverride = Math.abs(finalUsRate - autoUsRate) > 0.5;
+  const overrideRevenue = finalUsRate * totalStudents * 12;
 
   const hasAllocation =
     cabangAllocatedComponents.length > 0 || pusatAllocatedComponents.length > 0;
@@ -98,17 +104,32 @@ export function USSimulationTable({
           {renderAllocRows(pusatAllocatedComponents, "pusat")}
         </TableBody>
         <TableFooter>
+          {/* Versi otomatis: total biaya ÷ (siswa × 12) = tarif otomatis */}
           <TableRow>
             <TableCell colSpan={2} className="font-semibold">
-              Total Biaya US
+              Total Biaya US — Tarif Otomatis
             </TableCell>
             <TableCell className="text-right font-semibold tabular-nums">
               {formatCurrency(totalUsCost)}
             </TableCell>
             <TableCell className="text-right font-semibold tabular-nums">
-              {formatCurrency(finalUsRate)}
+              {formatCurrency(autoUsRate)}
             </TableCell>
           </TableRow>
+          {/* Versi override: tarif override × siswa × 12 = pendapatan US */}
+          {hasOverride && (
+            <TableRow className="text-blue-600">
+              <TableCell colSpan={2} className="font-semibold">
+                Pendapatan US — Tarif Override Unit
+              </TableCell>
+              <TableCell className="text-right font-semibold tabular-nums">
+                {formatCurrency(overrideRevenue)}
+              </TableCell>
+              <TableCell className="text-right font-semibold tabular-nums">
+                {formatCurrency(finalUsRate)}
+              </TableCell>
+            </TableRow>
+          )}
         </TableFooter>
       </Table>
     </div>
