@@ -563,3 +563,31 @@ export interface ParentExpenseAllocationRead extends ParentExpenseAllocationCrea
   expense_category_code: string | null;
   expense_category_label: string | null;
 }
+
+// ── Subsidies ─────────────────────────────────────────────────────────────────
+
+export interface SubsidyCreate {
+  recipient_org_id: number;
+  expense_category_id: number;
+  income_category_id: number;
+  amount: number;
+  is_active: boolean;
+}
+
+export interface SubsidyUpdate {
+  recipient_org_id?: number;
+  expense_category_id?: number;
+  income_category_id?: number;
+  amount?: number;
+  is_active?: boolean;
+}
+
+export interface SubsidyRead extends SubsidyCreate {
+  id: number;
+  provider_org_id: number;
+  recipient_org_name: string | null;
+  expense_category_code: string | null;
+  expense_category_label: string | null;
+  income_category_code: string | null;
+  income_category_label: string | null;
+}

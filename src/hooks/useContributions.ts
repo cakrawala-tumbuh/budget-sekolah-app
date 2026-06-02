@@ -3,11 +3,14 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { contributionsApi } from "@/lib/api/contributions";
 import { parentExpenseAllocationsApi } from "@/lib/api/parent-expense-allocations";
+import { subsidiesApi } from "@/lib/api/subsidies";
 import type {
   ContributionRateSet,
   ContributionAllocationCreate,
   ParentExpenseAllocationCreate,
   ParentExpenseAllocationUpdate,
+  SubsidyCreate,
+  SubsidyUpdate,
 } from "@/lib/types";
 
 // ── Contribution Rates ────────────────────────────────────────────────────────
@@ -99,5 +102,44 @@ export function useDeleteParentExpenseAllocation(orgId: number) {
       parentExpenseAllocationsApi.remove(orgId, allocId),
     onSuccess: () =>
       qc.invalidateQueries({ queryKey: peaKeys.list(orgId) }),
+  });
+}
+
+// ── Subsidies ─────────────────────────────────────────────────────────────────
+
+const subsidyKeys = {
+  list: (orgId: number) => ["subsidies", orgId] as const,
+};
+
+export function useSubsidies(orgId: number) {
+  return useQuery({
+    queryKey: subsidyKeys.list(orgId),
+    queryFn: () => subsidiesApi.list(orgId),
+    enabled: !!orgId,
+  });
+}
+
+export function useCreateSubsidy(orgId: number) {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (data: SubsidyCreate) => subsidiesApi.create(orgId, data),
+    onSuccess: () => qc.invalidateQueries({ queryKey: subsidyKeys.list(orgId) }),
+  });
+}
+
+export function useUpdateSubsidy(orgId: number) {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: ({ subsidyId, data }: { subsidyId: number; data: SubsidyUpdate }) =>
+      subsidiesApi.update(orgId, subsidyId, data),
+    onSuccess: () => qc.invalidateQueries({ queryKey: subsidyKeys.list(orgId) }),
+  });
+}
+
+export function useDeleteSubsidy(orgId: number) {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (subsidyId: number) => subsidiesApi.remove(orgId, subsidyId),
+    onSuccess: () => qc.invalidateQueries({ queryKey: subsidyKeys.list(orgId) }),
   });
 }

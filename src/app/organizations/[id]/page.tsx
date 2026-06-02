@@ -16,6 +16,7 @@ import {
   ClipboardList,
   Users,
   ListOrdered,
+  HandCoins,
 } from "lucide-react";
 import { useOrganization } from "@/hooks/useOrganizations";
 import { Button } from "@/components/ui/button";
@@ -167,9 +168,9 @@ export default function OrganizationDetailPage({ params }: Props) {
         ))}
       </div>
 
-      {/* Alokasi UP/US — hanya untuk CABANG dan PUSAT */}
+      {/* Alokasi UP/US & Subsidi — hanya untuk CABANG dan PUSAT */}
       {org.org_type !== "UNIT" && (
-        <div className="grid gap-3 grid-cols-2 mb-6">
+        <div className="grid gap-3 grid-cols-2 sm:grid-cols-3 mb-6">
           <Link href={`/organizations/${org.id}/alokasi-up`}>
             <Card className="hover:shadow-md transition-shadow cursor-pointer h-full border-blue-200">
               <CardContent className="flex flex-col items-center justify-center gap-2 py-4 text-center">
@@ -185,6 +186,15 @@ export default function OrganizationDetailPage({ params }: Props) {
                 <School className="h-6 w-6 text-orange-700" />
                 <span className="text-xs font-medium leading-tight">Alokasi US</span>
                 <span className="text-xs text-muted-foreground">Komponen Uang Sekolah</span>
+              </CardContent>
+            </Card>
+          </Link>
+          <Link href={`/organizations/${org.id}/subsidi`}>
+            <Card className="hover:shadow-md transition-shadow cursor-pointer h-full border-emerald-200">
+              <CardContent className="flex flex-col items-center justify-center gap-2 py-4 text-center">
+                <HandCoins className="h-6 w-6 text-emerald-700" />
+                <span className="text-xs font-medium leading-tight">Subsidi ke Unit</span>
+                <span className="text-xs text-muted-foreground">Beban pemberi → pendapatan penerima</span>
               </CardContent>
             </Card>
           </Link>
