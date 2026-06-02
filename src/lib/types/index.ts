@@ -301,6 +301,7 @@ export interface UPSimulation {
   auto_up_rate: number;
   final_up_rate: number;
   total_up_revenue: number;
+  auto_up_revenue: number;
 }
 
 export interface USComponent {
@@ -321,17 +322,20 @@ export interface USSimulation {
   auto_us_rate: number;
   final_us_rate: number;
   total_us_revenue: number;
+  auto_us_revenue: number;
 }
 
 export interface IncomeItem {
   account_code: string;
   description: string;
   total: number;
+  auto_total: number;
 }
 
 export interface IncomeSimulation {
   items: IncomeItem[];
   total: number;
+  total_auto: number;
 }
 
 export interface ExpenseItem {
@@ -393,13 +397,17 @@ export interface BudgetSummary {
   budget_year: string;
   // Cash basis
   total_cash_revenue: number;
+  total_cash_revenue_auto: number;
   total_cash_expenses: number;
   total_investments: number;
   cash_surplus_deficit: number;
+  cash_surplus_deficit_auto: number;
   // Accrual basis
   total_accrual_revenue: number;
+  total_accrual_revenue_auto: number;
   total_accrual_expenses: number;
   accrual_surplus_deficit: number;
+  accrual_surplus_deficit_auto: number;
   // Detail
   income: IncomeSimulation;
   expenses: ExpenseSimulation;

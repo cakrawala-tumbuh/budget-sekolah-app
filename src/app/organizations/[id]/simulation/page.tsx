@@ -20,6 +20,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { BudgetSummaryCard } from "@/components/simulation/BudgetSummaryCard";
 import { SimulationTable } from "@/components/simulation/SimulationTable";
+import { IncomeSimulationTable } from "@/components/simulation/IncomeSimulationTable";
 import { UPSimulationTable } from "@/components/simulation/UPSimulationTable";
 import { USSimulationTable } from "@/components/simulation/USSimulationTable";
 import { formatCurrency, formatNumber } from "@/lib/utils";
@@ -220,13 +221,13 @@ export default function SimulationPage({ params }: Props) {
             <Card>
               <CardHeader>
                 <CardTitle className="text-base">Simulasi Pendapatan</CardTitle>
+                <p className="text-sm text-muted-foreground">
+                  Versi <strong>Otomatis</strong> memakai tarif UP/US hasil perhitungan;
+                  versi <strong>Override Unit</strong> memakai tarif UP/US yang diisi di unit.
+                </p>
               </CardHeader>
               <CardContent>
-                <SimulationTable
-                  rows={income.items}
-                  totalLabel="Total Pendapatan"
-                  totalAmount={income.total}
-                />
+                <IncomeSimulationTable income={income} />
               </CardContent>
             </Card>
           ) : (
