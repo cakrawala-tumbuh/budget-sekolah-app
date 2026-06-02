@@ -22,6 +22,9 @@
 # production
 /build
 
+# mkdocs (dokumentasi)
+/site
+
 # misc
 .DS_Store
 *.pem

@@ -1,0 +1,75 @@
+site_name: Panduan Budget YPII
+site_description: Dokumentasi penggunaan aplikasi Budget YPII — Sistem Simulasi Anggaran (RAB) 2025–2026
+site_author: YPII
+site_url: https://cakrawala-tumbuh.github.io/budget-sekolah-app/
+
+repo_name: cakrawala-tumbuh/budget-sekolah-app
+repo_url: https://github.com/cakrawala-tumbuh/budget-sekolah-app
+edit_uri: edit/master/docs/
+
+docs_dir: docs
+
+theme:
+  name: material
+  language: id
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/weather-night
+        name: Ganti ke mode gelap
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/weather-sunny
+        name: Ganti ke mode terang
+  features:
+    - navigation.instant
+    - navigation.tracking
+    - navigation.top
+    - navigation.footer
+    - content.action.edit
+    - search.suggest
+    - search.highlight
+    - toc.follow
+  icon:
+    repo: fontawesome/brands/github
+
+nav:
+  - Beranda: index.md
+  - Memulai: memulai.md
+  - Konsep Dasar: konsep.md
+  - Manajemen Organisasi: organisasi.md
+  - Input Data Anggaran: data-anggaran.md
+  - Alokasi & Subsidi: alokasi-subsidi.md
+  - Simulasi & Laporan: simulasi.md
+  - Administrasi: admin.md
+  - Tanya Jawab: faq.md
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - attr_list
+  - md_in_html
+  - tables
+  - toc:
+      permalink: true
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+
+plugins:
+  - search:
+      lang: id
+
+extra:
+  generator: false
