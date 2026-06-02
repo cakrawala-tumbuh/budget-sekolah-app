@@ -3,6 +3,7 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { contributionsApi } from "@/lib/api/contributions";
 import { parentExpenseAllocationsApi } from "@/lib/api/parent-expense-allocations";
+import type { CopyResult } from "@/lib/api/parent-expense-allocations";
 import { subsidiesApi } from "@/lib/api/subsidies";
 import type {
   ContributionRateSet,
@@ -100,6 +101,16 @@ export function useDeleteParentExpenseAllocation(orgId: number) {
   return useMutation({
     mutationFn: (allocId: number) =>
       parentExpenseAllocationsApi.remove(orgId, allocId),
+    onSuccess: () =>
+      qc.invalidateQueries({ queryKey: peaKeys.list(orgId) }),
+  });
+}
+
+export function useCopyParentExpenseAllocations(orgId: number) {
+  const qc = useQueryClient();
+  return useMutation<CopyResult, Error, { sourceOrgId: number; affectsUp?: boolean }>({
+    mutationFn: ({ sourceOrgId, affectsUp }) =>
+      parentExpenseAllocationsApi.copyFrom(orgId, sourceOrgId, affectsUp),
     onSuccess: () =>
       qc.invalidateQueries({ queryKey: peaKeys.list(orgId) }),
   });

@@ -2,7 +2,7 @@
 
 import { use, useState } from "react";
 import Link from "next/link";
-import { ArrowLeft, Plus, Trash2, Users, Settings2, RefreshCw } from "lucide-react";
+import { ArrowLeft, Plus, Trash2, Users, Settings2, RefreshCw, Copy } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -13,6 +13,7 @@ import {
   useParentExpenseAllocations,
   useCreateParentExpenseAllocation,
   useDeleteParentExpenseAllocation,
+  useCopyParentExpenseAllocations,
   useContributionAllocations,
   useUpsertContributionAllocation,
 } from "@/hooks/useContributions";
@@ -149,9 +150,13 @@ export default function AlokasiUPPage({ params }: Props) {
 
   const createPea = useCreateParentExpenseAllocation(orgId);
   const deletePea = useDeleteParentExpenseAllocation(orgId);
+  const copyPea = useCopyParentExpenseAllocations(orgId);
   const upsertAlloc = useUpsertContributionAllocation(orgId);
 
   const [showAddCategory, setShowAddCategory] = useState(false);
+  const [showCopyDialog, setShowCopyDialog] = useState(false);
+  const [copySourceOrgId, setCopySourceOrgId] = useState<string>("");
+  const [copyResult, setCopyResult] = useState<{ copied: number; skipped: number } | null>(null);
   const [editingUnitId, setEditingUnitId] = useState<number | null>(null);
 
   const {
@@ -265,6 +270,17 @@ export default function AlokasiUPPage({ params }: Props) {
     }
   };
 
+  const siblingOrgs = allOrgs?.filter(
+    (o) => o.id !== orgId && o.org_type === org.org_type
+  ) ?? [];
+
+  const handleCopyFrom = async () => {
+    if (!copySourceOrgId) return;
+    const result = await copyPea.mutateAsync({ sourceOrgId: Number(copySourceOrgId), affectsUp: true });
+    setCopyResult(result);
+    setCopySourceOrgId("");
+  };
+
   const editingUnit = editingUnitId ? childUnits.find((u) => u.id === editingUnitId) : null;
   const editingAlloc = editingUnitId
     ? allocations?.find((a) => a.from_organization_id === editingUnitId)
@@ -302,10 +318,16 @@ export default function AlokasiUPPage({ params }: Props) {
               Kategori biaya dari organisasi ini yang akan dialokasikan ke unit sebagai komponen UP.
             </p>
           </div>
-          <Button size="sm" onClick={() => setShowAddCategory(true)}>
-            <Plus className="h-4 w-4 mr-1" />
-            Tambah Kategori
-          </Button>
+          <div className="flex gap-2">
+            <Button size="sm" variant="outline" onClick={() => { setCopyResult(null); setShowCopyDialog(true); }}>
+              <Copy className="h-4 w-4 mr-1" />
+              Salin dari Org Lain
+            </Button>
+            <Button size="sm" onClick={() => setShowAddCategory(true)}>
+              <Plus className="h-4 w-4 mr-1" />
+              Tambah Kategori
+            </Button>
+          </div>
         </div>
 
         {loadingPea ? (
@@ -475,6 +497,61 @@ export default function AlokasiUPPage({ params }: Props) {
               </Button>
             </div>
           </form>
+        </DialogContent>
+      </Dialog>
+
+      {/* Dialog Salin Kategori UP */}
+      <Dialog open={showCopyDialog} onOpenChange={(open) => { setShowCopyDialog(open); if (!open) setCopyResult(null); }}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Salin Kategori Biaya UP dari Organisasi Lain</DialogTitle>
+          </DialogHeader>
+          {copyResult ? (
+            <div className="space-y-4">
+              <div className="rounded-md bg-muted p-4 text-sm space-y-1">
+                <p>Berhasil disalin: <strong>{copyResult.copied}</strong> kategori</p>
+                <p>Dilewati (sudah ada): <strong>{copyResult.skipped}</strong> kategori</p>
+              </div>
+              <div className="flex justify-end">
+                <Button onClick={() => setShowCopyDialog(false)}>Tutup</Button>
+              </div>
+            </div>
+          ) : (
+            <div className="space-y-4">
+              <p className="text-sm text-muted-foreground">
+                Pilih organisasi sumber. Kategori UP yang sudah ada tidak akan digandakan.
+              </p>
+              <div className="space-y-1.5">
+                <Label>Organisasi Sumber</Label>
+                <Select value={copySourceOrgId} onValueChange={setCopySourceOrgId}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Pilih organisasi..." />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {siblingOrgs.map((o) => (
+                      <SelectItem key={o.id} value={String(o.id)}>
+                        {o.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              {copyPea.error && (
+                <p className="text-xs text-destructive">{copyPea.error.message}</p>
+              )}
+              <div className="flex gap-2 justify-end">
+                <Button type="button" variant="outline" onClick={() => setShowCopyDialog(false)}>
+                  Batal
+                </Button>
+                <Button
+                  onClick={handleCopyFrom}
+                  disabled={!copySourceOrgId || copyPea.isPending}
+                >
+                  {copyPea.isPending ? "Menyalin..." : "Salin"}
+                </Button>
+              </div>
+            </div>
+          )}
         </DialogContent>
       </Dialog>
 

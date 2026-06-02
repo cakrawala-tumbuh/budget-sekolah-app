@@ -5,6 +5,11 @@ import type {
   ParentExpenseAllocationUpdate,
 } from "@/lib/types";
 
+export interface CopyResult {
+  copied: number;
+  skipped: number;
+}
+
 export const parentExpenseAllocationsApi = {
   list(orgId: number): Promise<ParentExpenseAllocationRead[]> {
     return apiFetch<ParentExpenseAllocationRead[]>(
@@ -37,6 +42,14 @@ export const parentExpenseAllocationsApi = {
     return apiFetch<void>(
       `/organizations/${orgId}/parent-expense-allocations/${allocId}`,
       { method: "DELETE" },
+    );
+  },
+
+  copyFrom(orgId: number, sourceOrgId: number, affectsUp?: boolean): Promise<CopyResult> {
+    const params = affectsUp !== undefined ? `?affects_up=${affectsUp}` : "";
+    return apiFetch<CopyResult>(
+      `/organizations/${orgId}/parent-expense-allocations/copy-from/${sourceOrgId}${params}`,
+      { method: "POST" },
     );
   },
 };
