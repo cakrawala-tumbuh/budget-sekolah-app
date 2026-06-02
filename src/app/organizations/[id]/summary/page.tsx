@@ -408,6 +408,31 @@ export default function SummaryPage({ params }: Props) {
               akrual={summary.accrual_surplus_deficit}
               isSurplus
             />
+
+            {/* SALDO KAS & SETARA KAS */}
+            <SectionHeader label="Saldo Kas & Setara Kas" />
+            <SummaryRow
+              label="Saldo Kas Awal"
+              kas={summary.opening_cash_balance}
+              akrual={null}
+              indent
+            />
+            <SummaryRow
+              label={
+                summary.cash_surplus_deficit >= 0
+                  ? "Surplus Kas Tahun Ini"
+                  : "Defisit Kas Tahun Ini"
+              }
+              kas={summary.cash_surplus_deficit}
+              akrual={null}
+              indent
+            />
+            <SummaryRow
+              label="SALDO KAS AKHIR (Budget Kas)"
+              kas={summary.ending_cash_balance}
+              akrual={null}
+              isSurplus
+            />
           </tbody>
         </table>
       </div>
@@ -418,6 +443,7 @@ export default function SummaryPage({ params }: Props) {
         <p>1. Budget KAS = Pendapatan − Biaya Operasional − Biaya Non Operasional − Total Investasi (harga beli)</p>
         <p>2. Budget AKRUAL = Pendapatan − Biaya Operasional − Biaya Non Operasional − Depresiasi (penyusutan tahun ini)</p>
         <p>3. Selisih Kas−Akrual pada baris Investasi = Nilai Beli − Depresiasi Tahun Ini</p>
+        <p>4. Saldo Kas Akhir (Budget Kas) = Saldo Kas Awal + Surplus/Defisit Kas Tahun Ini</p>
       </div>
     </div>
   );

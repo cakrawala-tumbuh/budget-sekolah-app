@@ -56,6 +56,7 @@ export default function OrganizationsPage() {
     name: string;
     org_type: OrgType;
     city?: string;
+    cash_balance?: number;
     parent_id?: number;
   }) => {
     createMutation.mutate(values, {

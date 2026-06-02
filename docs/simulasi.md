@@ -55,6 +55,18 @@ Untuk masing-masing basis ditampilkan **total pendapatan**, **total biaya**, dan
     - **Defisit** (negatif) — biaya melebihi pendapatan; tinjau kembali asumsi siswa,
       tarif UP/US, atau komponen biaya.
 
+### Saldo Kas & Setara Kas (Budget Kas)
+
+Di bagian akhir Summary ditampilkan posisi kas organisasi:
+
+| Baris | Keterangan |
+|-------|-----------|
+| **Saldo Kas Awal** | Saldo kas & setara kas awal dari data organisasi. |
+| **Surplus / Defisit Kas Tahun Ini** | Hasil basis kas (pendapatan − biaya − investasi). |
+| **Saldo Kas Akhir (Budget Kas)** | Saldo Kas Awal + Surplus/Defisit Kas Tahun Ini. |
+
+Saldo kas awal diatur lewat form organisasi (lihat [Manajemen Organisasi](organisasi.md)).
+
 ## Konsolidasi
 
 Untuk Cabang dan Pusat, simulasi memperhitungkan kontribusi dan alokasi dari unit-unit di

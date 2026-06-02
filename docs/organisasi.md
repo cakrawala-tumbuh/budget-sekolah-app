@@ -20,8 +20,11 @@ Buka menu **Organisasi** di sidebar. Anda akan melihat kartu setiap organisasi b
    - **Nama** — nama lengkap organisasi.
    - **Tipe** — Pusat, Cabang, atau Unit.
    - **Kota** — opsional.
+   - **Saldo Kas & Setara Kas** — saldo kas awal organisasi (total saja; bawaan `0`).
+     Dipakai sebagai dasar perhitungan budget kas pada Summary.
    - **Induk (parent)** — pilih organisasi induk (untuk cabang/unit).
-3. Simpan. Untuk mengubah, buka kartu organisasi lalu ubah datanya.
+3. Simpan. Untuk mengubah, buka halaman detail organisasi lalu klik **Edit**. Pada mode
+   edit, **kode** dan **tipe** organisasi tidak dapat diubah.
 
 ## Halaman detail organisasi
 

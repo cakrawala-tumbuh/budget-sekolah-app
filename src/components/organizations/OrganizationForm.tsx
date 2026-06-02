@@ -20,6 +20,7 @@ const orgSchema = z.object({
   name: z.string().min(1, "Nama wajib diisi").max(200),
   org_type: z.enum(["UNIT", "CABANG", "PUSAT"] as const),
   city: z.string().optional(),
+  cash_balance: z.coerce.number().min(0, "Saldo tidak boleh negatif").optional(),
   parent_id: z.coerce.number().optional(),
 });
 
@@ -30,6 +31,8 @@ interface OrganizationFormProps {
   onSubmit: (values: OrgFormValues) => void;
   isLoading?: boolean;
   submitLabel?: string;
+  /** Mode edit: kode & tipe organisasi tidak bisa diubah */
+  isEdit?: boolean;
 }
 
 export function OrganizationForm({
@@ -37,6 +40,7 @@ export function OrganizationForm({
   onSubmit,
   isLoading,
   submitLabel = "Simpan",
+  isEdit = false,
 }: OrganizationFormProps) {
   const {
     register,
@@ -48,6 +52,7 @@ export function OrganizationForm({
     resolver: zodResolver(orgSchema),
     defaultValues: {
       org_type: "UNIT",
+      cash_balance: 0,
       ...defaultValues,
     },
   });
@@ -61,6 +66,7 @@ export function OrganizationForm({
         <Input
           id="code"
           placeholder="Contoh: SD-MBL"
+          disabled={isEdit}
           {...register("code")}
           className={errors.code ? "border-destructive" : ""}
         />
@@ -87,6 +93,7 @@ export function OrganizationForm({
         <Select
           value={orgType}
           onValueChange={(v) => setValue("org_type", v as OrgType)}
+          disabled={isEdit}
         >
           <SelectTrigger>
             <SelectValue placeholder="Pilih tipe..." />
@@ -106,6 +113,26 @@ export function OrganizationForm({
           placeholder="Contoh: Bandung"
           {...register("city")}
         />
+      </div>
+
+      <div className="space-y-1.5">
+        <Label htmlFor="cash_balance">Saldo Kas &amp; Setara Kas (Rp)</Label>
+        <Input
+          id="cash_balance"
+          type="number"
+          min={0}
+          step="any"
+          placeholder="0"
+          {...register("cash_balance")}
+          className={errors.cash_balance ? "border-destructive" : ""}
+        />
+        {errors.cash_balance ? (
+          <p className="text-xs text-destructive">{errors.cash_balance.message}</p>
+        ) : (
+          <p className="text-xs text-muted-foreground">
+            Saldo kas awal sebagai dasar perhitungan budget kas.
+          </p>
+        )}
       </div>
 
       <Button type="submit" disabled={isLoading} className="w-full">

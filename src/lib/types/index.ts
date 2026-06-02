@@ -32,6 +32,8 @@ export interface Organization {
   name: string;
   org_type: OrgType;
   city: string | null;
+  /** Saldo kas & setara kas awal organisasi */
+  cash_balance: number;
   parent_id: number | null;
   created_at: string;
   updated_at: string;
@@ -46,6 +48,7 @@ export interface OrganizationCreate {
   name: string;
   org_type: OrgType;
   city?: string;
+  cash_balance?: number;
   parent_id?: number;
 }
 
@@ -54,6 +57,7 @@ export interface OrganizationUpdate {
   name?: string;
   org_type?: OrgType;
   city?: string;
+  cash_balance?: number;
   parent_id?: number;
 }
 
@@ -402,6 +406,10 @@ export interface BudgetSummary {
   total_investments: number;
   cash_surplus_deficit: number;
   cash_surplus_deficit_auto: number;
+  // Cash & cash equivalents position
+  opening_cash_balance: number;
+  ending_cash_balance: number;
+  ending_cash_balance_auto: number;
   // Accrual basis
   total_accrual_revenue: number;
   total_accrual_revenue_auto: number;

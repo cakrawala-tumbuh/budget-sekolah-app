@@ -13,8 +13,9 @@ Organisasi dalam aplikasi dibagi menjadi tiga jenis (tipe) yang membentuk hierar
 | **CABANG** | Pengelola wilayah/sekolah, membawahi beberapa unit. |
 | **UNIT** | Satuan pendidikan (mis. TK, SD, SMP, SMA) tempat siswa terdaftar. |
 
-Setiap organisasi memiliki **kode** unik, **nama**, **kota** (opsional), dan dapat
-memiliki **induk** (parent) sehingga terbentuk struktur pohon Pusat → Cabang → Unit.
+Setiap organisasi memiliki **kode** unik, **nama**, **kota** (opsional), **saldo kas &
+setara kas** awal, dan dapat memiliki **induk** (parent) sehingga terbentuk struktur pohon
+Pusat → Cabang → Unit.
 
 ## Peran Pengguna (Role)
 
@@ -71,6 +72,17 @@ untuk UP dan US. Komponen biaya juga dapat dialokasikan (**Alokasi UP/US**) ke c
 Organisasi induk dapat memberi **subsidi** ke unit: beban di sisi pemberi menjadi
 pendapatan di sisi penerima, untuk kategori biaya/pendapatan tertentu.
 
+## Saldo Kas & Setara Kas
+
+Tiap organisasi dapat mencatat **saldo kas & setara kas** awal (total saja, tanpa rincian).
+Saldo ini menjadi dasar perhitungan **budget kas**:
+
+> **Saldo Kas Akhir (Budget Kas) = Saldo Kas Awal + Surplus/Defisit Kas Tahun Ini**
+
+Dengan begitu Summary tidak hanya menampilkan surplus/defisit tahun berjalan, tetapi juga
+**proyeksi posisi kas akhir** organisasi. Saldo diisi/diubah lewat form organisasi (lihat
+[Manajemen Organisasi](organisasi.md)); nilai bawaannya `0`.
+
 ## Basis Kas vs Akrual
 
 Ringkasan anggaran (Summary) disajikan dalam dua basis:
@@ -79,7 +91,8 @@ Ringkasan anggaran (Summary) disajikan dalam dua basis:
 - **Akrual (accrual)** — memperhitungkan beban depresiasi alih-alih pengeluaran investasi
   penuh, sesuai prinsip akuntansi akrual.
 
-Masing-masing menampilkan **surplus/defisit**.
+Masing-masing menampilkan **surplus/defisit**. Pada basis kas, surplus/defisit ini
+ditambahkan ke saldo kas awal untuk memperoleh **saldo kas akhir (budget kas)**.
 
 ---
 

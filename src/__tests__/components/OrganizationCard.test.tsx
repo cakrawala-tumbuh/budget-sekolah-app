@@ -18,6 +18,7 @@ const mockOrg: Organization = {
   name: "SD Maria Bintang Laut",
   org_type: "UNIT",
   city: "Bandung",
+  cash_balance: 0,
   parent_id: 2,
   created_at: "2025-01-01T00:00:00",
   updated_at: "2025-01-01T00:00:00",

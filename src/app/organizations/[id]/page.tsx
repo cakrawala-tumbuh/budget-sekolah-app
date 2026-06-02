@@ -1,6 +1,6 @@
 "use client";
 
-import { use } from "react";
+import { use, useState } from "react";
 import Link from "next/link";
 import {
   ArrowLeft,
@@ -17,15 +17,25 @@ import {
   Users,
   ListOrdered,
   HandCoins,
+  Pencil,
+  Wallet,
 } from "lucide-react";
-import { useOrganization } from "@/hooks/useOrganizations";
+import { useOrganization, useUpdateOrganization } from "@/hooks/useOrganizations";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { ORG_TYPE_LABEL } from "@/lib/utils";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { ORG_TYPE_LABEL, formatCurrency } from "@/lib/utils";
 import { OrganizationCard } from "@/components/organizations/OrganizationCard";
+import { OrganizationForm } from "@/components/organizations/OrganizationForm";
 
 interface Props {
   params: Promise<{ id: string }>;
@@ -35,6 +45,8 @@ export default function OrganizationDetailPage({ params }: Props) {
   const { id } = use(params);
   const orgId = Number(id);
   const { data: org, isLoading, isError } = useOrganization(orgId);
+  const updateMutation = useUpdateOrganization(orgId);
+  const [editOpen, setEditOpen] = useState(false);
 
   if (isLoading) {
     return (
@@ -76,6 +88,41 @@ export default function OrganizationDetailPage({ params }: Props) {
           </p>
         </div>
         <div className="flex flex-wrap gap-2 w-full sm:w-auto">
+          <Dialog open={editOpen} onOpenChange={setEditOpen}>
+            <DialogTrigger asChild>
+              <Button variant="outline" size="sm">
+                <Pencil className="h-4 w-4" />
+                Edit
+              </Button>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Edit Organisasi</DialogTitle>
+              </DialogHeader>
+              <OrganizationForm
+                isEdit
+                submitLabel="Simpan Perubahan"
+                isLoading={updateMutation.isPending}
+                defaultValues={{
+                  code: org.code,
+                  name: org.name,
+                  org_type: org.org_type,
+                  city: org.city ?? undefined,
+                  cash_balance: org.cash_balance,
+                }}
+                onSubmit={(values) =>
+                  updateMutation.mutate(
+                    {
+                      name: values.name,
+                      city: values.city,
+                      cash_balance: values.cash_balance,
+                    },
+                    { onSuccess: () => setEditOpen(false) },
+                  )
+                }
+              />
+            </DialogContent>
+          </Dialog>
           <Button asChild variant="outline" size="sm">
             <Link href={`/organizations/${org.id}/summary`}>
               <ClipboardList className="h-4 w-4" />
@@ -218,6 +265,15 @@ export default function OrganizationDetailPage({ params }: Props) {
             <div className="flex justify-between">
               <span className="text-muted-foreground">Tipe</span>
               <span>{ORG_TYPE_LABEL[org.org_type]}</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="flex items-center gap-1.5 text-muted-foreground">
+                <Wallet className="h-3.5 w-3.5" />
+                Saldo Kas &amp; Setara Kas
+              </span>
+              <span className="font-medium tabular-nums">
+                {formatCurrency(org.cash_balance)}
+              </span>
             </div>
             {org.city && (
               <div className="flex justify-between">
