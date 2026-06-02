@@ -118,15 +118,8 @@ export default function SimulationPage({ params }: Props) {
                           Pendapatan{" "}
                           <strong>{formatCurrency(up.total_up_revenue)}</strong>
                           <span className="block text-xs text-muted-foreground">
-                            Override mengganti komponen biaya; depresiasi{" "}
-                            {formatCurrency(
-                              (up.new_investment_dep +
-                                up.old_asset_dep +
-                                up.cabang_allocated_old_asset_dep +
-                                up.pusat_allocated_old_asset_dep) /
-                                (up.new_student_count || 1),
-                            )}
-                            /siswa tetap ditambahkan ke tarif.
+                            Tarif override dipakai apa adanya dari asumsi unit (tanpa
+                            tambahan depresiasi).
                           </span>
                         </p>
                       )}
