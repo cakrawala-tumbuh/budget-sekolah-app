@@ -2,7 +2,7 @@
 
 ## Masuk (Login)
 
-1. Buka aplikasi Budget YPII di peramban (browser) Anda.
+1. Buka aplikasi Budget Sekolah di peramban (browser) Anda.
 2. Pada halaman **Masuk**, isi:
    - **Username** — nama pengguna yang diberikan administrator.
    - **Password** — kata sandi Anda. Gunakan ikon mata untuk menampilkan/menyembunyikan.
@@ -47,7 +47,7 @@ Pengguna Organisasi hanya dapat mengakses data milik organisasinya sendiri.
 
 ## Navigasi dasar
 
-- Klik **logo Budget YPII** di kiri atas untuk kembali ke Dashboard.
+- Klik **logo aplikasi** di kiri atas untuk kembali ke Dashboard.
 - Di perangkat seluler (mobile), gunakan ikon menu untuk membuka/menutup sidebar.
 - Tombol **panah kembali** (←) di setiap halaman detail membawa Anda ke daftar sebelumnya.
 

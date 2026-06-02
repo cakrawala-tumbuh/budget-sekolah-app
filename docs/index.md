@@ -1,9 +1,9 @@
-# Panduan Penggunaan Budget YPII
+# Panduan Penggunaan Budget Sekolah
 
-Selamat datang di dokumentasi **Budget YPII** — Sistem Simulasi Anggaran (RAB) untuk
-Yayasan Pendidikan YPII tahun anggaran **2025–2026**.
+Selamat datang di dokumentasi **Budget Sekolah** — Sistem Simulasi Anggaran (RAB) untuk
+satuan pendidikan.
 
-Aplikasi ini membantu setiap satuan pendidikan, cabang, dan pusat yayasan menyusun
+Aplikasi ini membantu setiap satuan pendidikan, cabang, dan pusat pengelola menyusun
 **Rencana Anggaran Biaya (RAB)** secara terstruktur: mulai dari asumsi jumlah siswa,
 biaya operasional dan non-operasional, investasi, depresiasi, hingga simulasi tarif
 **Uang Pangkal (UP)** dan **Uang Sekolah (US)** serta alokasi kontribusi antar
@@ -13,7 +13,7 @@ organisasi.
 
 - **Pengguna Organisasi (ORG)** — staf unit/cabang yang menginput data anggaran dan
   menjalankan simulasi untuk organisasinya sendiri.
-- **Administrator (ADMIN)** — pengelola yayasan yang mengatur struktur organisasi,
+- **Administrator (ADMIN)** — pengelola lembaga yang mengatur struktur organisasi,
   pengguna, dan data master (kategori pendapatan, biaya, dan investasi).
 
 ## Mulai dari mana?

@@ -5,11 +5,11 @@ akan memudahkan Anda menginput data dan membaca hasil simulasi.
 
 ## Struktur Organisasi
 
-Yayasan dibagi menjadi tiga jenis (tipe) organisasi yang membentuk hierarki:
+Organisasi dalam aplikasi dibagi menjadi tiga jenis (tipe) yang membentuk hierarki:
 
 | Tipe | Keterangan |
 |------|-----------|
-| **PUSAT** | Tingkat yayasan tertinggi. Menerima kontribusi dari cabang/unit. |
+| **PUSAT** | Tingkat pengelola tertinggi. Menerima kontribusi dari cabang/unit. |
 | **CABANG** | Pengelola wilayah/sekolah, membawahi beberapa unit. |
 | **UNIT** | Satuan pendidikan (mis. TK, SD, SMP, SMA) tempat siswa terdaftar. |
 

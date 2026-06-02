@@ -59,7 +59,7 @@ Untuk masing-masing basis ditampilkan **total pendapatan**, **total biaya**, dan
 
 Untuk Cabang dan Pusat, simulasi memperhitungkan kontribusi dan alokasi dari unit-unit di
 bawahnya, sehingga Administrator dapat melihat **gambaran anggaran konsolidasi** seluruh
-yayasan.
+organisasi.
 
 ---
 

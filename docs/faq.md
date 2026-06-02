@@ -55,4 +55,4 @@ Hanya Administrator melalui menu **Organisasi**. Lihat
 
 ---
 
-Belum terjawab? Hubungi tim administrator yayasan Anda.
+Belum terjawab? Hubungi tim administrator aplikasi Anda.
