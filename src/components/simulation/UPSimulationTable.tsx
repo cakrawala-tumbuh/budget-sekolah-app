@@ -17,6 +17,7 @@ interface Props {
   totalOwnCost: number;
   newInvestmentDep: number;
   oldAssetDep: number;
+  parentAllocatedOldAssetDep: number;
   totalUpCostWithDep: number;
   finalUpRate: number;
 }
@@ -28,11 +29,15 @@ export function UPSimulationTable({
   totalOwnCost,
   newInvestmentDep,
   oldAssetDep,
+  parentAllocatedOldAssetDep,
   totalUpCostWithDep,
   finalUpRate,
 }: Props) {
   const hasExtra =
-    newInvestmentDep > 0 || oldAssetDep > 0 || allocatedComponents.length > 0;
+    newInvestmentDep > 0 ||
+    oldAssetDep > 0 ||
+    parentAllocatedOldAssetDep > 0 ||
+    allocatedComponents.length > 0;
 
   return (
     <div className="overflow-x-auto">
@@ -105,6 +110,21 @@ export function UPSimulationTable({
               <TableCell className="text-right tabular-nums">
                 {newStudentCount > 0
                   ? formatCurrency(oldAssetDep / newStudentCount)
+                  : "-"}
+              </TableCell>
+            </TableRow>
+          )}
+
+          {parentAllocatedOldAssetDep > 0 && (
+            <TableRow className="text-muted-foreground italic">
+              <TableCell className="font-mono text-xs">DEP-OLD-INDUK</TableCell>
+              <TableCell>Depresiasi Aset Lama Cabang/Pusat</TableCell>
+              <TableCell className="text-right tabular-nums">
+                {formatCurrency(parentAllocatedOldAssetDep)}
+              </TableCell>
+              <TableCell className="text-right tabular-nums">
+                {newStudentCount > 0
+                  ? formatCurrency(parentAllocatedOldAssetDep / newStudentCount)
                   : "-"}
               </TableCell>
             </TableRow>

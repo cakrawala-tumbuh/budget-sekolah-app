@@ -110,6 +110,12 @@ export default function SimulationPage({ params }: Props) {
                       {up.old_asset_dep > 0 && (
                         <p>Depresiasi aset lama: <strong>{formatCurrency(up.old_asset_dep)}</strong></p>
                       )}
+                      {up.parent_allocated_old_asset_dep > 0 && (
+                        <p>
+                          Depresiasi aset lama Cabang/Pusat:{" "}
+                          <strong>{formatCurrency(up.parent_allocated_old_asset_dep)}</strong>
+                        </p>
+                      )}
                       {up.parent_allocated_up_cost > 0 && (
                         <p>
                           Alokasi biaya dari Cabang/Pusat:{" "}
@@ -126,6 +132,7 @@ export default function SimulationPage({ params }: Props) {
                       totalOwnCost={up.total_up_cost - up.parent_allocated_up_cost}
                       newInvestmentDep={up.new_investment_dep}
                       oldAssetDep={up.old_asset_dep}
+                      parentAllocatedOldAssetDep={up.parent_allocated_old_asset_dep}
                       totalUpCostWithDep={up.total_up_cost_with_dep}
                       finalUpRate={up.final_up_rate}
                     />
