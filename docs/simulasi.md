@@ -38,6 +38,14 @@ Rincian seluruh pos pendapatan, membandingkan nilai input dengan nilai otomatis.
 Rincian biaya **operasional** dan **non-operasional**, dipecah menjadi porsi **Yayasan**
 dan **BOS**.
 
+Khusus **unit**, beban yang dialokasikan dari induk juga ditambahkan sebagai beban
+operasional unit:
+
+- seluruh beban **Cabang & Pusat** yang dialokasikan ke unit (komponen UP & US),
+  ditandai prefiks `[Alokasi Cabang]` / `[Alokasi Pusat]`;
+- **depresiasi investasi baru** tahun berjalan Cabang & Pusat (alokasi); dan
+- **depresiasi aset lama** tahun berjalan Cabang & Pusat (alokasi).
+
 ## Ringkasan Anggaran (Summary)
 
 Tombol **Summary** di halaman detail organisasi menampilkan ringkasan RAB dalam dua basis:
