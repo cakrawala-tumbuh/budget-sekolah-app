@@ -49,6 +49,18 @@ export function useUpdateOrganization(id: number) {
   });
 }
 
+export function useUpdateCashBalance(id: number) {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (cash_balance: number) =>
+      organizationsApi.updateCashBalance(id, cash_balance),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: organizationKeys.all });
+      qc.invalidateQueries({ queryKey: organizationKeys.detail(id) });
+    },
+  });
+}
+
 export function useDeleteOrganization() {
   const qc = useQueryClient();
   return useMutation({

@@ -20,8 +20,14 @@ import {
   Pencil,
   Wallet,
 } from "lucide-react";
-import { useOrganization, useUpdateOrganization } from "@/hooks/useOrganizations";
+import {
+  useOrganization,
+  useUpdateOrganization,
+  useUpdateCashBalance,
+} from "@/hooks/useOrganizations";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -47,7 +53,10 @@ export default function OrganizationDetailPage({ params }: Props) {
   const orgId = Number(id);
   const { data: org, isLoading, isError } = useOrganization(orgId);
   const updateMutation = useUpdateOrganization(orgId);
+  const cashMutation = useUpdateCashBalance(orgId);
   const [editOpen, setEditOpen] = useState(false);
+  const [cashOpen, setCashOpen] = useState(false);
+  const [cashInput, setCashInput] = useState("");
   const { user } = useAuth();
   const isAdmin = user?.role === "ADMIN";
 
@@ -276,8 +285,72 @@ export default function OrganizationDetailPage({ params }: Props) {
                 <Wallet className="h-3.5 w-3.5" />
                 Saldo Kas &amp; Setara Kas
               </span>
-              <span className="font-medium tabular-nums">
-                {formatCurrency(org.cash_balance)}
+              <span className="flex items-center gap-2">
+                <span className="font-medium tabular-nums">
+                  {formatCurrency(org.cash_balance)}
+                </span>
+                {!isAdmin && (
+                  <Dialog
+                    open={cashOpen}
+                    onOpenChange={(open) => {
+                      setCashOpen(open);
+                      if (open) setCashInput(String(org.cash_balance));
+                    }}
+                  >
+                    <DialogTrigger asChild>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="h-6 w-6 shrink-0"
+                        aria-label="Edit saldo kas & setara kas"
+                      >
+                        <Pencil className="h-3.5 w-3.5" />
+                      </Button>
+                    </DialogTrigger>
+                    <DialogContent>
+                      <DialogHeader>
+                        <DialogTitle>Edit Saldo Kas &amp; Setara Kas</DialogTitle>
+                      </DialogHeader>
+                      <form
+                        className="space-y-4"
+                        onSubmit={(e) => {
+                          e.preventDefault();
+                          const value = Number(cashInput);
+                          if (Number.isNaN(value) || value < 0) return;
+                          cashMutation.mutate(value, {
+                            onSuccess: () => setCashOpen(false),
+                          });
+                        }}
+                      >
+                        <div className="space-y-1.5">
+                          <Label htmlFor="cash_balance">
+                            Saldo Kas &amp; Setara Kas (Rp)
+                          </Label>
+                          <Input
+                            id="cash_balance"
+                            type="number"
+                            min={0}
+                            step="any"
+                            value={cashInput}
+                            onChange={(e) => setCashInput(e.target.value)}
+                          />
+                          <p className="text-xs text-muted-foreground">
+                            Saldo kas awal sebagai dasar perhitungan budget kas.
+                          </p>
+                        </div>
+                        <Button
+                          type="submit"
+                          disabled={cashMutation.isPending}
+                          className="w-full"
+                        >
+                          {cashMutation.isPending
+                            ? "Menyimpan..."
+                            : "Simpan Perubahan"}
+                        </Button>
+                      </form>
+                    </DialogContent>
+                  </Dialog>
+                )}
               </span>
             </div>
             {org.city && (

@@ -29,6 +29,18 @@ export const organizationsApi = {
     });
   },
 
+  /**
+   * Update saldo kas & setara kas saja. Berbeda dengan `update` (admin only),
+   * endpoint ini boleh dipakai user organisasi untuk organisasinya sendiri
+   * maupun organisasi yang dinaunginya secara berjenjang.
+   */
+  updateCashBalance(id: number, cash_balance: number): Promise<Organization> {
+    return apiFetch<Organization>(`/organizations/${id}/cash-balance`, {
+      method: "PUT",
+      body: JSON.stringify({ cash_balance }),
+    });
+  },
+
   remove(id: number): Promise<void> {
     return apiFetch<void>(`/organizations/${id}`, { method: "DELETE" });
   },

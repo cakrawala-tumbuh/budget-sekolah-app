@@ -80,8 +80,10 @@ Saldo ini menjadi dasar perhitungan **budget kas**:
 > **Saldo Kas Akhir (Budget Kas) = Saldo Kas Awal + Surplus/Defisit Kas Tahun Ini**
 
 Dengan begitu Summary tidak hanya menampilkan surplus/defisit tahun berjalan, tetapi juga
-**proyeksi posisi kas akhir** organisasi. Saldo diisi/diubah lewat form organisasi (lihat
-[Manajemen Organisasi](organisasi.md)); nilai bawaannya `0`.
+**proyeksi posisi kas akhir** organisasi. Saldo diisi/diubah lewat form organisasi
+(Administrator) atau lewat halaman detail organisasi oleh pengguna Organisasi sendiri
+(lihat [Mengubah Saldo Kas & Setara Kas](organisasi.md#mengubah-saldo-kas-setara-kas));
+nilai bawaannya `0`.
 
 ## Basis Kas vs Akrual
 

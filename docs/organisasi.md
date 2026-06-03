@@ -8,7 +8,11 @@
       seluruh keturunan di hierarki bawahnya (mis. Pusat melihat semua Cabang dan
       semua Unit di bawah tiap Cabang).
     - Pengguna **Organisasi** **tidak** memiliki tombol untuk **menambah**,
-      **mengubah**, atau **menghapus** organisasi — fitur tersebut khusus Administrator.
+      **mengubah** data umum (nama, kota, induk), atau **menghapus** organisasi —
+      fitur tersebut khusus Administrator.
+    - **Pengecualian:** pengguna **Organisasi** **boleh memperbarui Saldo Kas &
+      Setara Kas** organisasinya sendiri maupun organisasi yang dinaunginya secara
+      berjenjang. Lihat [Mengubah Saldo Kas & Setara Kas](#mengubah-saldo-kas-setara-kas).
 
 ## Melihat daftar organisasi
 
@@ -39,6 +43,25 @@ dan turunannya.
    - **Induk (parent)** — pilih organisasi induk (untuk cabang/unit).
 3. Simpan. Untuk mengubah, buka halaman detail organisasi lalu klik **Edit**. Pada mode
    edit, **kode** dan **tipe** organisasi tidak dapat diubah.
+
+## Mengubah Saldo Kas & Setara Kas
+
+Berbeda dengan data umum organisasi, **Saldo Kas & Setara Kas dapat diperbarui oleh
+pengguna Organisasi** (non-admin), bukan hanya Administrator.
+
+- Pengguna **Organisasi** dapat mengubah saldo kas **organisasinya sendiri** maupun
+  **organisasi yang dinaunginya secara berjenjang** (mis. Cabang dapat memperbarui
+  saldo Unit di bawahnya).
+- **Administrator** dapat mengubahnya lewat tombol **Edit** (form lengkap) seperti biasa.
+
+Langkah bagi pengguna Organisasi:
+
+1. Buka **halaman detail** organisasi yang ingin diperbarui.
+2. Pada kartu **Informasi Organisasi**, di baris **Saldo Kas & Setara Kas**, klik ikon
+   pensil di sebelah nilainya.
+3. Masukkan nilai saldo baru (tidak boleh negatif), lalu klik **Simpan Perubahan**.
+
+Saldo ini dipakai sebagai dasar perhitungan budget kas pada **Summary**.
 
 ## Halaman detail organisasi
 
