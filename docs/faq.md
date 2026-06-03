@@ -9,7 +9,9 @@
 ## Kenapa menu yang saya lihat berbeda dari rekan saya?
 
 Menu menyesuaikan **peran** Anda. Administrator melihat semua menu administrasi;
-pengguna Organisasi hanya melihat Dashboard dan Simulasi untuk organisasinya.
+pengguna Organisasi melihat Dashboard, **Organisasi** (lihat saja — organisasinya
+sendiri beserta organisasi di bawahnya secara berjenjang), dan Simulasi untuk
+organisasinya. Tombol untuk menambah/mengubah organisasi hanya muncul bagi Administrator.
 
 ## Kenapa menu "Asumsi Siswa" / "Label Kelas" tidak muncul?
 

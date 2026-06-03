@@ -22,7 +22,7 @@ Pusat → Cabang → Unit.
 | Peran | Akses |
 |-------|-------|
 | **ADMIN** (Administrator) | Akses penuh ke seluruh organisasi, data master, dan pengguna. |
-| **ORG** (Organisasi) | Hanya data milik organisasi yang ditugaskan kepadanya. |
+| **ORG** (Organisasi) | Organisasi yang ditugaskan kepadanya **beserta seluruh organisasi yang dinaunginya secara berjenjang** (anak, cucu, dan seterusnya). Bersifat lihat saja — tidak dapat menambah/mengubah/menghapus organisasi. |
 
 ## Uang Pangkal (UP) dan Uang Sekolah (US)
 

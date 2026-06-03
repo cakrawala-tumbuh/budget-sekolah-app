@@ -36,6 +36,7 @@ import {
 import { ORG_TYPE_LABEL, formatCurrency } from "@/lib/utils";
 import { OrganizationCard } from "@/components/organizations/OrganizationCard";
 import { OrganizationForm } from "@/components/organizations/OrganizationForm";
+import { useAuth } from "@/context/AuthContext";
 
 interface Props {
   params: Promise<{ id: string }>;
@@ -47,6 +48,8 @@ export default function OrganizationDetailPage({ params }: Props) {
   const { data: org, isLoading, isError } = useOrganization(orgId);
   const updateMutation = useUpdateOrganization(orgId);
   const [editOpen, setEditOpen] = useState(false);
+  const { user } = useAuth();
+  const isAdmin = user?.role === "ADMIN";
 
   if (isLoading) {
     return (
@@ -88,41 +91,43 @@ export default function OrganizationDetailPage({ params }: Props) {
           </p>
         </div>
         <div className="flex flex-wrap gap-2 w-full sm:w-auto">
-          <Dialog open={editOpen} onOpenChange={setEditOpen}>
-            <DialogTrigger asChild>
-              <Button variant="outline" size="sm">
-                <Pencil className="h-4 w-4" />
-                Edit
-              </Button>
-            </DialogTrigger>
-            <DialogContent>
-              <DialogHeader>
-                <DialogTitle>Edit Organisasi</DialogTitle>
-              </DialogHeader>
-              <OrganizationForm
-                isEdit
-                submitLabel="Simpan Perubahan"
-                isLoading={updateMutation.isPending}
-                defaultValues={{
-                  code: org.code,
-                  name: org.name,
-                  org_type: org.org_type,
-                  city: org.city ?? undefined,
-                  cash_balance: org.cash_balance,
-                }}
-                onSubmit={(values) =>
-                  updateMutation.mutate(
-                    {
-                      name: values.name,
-                      city: values.city,
-                      cash_balance: values.cash_balance,
-                    },
-                    { onSuccess: () => setEditOpen(false) },
-                  )
-                }
-              />
-            </DialogContent>
-          </Dialog>
+          {isAdmin && (
+            <Dialog open={editOpen} onOpenChange={setEditOpen}>
+              <DialogTrigger asChild>
+                <Button variant="outline" size="sm">
+                  <Pencil className="h-4 w-4" />
+                  Edit
+                </Button>
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>Edit Organisasi</DialogTitle>
+                </DialogHeader>
+                <OrganizationForm
+                  isEdit
+                  submitLabel="Simpan Perubahan"
+                  isLoading={updateMutation.isPending}
+                  defaultValues={{
+                    code: org.code,
+                    name: org.name,
+                    org_type: org.org_type,
+                    city: org.city ?? undefined,
+                    cash_balance: org.cash_balance,
+                  }}
+                  onSubmit={(values) =>
+                    updateMutation.mutate(
+                      {
+                        name: values.name,
+                        city: values.city,
+                        cash_balance: values.cash_balance,
+                      },
+                      { onSuccess: () => setEditOpen(false) },
+                    )
+                  }
+                />
+              </DialogContent>
+            </Dialog>
+          )}
           <Button asChild variant="outline" size="sm">
             <Link href={`/organizations/${org.id}/summary`}>
               <ClipboardList className="h-4 w-4" />

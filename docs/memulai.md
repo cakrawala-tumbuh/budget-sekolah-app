@@ -41,9 +41,13 @@ Setelah masuk, Anda akan melihat:
 | Menu | Fungsi |
 |------|--------|
 | **Dashboard** | Ringkasan dan pintasan |
+| **Organisasi** | Lihat organisasi Anda sendiri beserta organisasi di bawahnya (berjenjang) |
 | **Simulasi** | Langsung ke simulasi organisasi Anda |
 
-Pengguna Organisasi hanya dapat mengakses data milik organisasinya sendiri.
+Pengguna Organisasi hanya dapat mengakses data milik organisasinya sendiri dan
+seluruh organisasi yang dinaunginya secara berjenjang. Menu **Organisasi** bersifat
+**lihat saja** — tidak tersedia tombol untuk menambah, mengubah, atau menghapus
+organisasi.
 
 ## Navigasi dasar
 

@@ -1,7 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { Plus, Search } from "lucide-react";
 import { useOrganizations, useCreateOrganization, useDeleteOrganization } from "@/hooks/useOrganizations";
 import { OrganizationCard } from "@/components/organizations/OrganizationCard";
@@ -24,25 +23,14 @@ export default function OrganizationsPage() {
   const [search, setSearch] = useState("");
   const [open, setOpen] = useState(false);
   const { user } = useAuth();
-  const router = useRouter();
 
-  // Redirect ORG users to their own organization's simulation page
-  useEffect(() => {
-    if (user && user.role !== "ADMIN") {
-      if (user.org_id) {
-        router.replace(`/organizations/${user.org_id}/simulation`);
-      } else {
-        router.replace("/");
-      }
-    }
-  }, [user, router]);
+  // ADMIN melihat semua organisasi; user ORG melihat organisasinya sendiri
+  // beserta seluruh organisasi yang dinaunginya secara berjenjang (di-filter backend).
+  const isAdmin = user?.role === "ADMIN";
 
   const { data: organizations, isLoading, isError } = useOrganizations();
   const createMutation = useCreateOrganization();
   const deleteMutation = useDeleteOrganization();
-
-  // Don't render list for non-admin users while redirect is in progress
-  if (user && user.role !== "ADMIN") return null;
 
   const filtered = organizations?.filter(
     (o) =>
@@ -79,23 +67,25 @@ export default function OrganizationsPage() {
             {organizations ? `${organizations.length} organisasi terdaftar` : ""}
           </p>
         </div>
-        <Dialog open={open} onOpenChange={setOpen}>
-          <DialogTrigger asChild>
-            <Button>
-              <Plus className="h-4 w-4" />
-              Tambah Organisasi
-            </Button>
-          </DialogTrigger>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>Tambah Organisasi Baru</DialogTitle>
-            </DialogHeader>
-            <OrganizationForm
-              onSubmit={handleCreate}
-              isLoading={createMutation.isPending}
-            />
-          </DialogContent>
-        </Dialog>
+        {isAdmin && (
+          <Dialog open={open} onOpenChange={setOpen}>
+            <DialogTrigger asChild>
+              <Button>
+                <Plus className="h-4 w-4" />
+                Tambah Organisasi
+              </Button>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Tambah Organisasi Baru</DialogTitle>
+              </DialogHeader>
+              <OrganizationForm
+                onSubmit={handleCreate}
+                isLoading={createMutation.isPending}
+              />
+            </DialogContent>
+          </Dialog>
+        )}
       </div>
 
       <div className="mb-6 relative max-w-sm">
@@ -131,7 +121,11 @@ export default function OrganizationsPage() {
             </p>
           )}
           {filtered?.map((org) => (
-            <OrganizationCard key={org.id} org={org} onDelete={handleDelete} />
+            <OrganizationCard
+              key={org.id}
+              org={org}
+              onDelete={isAdmin ? handleDelete : undefined}
+            />
           ))}
         </div>
       )}

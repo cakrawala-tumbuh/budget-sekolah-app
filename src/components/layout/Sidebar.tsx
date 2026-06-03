@@ -84,13 +84,27 @@ export function Sidebar({ onClose }: SidebarProps) {
 
   const isAdmin = user?.role === "ADMIN";
 
-  // Dynamic nav items for ORG users — link directly to their own org's simulation
-  const orgNavItems = !isAdmin && user?.org_id
+  // Dynamic nav items for ORG users — akses ke organisasinya sendiri beserta
+  // seluruh organisasi yang dinaunginya secara berjenjang, dan simulasi org sendiri.
+  const orgNavItems: {
+    label: string;
+    href: string;
+    icon: React.ComponentType<{ className?: string }>;
+    matchActive?: (pathname: string) => boolean;
+  }[] = !isAdmin && user?.org_id
     ? [
+        {
+          label: "Organisasi",
+          href: "/organizations",
+          icon: Building2,
+          matchActive: (pathname) =>
+            pathname.startsWith("/organizations") && !pathname.includes("/simulation"),
+        },
         {
           label: "Simulasi",
           href: `/organizations/${user.org_id}/simulation`,
           icon: TrendingUp,
+          matchActive: (pathname) => pathname.includes("/simulation"),
         },
       ]
     : [];
@@ -154,7 +168,9 @@ export function Sidebar({ onClose }: SidebarProps) {
           })}
           {orgNavItems.map((item) => {
             const Icon = item.icon;
-            const isActive = pathname.startsWith(item.href);
+            const isActive = item.matchActive
+              ? item.matchActive(pathname)
+              : pathname.startsWith(item.href);
             return (
               <li key={item.label}>
                 <Link

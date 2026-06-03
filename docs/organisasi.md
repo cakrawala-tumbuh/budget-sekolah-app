@@ -1,8 +1,14 @@
 # Manajemen Organisasi
 
 !!! note "Akses"
-    Daftar dan pengelolaan organisasi tersedia bagi **Administrator**. Pengguna
-    **Organisasi** langsung diarahkan ke organisasinya sendiri.
+    - **Administrator** melihat dan mengelola **seluruh** organisasi.
+    - Pengguna **Organisasi** (non-admin) juga dapat membuka menu **Organisasi**,
+      namun hanya melihat **organisasinya sendiri** beserta **seluruh organisasi
+      yang dinaunginya secara berjenjang** — tidak hanya anak langsung, tetapi juga
+      seluruh keturunan di hierarki bawahnya (mis. Pusat melihat semua Cabang dan
+      semua Unit di bawah tiap Cabang).
+    - Pengguna **Organisasi** **tidak** memiliki tombol untuk **menambah**,
+      **mengubah**, atau **menghapus** organisasi — fitur tersebut khusus Administrator.
 
 ## Melihat daftar organisasi
 
@@ -12,7 +18,15 @@ Buka menu **Organisasi** di sidebar. Anda akan melihat kartu setiap organisasi b
 - **Kode** organisasi dan **kota**.
 - Relasi induk–anak (hierarki).
 
+Daftar yang tampil sudah otomatis dibatasi sesuai hak akses Anda: Administrator
+melihat semua, sedangkan pengguna Organisasi melihat lingkup organisasinya sendiri
+dan turunannya.
+
 ## Menambah / mengubah organisasi
+
+!!! info "Khusus Administrator"
+    Langkah pada bagian ini hanya tersedia bagi **Administrator**. Bagi pengguna
+    **Organisasi**, tombol **Tambah Organisasi** dan **Edit** tidak ditampilkan.
 
 1. Pada halaman **Organisasi**, gunakan form/tombol tambah.
 2. Isi data:
