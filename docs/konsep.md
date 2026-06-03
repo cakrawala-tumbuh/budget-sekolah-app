@@ -64,8 +64,19 @@ Setiap baris biaya dapat dibagi sumber pendanaannya menjadi **Yayasan (foundatio
 
 ## Kontribusi & Alokasi
 
-Cabang dan Pusat dapat menerima **kontribusi** dari unit di bawahnya, dengan persentase
-untuk UP dan US. Komponen biaya juga dapat dialokasikan (**Alokasi UP/US**) ke cabang/pusat.
+Beban cabang/pusat dialokasikan (**Alokasi UP/US**) ke unit di bawahnya secara
+proporsional jumlah siswa (UP: siswa baru, US: total siswa). Bagi **unit**, porsi ini —
+beban UP+US induk **ditambah depresiasi tahun berjalan induk** (investasi baru + aset
+lama) — menjadi **setoran** yang dicatat sebagai penambah beban operasional unit.
+
+Bagi **cabang/pusat**, total setoran seluruh unit menjadi **pendapatan kontribusi**
+(akun `4630.xx`). Karena keduanya memakai angka yang sama, **setoran unit = kontribusi
+yang diterima induk**, sehingga buku unit dan induk terkonsolidasi 1:1.
+
+!!! note "Tarif kontribusi persentase"
+    Field tarif kontribusi persen (`up_to_cabang`, dst.) tetap tersedia di data unit,
+    namun **tidak lagi dipakai** untuk menghitung pendapatan induk — pendapatan induk
+    kini sepenuhnya berbasis alokasi beban + depresiasi.
 
 ## Subsidi
 

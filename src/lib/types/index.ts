@@ -298,6 +298,8 @@ export interface UPSimulation {
   pusat_allocated_up_cost: number;
   new_investment_dep: number;
   old_asset_dep: number;
+  cabang_allocated_new_investment_dep: number;
+  pusat_allocated_new_investment_dep: number;
   cabang_allocated_old_asset_dep: number;
   pusat_allocated_old_asset_dep: number;
   total_up_cost_with_dep: number;

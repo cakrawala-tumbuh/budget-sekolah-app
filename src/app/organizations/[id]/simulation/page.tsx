@@ -129,6 +129,18 @@ export default function SimulationPage({ params }: Props) {
                       {up.old_asset_dep > 0 && (
                         <p>Depresiasi aset lama: <strong>{formatCurrency(up.old_asset_dep)}</strong></p>
                       )}
+                      {up.cabang_allocated_new_investment_dep > 0 && (
+                        <p>
+                          Depresiasi investasi baru Cabang:{" "}
+                          <strong>{formatCurrency(up.cabang_allocated_new_investment_dep)}</strong>
+                        </p>
+                      )}
+                      {up.pusat_allocated_new_investment_dep > 0 && (
+                        <p>
+                          Depresiasi investasi baru Pusat:{" "}
+                          <strong>{formatCurrency(up.pusat_allocated_new_investment_dep)}</strong>
+                        </p>
+                      )}
                       {up.cabang_allocated_old_asset_dep > 0 && (
                         <p>
                           Depresiasi aset lama Cabang:{" "}
@@ -168,6 +180,8 @@ export default function SimulationPage({ params }: Props) {
                       }
                       newInvestmentDep={up.new_investment_dep}
                       oldAssetDep={up.old_asset_dep}
+                      cabangAllocatedNewInvestmentDep={up.cabang_allocated_new_investment_dep}
+                      pusatAllocatedNewInvestmentDep={up.pusat_allocated_new_investment_dep}
                       cabangAllocatedOldAssetDep={up.cabang_allocated_old_asset_dep}
                       pusatAllocatedOldAssetDep={up.pusat_allocated_old_asset_dep}
                       totalUpCostWithDep={up.total_up_cost_with_dep}

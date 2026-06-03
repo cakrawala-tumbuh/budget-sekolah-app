@@ -18,6 +18,8 @@ interface Props {
   totalOwnCost: number;
   newInvestmentDep: number;
   oldAssetDep: number;
+  cabangAllocatedNewInvestmentDep: number;
+  pusatAllocatedNewInvestmentDep: number;
   cabangAllocatedOldAssetDep: number;
   pusatAllocatedOldAssetDep: number;
   totalUpCostWithDep: number;
@@ -33,6 +35,8 @@ export function UPSimulationTable({
   totalOwnCost,
   newInvestmentDep,
   oldAssetDep,
+  cabangAllocatedNewInvestmentDep,
+  pusatAllocatedNewInvestmentDep,
   cabangAllocatedOldAssetDep,
   pusatAllocatedOldAssetDep,
   totalUpCostWithDep,
@@ -49,6 +53,8 @@ export function UPSimulationTable({
   const hasExtra =
     newInvestmentDep > 0 ||
     oldAssetDep > 0 ||
+    cabangAllocatedNewInvestmentDep > 0 ||
+    pusatAllocatedNewInvestmentDep > 0 ||
     cabangAllocatedOldAssetDep > 0 ||
     pusatAllocatedOldAssetDep > 0 ||
     cabangAllocatedComponents.length > 0 ||
@@ -134,6 +140,32 @@ export function UPSimulationTable({
               </TableCell>
               <TableCell className="text-right tabular-nums">
                 {perStudent(oldAssetDep)}
+              </TableCell>
+            </TableRow>
+          )}
+
+          {/* Alokasi depresiasi investasi baru dari Cabang (terpisah dari Pusat) */}
+          {cabangAllocatedNewInvestmentDep > 0 && (
+            <TableRow className="text-muted-foreground italic">
+              <TableCell className="font-mono text-xs">DEP-NEW-CABANG</TableCell>
+              <TableCell>Depresiasi Investasi Baru Cabang</TableCell>
+              <TableCell className="text-right tabular-nums">
+                {formatCurrency(cabangAllocatedNewInvestmentDep)}
+              </TableCell>
+              <TableCell className="text-right tabular-nums">
+                {perStudent(cabangAllocatedNewInvestmentDep)}
+              </TableCell>
+            </TableRow>
+          )}
+          {pusatAllocatedNewInvestmentDep > 0 && (
+            <TableRow className="text-muted-foreground italic">
+              <TableCell className="font-mono text-xs">DEP-NEW-PUSAT</TableCell>
+              <TableCell>Depresiasi Investasi Baru Pusat</TableCell>
+              <TableCell className="text-right tabular-nums">
+                {formatCurrency(pusatAllocatedNewInvestmentDep)}
+              </TableCell>
+              <TableCell className="text-right tabular-nums">
+                {perStudent(pusatAllocatedNewInvestmentDep)}
               </TableCell>
             </TableRow>
           )}
