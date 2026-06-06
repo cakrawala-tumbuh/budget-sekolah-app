@@ -143,7 +143,7 @@ function IncomeEntryForm({
 
       <div className="space-y-1.5">
         <Label>Jumlah (Rp)</Label>
-        <Input type="number" min={0} step="1000" {...register("amount")} />
+        <Input type="number" min={0} step={1} {...register("amount")} />
         {errors.amount && (
           <p className="text-xs text-destructive">{errors.amount.message}</p>
         )}

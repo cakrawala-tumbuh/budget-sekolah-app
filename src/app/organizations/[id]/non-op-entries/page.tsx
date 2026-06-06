@@ -133,14 +133,14 @@ function EntryForm({
       <div className="grid grid-cols-2 gap-4">
         <div className="space-y-1.5">
           <Label>Yayasan (Rp)</Label>
-          <Input type="number" min={0} step="1000" {...register("foundation")} />
+          <Input type="number" min={0} step={1} {...register("foundation")} />
           {errors.foundation && (
             <p className="text-xs text-destructive">{errors.foundation.message}</p>
           )}
         </div>
         <div className="space-y-1.5">
           <Label>BOS/BOP (Rp)</Label>
-          <Input type="number" min={0} step="1000" {...register("bos")} />
+          <Input type="number" min={0} step={1} {...register("bos")} />
           {errors.bos && (
             <p className="text-xs text-destructive">{errors.bos.message}</p>
           )}
