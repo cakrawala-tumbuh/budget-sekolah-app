@@ -135,7 +135,7 @@ function InvestmentForm({
 
       <div className="space-y-1.5">
         <Label>Harga Perolehan (Rp)</Label>
-        <Input type="number" min={1} step="1000" {...register("purchase_price")} />
+        <Input type="number" min={1} step={1} {...register("purchase_price")} />
         {errors.purchase_price && (
           <p className="text-xs text-destructive">{errors.purchase_price.message}</p>
         )}

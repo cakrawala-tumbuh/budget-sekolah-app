@@ -89,7 +89,7 @@ function DepreciationForm({
 
       <div className="space-y-1.5">
         <Label>Nilai Perolehan (Rp)</Label>
-        <Input type="number" min={1} step="1000" {...register("acquisition_cost")} />
+        <Input type="number" min={1} step={1} {...register("acquisition_cost")} />
         {errors.acquisition_cost && (
           <p className="text-xs text-destructive">{errors.acquisition_cost.message}</p>
         )}
