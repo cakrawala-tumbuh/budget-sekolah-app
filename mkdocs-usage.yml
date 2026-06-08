@@ -1,0 +1,92 @@
+site_name: "Budget YPII - Panduan Pengguna"
+site_description: "Panduan penggunaan lengkap aplikasi Budget YPII — Simulasi Rencana Anggaran Belanja Yayasan Penyelenggaraan Ilahi Indonesia"
+site_author: "Yayasan Penyelenggaraan Ilahi Indonesia"
+site_url: "https://cakrawala-tumbuh.github.io/budget-sekolah-app/"
+repo_url: "https://github.com/cakrawala-tumbuh/budget-sekolah-app"
+repo_name: "cakrawala-tumbuh/budget-sekolah-app"
+edit_uri: edit/master/docs-usage/
+
+docs_dir: docs-usage
+site_dir: site-usage
+
+theme:
+  name: material
+  language: id
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: blue
+      accent: blue
+      toggle:
+        icon: material/brightness-7
+        name: Ganti ke mode gelap
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: blue
+      accent: blue
+      toggle:
+        icon: material/brightness-4
+        name: Ganti ke mode terang
+  features:
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.sections
+    - navigation.expand
+    - navigation.top
+    - navigation.footer
+    - search.suggest
+    - search.highlight
+    - search.share
+    - content.code.annotate
+    - content.tabs.link
+    - content.tooltips
+
+plugins:
+  - search:
+      lang: id
+  - glightbox
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - attr_list
+  - md_in_html
+  - tables
+  - footnotes
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/cakrawala-tumbuh/budget-sekolah-app
+
+nav:
+  - Beranda: index.md
+  - Memulai:
+    - Cara Memulai: memulai/index.md
+  - Panduan Fitur:
+    - Semua Fitur: panduan-fitur/index.md
+    - Organisasi: panduan-fitur/organisasi.md
+    - Asumsi Siswa: panduan-fitur/asumsi-siswa.md
+    - Label Kelas: panduan-fitur/label-kelas.md
+    - Biaya Operasional: panduan-fitur/biaya-operasional.md
+    - Biaya Non-Operasional: panduan-fitur/biaya-non-operasional.md
+    - Investasi Aset Tetap: panduan-fitur/investasi.md
+    - Depresiasi Aset Lama: panduan-fitur/depresiasi-aset-lama.md
+    - Entri Pendapatan: panduan-fitur/pendapatan.md
+    - Alokasi UP & US: panduan-fitur/alokasi.md
+    - Subsidi ke Unit: panduan-fitur/subsidi.md
+    - Simulasi Anggaran: panduan-fitur/simulasi.md
+    - Summary Anggaran: panduan-fitur/summary.md
+    - Panel Admin: panduan-fitur/admin.md
+  - Tutorial:
+    - Daftar Tutorial: tutorial/index.md
+    - Input Anggaran Unit Baru: tutorial/input-anggaran-unit.md
+    - Membaca Hasil Simulasi: tutorial/membaca-simulasi.md
+  - Referensi:
+    - FAQ: referensi/faq.md

@@ -7,6 +7,20 @@ dan proyek ini menganut [Semantic Versioning](https://semver.org/lang/id/).
 
 ## [Unreleased]
 
+### Ditambahkan
+- Dokumentasi penggunaan lengkap di `docs-usage/` dengan Material for MkDocs:
+  panduan fitur per halaman (organisasi, asumsi siswa, label kelas, biaya
+  operasional/non-operasional, investasi, depresiasi aset lama, pendapatan,
+  alokasi UP/US, subsidi, simulasi, summary, admin), dua tutorial skenario,
+  dan FAQ.
+- File konfigurasi `mkdocs-usage.yml` dan `requirements-docs.txt` untuk build
+  dokumentasi penggunaan.
+
+### Diubah
+- Workflow `docs.yml` kini mem-build `mkdocs-usage.yml` (menggantikan `mkdocs.yml`)
+  dan memantau perubahan di `docs-usage/`, `mkdocs-usage.yml`, dan
+  `requirements-docs.txt`; pip cache diaktifkan via `requirements-docs.txt`.
+
 ## [1.18.0] - 2026-06-08
 
 ### Ditambahkan
