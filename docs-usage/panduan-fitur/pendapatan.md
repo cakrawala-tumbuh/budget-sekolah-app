@@ -1,6 +1,6 @@
 # Entri Pendapatan
 
-Halaman **Entri Pendapatan** digunakan untuk mencatat pendapatan selain Uang Pangkal (UP) dan Uang Sekolah (US), seperti pendapatan kontribusi dari unit, pendapatan jasa giro, atau pendapatan lain-lain.
+Halaman **Entri Pendapatan** digunakan untuk mencatat pendapatan yang nilainya dimasukkan secara manual, seperti pendapatan jasa giro atau pendapatan lain-lain.
 
 ## Membuka Entri Pendapatan
 
@@ -22,7 +22,7 @@ Entri pendapatan dikelompokkan berdasarkan **kategori pendapatan**. Setiap baris
 
 1. Klik tombol **+ Tambah Entri**.
 2. Isi form:
-   - **Kategori Pendapatan** — Pilih dari daftar kategori yang tersedia.
+   - **Kategori Pendapatan** — Pilih dari daftar kategori yang tersedia. Hanya kategori bertipe **Manual** yang dapat dipilih.
    - **No. Baris** — Nomor urut dalam kategori.
    - **Uraian** — Deskripsi rincian pendapatan.
    - **Dasar / Catatan Perhitungan** — Cara menghitung nominal (opsional).
@@ -37,5 +37,7 @@ Klik ikon pensil untuk mengedit atau ikon tempat sampah untuk menghapus entri.
 !!! info "Hubungan dengan Simulasi Pendapatan"
     Entri pendapatan yang dimasukkan di sini akan muncul di tab **Pendapatan** pada halaman [Simulasi Anggaran](simulasi.md), berdampingan dengan pendapatan dari UP dan US.
 
-!!! note "Pendapatan Otomatis dari Biaya"
-    Beberapa kategori pendapatan nilainya **tidak perlu diinput manual** di sini — nilainya dihitung otomatis dari entri biaya yang di-mapping sebagai *Direct Income*. Konfigurasi mapping dilakukan oleh Admin melalui [Panel Admin → Kategori Biaya](admin.md#mapping-ke-kategori-pendapatan). Pendapatan jenis ini tetap akan muncul di simulasi, tetapi tidak akan tampil di halaman Entri Pendapatan karena bukan input manual.
+!!! note "Pendapatan Otomatis dari Biaya (Direct Income)"
+    Beberapa kategori pendapatan nilainya **tidak diinput di halaman ini** — nilainya dihitung otomatis dari entri biaya yang di-mapping sebagai *Direct Income*. Kategori jenis ini tidak muncul di daftar pilihan form di atas.
+
+    Bila nilai otomatis tersebut perlu disesuaikan, gunakan fitur **Override Direct Income** di tab **Direct Income** pada halaman [Simulasi Anggaran](simulasi.md#tab-direct-income-khusus-unit).

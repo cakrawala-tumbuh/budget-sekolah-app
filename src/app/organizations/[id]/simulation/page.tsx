@@ -339,7 +339,7 @@ export default function SimulationPage({ params }: Props) {
                   </p>
                 </CardHeader>
                 <CardContent>
-                  <DirectIncomeTable data={directIncome} />
+                  <DirectIncomeTable data={directIncome} orgId={orgId} />
                 </CardContent>
               </Card>
             ) : (

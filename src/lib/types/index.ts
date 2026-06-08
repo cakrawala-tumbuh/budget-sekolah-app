@@ -442,16 +442,35 @@ export interface BosIncomeSimulation {
 }
 
 export interface DirectIncomeItem {
+  expense_category_id: number;
   expense_code: string;
   expense_label: string;
   income_code: string;
   income_label: string;
+  auto_total: number;
   total: number;
+  is_overridden: boolean;
 }
 
 export interface DirectIncomeSimulation {
   items: DirectIncomeItem[];
   total: number;
+  total_auto: number;
+}
+
+export interface DirectIncomeOverride {
+  id: number;
+  organization_id: number;
+  expense_category_id: number;
+  override_amount: number;
+  notes: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface DirectIncomeOverrideUpsert {
+  override_amount: number;
+  notes?: string;
 }
 
 // ── Admin – Master Data ───────────────────────────────────────────────────────

@@ -62,28 +62,50 @@ Setiap seksi menampilkan subtotal, dan tabel diakhiri dengan **Total Pendapatan 
 
 ### Tab Direct Income *(khusus UNIT)*
 
-Menampilkan rincian biaya yang secara langsung dicatat sebagai pendapatan berdasarkan konfigurasi **Direct Income** pada kategori biaya.
+Menampilkan rincian biaya yang secara langsung dicatat sebagai pendapatan berdasarkan konfigurasi **Direct Income** pada kategori biaya. Di tab ini Anda juga dapat mengatur **override** — nilai pengganti jika pendapatan yang dipungut dari siswa berbeda dari total anggaran biaya.
 
 Data ditampilkan **dikelompokkan per kategori pendapatan**. Setiap grup terdiri dari:
 
-- **Baris header grup** — menampilkan kode dan nama kategori pendapatan beserta subtotal nilai seluruh biaya dalam grup tersebut.
-- **Baris detail** (di bawah header, sedikit diindentasi) — menampilkan kode biaya, uraian biaya, dan nominal masing-masing biaya penyusun grup.
+- **Baris header grup** — menampilkan kode dan nama kategori pendapatan beserta subtotal.
+- **Baris detail** (di bawah header, sedikit diindentasi) — menampilkan kode biaya, uraian biaya, dan kolom nilai.
 
 | Kolom | Keterangan |
 |---|---|
 | **Kode Biaya** | Kode akun biaya sumber (5xxx) |
-| **Uraian Biaya** | Nama kategori biaya |
-| **Nominal (Rp)** | Nilai dana yayasan dari biaya tersebut |
+| **Uraian Biaya** | Nama kategori biaya. Badge **Override** muncul bila nilai telah diganti manual. |
+| **Otomatis (Rp)** | Nilai yang dihitung otomatis dari anggaran biaya (dana Yayasan) |
+| **Final (Rp)** | Nilai yang dipakai dalam simulasi — sama dengan Otomatis bila tidak ada override |
+
+Footer tabel menampilkan **Total Pendapatan dari Biaya** dalam dua kolom: total otomatis dan total final.
 
 !!! info "Mengapa hanya dana Yayasan?"
     Nilai dana BoS tidak ikut diakumulasi di tab ini karena sudah diperhitungkan secara terpisah di **Tab Detail BoS** sebagai Pendapatan BoS. Tab Direct Income hanya mencatat porsi dana yayasan agar tidak terjadi penghitungan ganda.
 
-Footer tabel menampilkan **Total Pendapatan dari Biaya** — jumlah keseluruhan semua grup.
+## Mengatur Override Direct Income
 
-Bila belum ada kategori biaya yang dikonfigurasi sebagai Direct Income, tabel menampilkan pesan kosong.
+Gunakan override bila nilai pendapatan yang dipungut dari siswa berbeda dari nominal anggaran biaya terkait.
+
+### Menetapkan Override
+
+1. Temukan baris biaya yang ingin disesuaikan di tab **Direct Income**.
+2. Klik ikon **pensil** di ujung kanan baris.
+3. Ketik nilai baru pada kotak input yang muncul.
+4. Tekan **Enter** atau klik ikon **centang** untuk menyimpan.
+
+Nilai di kolom **Final** akan langsung berubah, dan tab **Pendapatan** serta **Ringkasan Anggaran** ikut diperbarui secara otomatis.
+
+### Menghapus Override (Kembali ke Nilai Otomatis)
+
+1. Pada baris yang memiliki badge **Override**, klik ikon **putar ulang** (↺).
+2. Konfirmasi penghapusan.
+
+Nilai Final akan kembali sama dengan nilai Otomatis.
+
+!!! warning "Perhatian"
+    Override hanya mempengaruhi nilai pendapatan dalam simulasi. Data anggaran biaya di halaman **Biaya Operasional** tidak ikut berubah.
 
 !!! info "Hubungan dengan Tab Pendapatan"
-    Nilai di tab ini sama persis dengan baris-baris Direct Income yang muncul di **Tab Pendapatan**. Tab ini hanya menampilkan rincian dari biaya mana nilai tersebut berasal dan ke kategori pendapatan mana hasilnya dicatat.
+    Nilai Final di tab ini sama persis dengan baris-baris Direct Income yang muncul di **Tab Pendapatan**. Tab ini hanya menampilkan rincian dari biaya mana nilai tersebut berasal dan ke kategori pendapatan mana hasilnya dicatat.
 
 !!! note "Konfigurasi Direct Income"
     Mapping biaya → pendapatan dikonfigurasi oleh Admin melalui [Panel Admin → Kategori Biaya](admin.md#menambah-kategori-biaya). Satu kategori biaya hanya bisa di-mapping ke satu kategori pendapatan.

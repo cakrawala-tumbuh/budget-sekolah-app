@@ -197,6 +197,7 @@ export default function IncomeEntriesPage({ params }: Props) {
 
   const [collapsed, setCollapsed] = useState<Set<number>>(new Set());
 
+  const manualCategories = (categories ?? []).filter((c) => c.calc_method === "MANUAL");
   const grouped = groupByCategory(entries ?? [], categories ?? []);
   const grandTotal = (entries ?? []).reduce((s, e) => s + e.amount, 0);
 
@@ -377,7 +378,7 @@ export default function IncomeEntriesPage({ params }: Props) {
             <DialogTitle>Tambah Entri Pendapatan</DialogTitle>
           </DialogHeader>
           <IncomeEntryForm
-            categories={categories ?? []}
+            categories={manualCategories}
             onSubmit={handleCreate}
             isLoading={createMutation.isPending}
           />
@@ -392,7 +393,7 @@ export default function IncomeEntriesPage({ params }: Props) {
           </DialogHeader>
           {editItem && (
             <IncomeEntryForm
-              categories={categories ?? []}
+              categories={manualCategories}
               defaultValues={{
                 income_category_id: editItem.income_category_id,
                 line_number: editItem.line_number,

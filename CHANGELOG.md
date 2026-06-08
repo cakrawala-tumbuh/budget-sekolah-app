@@ -7,6 +7,34 @@ dan proyek ini menganut [Semantic Versioning](https://semver.org/lang/id/).
 
 ## [Unreleased]
 
+## [1.24.0] - 2026-06-08
+
+### Ditambahkan
+- Tipe `DirectIncomeOverride` dan `DirectIncomeOverrideUpsert` di `src/lib/types/index.ts`.
+- API wrapper `src/lib/api/direct-income-overrides.ts`: fungsi `list`, `upsert`, `remove`.
+- Hook `useDirectIncomeOverrides`, `useUpsertDirectIncomeOverride`, dan
+  `useDeleteDirectIncomeOverride` di `src/hooks/useDirectIncomeOverrides.ts`.
+  Upsert/delete otomatis invalidasi query `directIncome`, `income`, dan `summary`.
+
+### Diubah
+- `DirectIncomeItem` di `src/lib/types/index.ts`: tambah field `expense_category_id`,
+  `auto_total`, dan `is_overridden`.
+- `DirectIncomeSimulation` di `src/lib/types/index.ts`: tambah field `total_auto`.
+- `DirectIncomeTable`: prop baru `orgId`; tabel kini memiliki kolom **Otomatis** dan
+  **Final** terpisah; baris override ditandai badge **Override** berwarna amber;
+  kolom aksi mendukung edit inline (klik pensil → input → Enter/centang) dan reset
+  ke nilai otomatis (ikon putar ulang).
+- `income-entries/page.tsx`: daftar pilihan kategori di form tambah/edit entri
+  hanya menampilkan kategori bertipe `MANUAL` — kategori `FROM_EXPENSE`,
+  `GRADE_BASED`, `SIMULATED_UP`, `SIMULATED_US`, dan `SUM_FROM_BOS` tidak lagi
+  dapat dipilih.
+- Dokumentasi penggunaan `docs-usage/panduan-fitur/pendapatan.md`: mencantumkan
+  bahwa hanya kategori Manual yang muncul di form, dan mengarahkan ke fitur Override
+  untuk Direct Income.
+- Dokumentasi penggunaan `docs-usage/panduan-fitur/simulasi.md`: deskripsi Tab Direct
+  Income diperbarui sesuai kolom baru; ditambah seksi "Mengatur Override Direct Income"
+  dengan panduan menetapkan dan menghapus override.
+
 ## [1.23.0] - 2026-06-08
 
 ### Diubah
