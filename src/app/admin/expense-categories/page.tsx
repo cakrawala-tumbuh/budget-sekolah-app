@@ -11,6 +11,7 @@ import {
   useUpdateExpenseCategory,
   useDeleteExpenseCategory,
   useSeedExpenseCategories,
+  useIncomeCategories,
 } from "@/hooks/useAdmin";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -40,6 +41,7 @@ const schema = z.object({
   is_operational: z.boolean().default(true),
   is_up_component: z.boolean().default(false),
   is_direct_income: z.boolean().default(false),
+  maps_to_income_category_id: z.coerce.number().int().nullable().optional(),
   contribution_role: z.string().optional().nullable(),
   sort_order: z.coerce.number().int().default(0),
 });
@@ -57,6 +59,7 @@ function CategoryForm({
   isLoading?: boolean;
   isEdit?: boolean;
 }) {
+  const { data: incomeCategories } = useIncomeCategories();
   const {
     register,
     handleSubmit,
@@ -69,10 +72,13 @@ function CategoryForm({
       is_operational: true,
       is_up_component: false,
       is_direct_income: false,
+      maps_to_income_category_id: null,
       sort_order: 0,
       ...defaultValues,
     },
   });
+
+  const isDirectIncome = watch("is_direct_income");
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
@@ -125,6 +131,32 @@ function CategoryForm({
           ))}
         </div>
       </div>
+      {isDirectIncome && (
+        <div className="space-y-1.5">
+          <Label htmlFor="maps_to_income_category_id">Mapping ke Kategori Pendapatan</Label>
+          <select
+            id="maps_to_income_category_id"
+            className="w-full rounded-md border bg-background px-3 py-2 text-sm"
+            value={watch("maps_to_income_category_id") ?? ""}
+            onChange={(e) =>
+              setValue(
+                "maps_to_income_category_id",
+                e.target.value ? Number(e.target.value) : null,
+              )
+            }
+          >
+            <option value="">-- Pilih kategori pendapatan --</option>
+            {incomeCategories?.map((ic) => (
+              <option key={ic.id} value={ic.id}>
+                {ic.code} — {ic.label}
+              </option>
+            ))}
+          </select>
+          <p className="text-xs text-muted-foreground">
+            Pendapatan dari biaya ini akan dicatat ke kategori yang dipilih.
+          </p>
+        </div>
+      )}
       <div className="space-y-1.5">
         <Label htmlFor="sort_order">Urutan</Label>
         <Input id="sort_order" type="number" {...register("sort_order")} />
@@ -138,9 +170,12 @@ function CategoryForm({
 
 export default function ExpenseCategoriesPage() {
   const { data, isLoading, isError } = useExpenseCategories();
+  const { data: incomeCategories } = useIncomeCategories();
   const createMutation = useCreateExpenseCategory();
   const deleteMutation = useDeleteExpenseCategory();
   const seedMutation = useSeedExpenseCategories();
+
+  const incomeCatMap = new Map(incomeCategories?.map((ic) => [ic.id, ic]) ?? []);
 
   const [createOpen, setCreateOpen] = useState(false);
   const [editItem, setEditItem] = useState<ExpenseCategory | null>(null);
@@ -216,6 +251,7 @@ export default function ExpenseCategoriesPage() {
               <TableHead className="w-24 text-center">Operasional</TableHead>
               <TableHead className="w-24 text-center">Komp. UP</TableHead>
               <TableHead className="w-24 text-center">Direct Inc.</TableHead>
+              <TableHead className="w-40">Mapping Pendapatan</TableHead>
               <TableHead className="w-32">Peran Kontribusi</TableHead>
               <TableHead className="w-24 text-right">Aksi</TableHead>
             </TableRow>
@@ -255,6 +291,18 @@ export default function ExpenseCategoriesPage() {
                       ) : (
                         <span className="text-muted-foreground text-xs">–</span>
                       )}
+                    </TableCell>
+                    <TableCell className="text-xs text-muted-foreground">
+                      {cat.maps_to_income_category_id
+                        ? (() => {
+                            const ic = incomeCatMap.get(cat.maps_to_income_category_id);
+                            return ic ? (
+                              <span className="font-mono">{ic.code}</span>
+                            ) : (
+                              <span className="text-destructive">ID {cat.maps_to_income_category_id}</span>
+                            );
+                          })()
+                        : "–"}
                     </TableCell>
                     <TableCell className="font-mono text-xs text-muted-foreground">
                       {cat.contribution_role ?? "–"}
@@ -306,6 +354,7 @@ export default function ExpenseCategoriesPage() {
                 is_operational: editItem.is_operational,
                 is_up_component: editItem.is_up_component,
                 is_direct_income: editItem.is_direct_income,
+                maps_to_income_category_id: editItem.maps_to_income_category_id,
                 contribution_role: editItem.contribution_role,
                 sort_order: editItem.sort_order,
               }}

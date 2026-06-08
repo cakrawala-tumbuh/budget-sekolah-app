@@ -7,6 +7,22 @@ dan proyek ini menganut [Semantic Versioning](https://semver.org/lang/id/).
 
 ## [Unreleased]
 
+## [1.21.0] - 2026-06-08
+
+### Ditambahkan
+- Dropdown **Mapping ke Kategori Pendapatan** pada form Kategori Biaya (Admin):
+  muncul otomatis saat flag **Direct Income** dicentang, memungkinkan Admin
+  menentukan ke kategori pendapatan mana nilai biaya ini akan dihitung otomatis.
+- Kolom **Mapping Pendapatan** pada tabel Kategori Biaya untuk menampilkan kode
+  akun pendapatan tujuan sekilas tanpa membuka form edit.
+
+### Diubah
+- Dokumentasi penggunaan `docs-usage/panduan-fitur/admin.md` diperbarui:
+  tabel kolom Kategori Biaya, penjelasan semua flag (termasuk Direct Income),
+  dan admonition cara kerja pendapatan otomatis dari biaya.
+- Dokumentasi penggunaan `docs-usage/panduan-fitur/pendapatan.md` ditambah
+  catatan bahwa sebagian pendapatan dihitung otomatis via mapping Direct Income.
+
 ## [1.20.0] - 2026-06-08
 
 ### Ditambahkan

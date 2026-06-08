@@ -36,3 +36,6 @@ Klik ikon pensil untuk mengedit atau ikon tempat sampah untuk menghapus entri.
 
 !!! info "Hubungan dengan Simulasi Pendapatan"
     Entri pendapatan yang dimasukkan di sini akan muncul di tab **Pendapatan** pada halaman [Simulasi Anggaran](simulasi.md), berdampingan dengan pendapatan dari UP dan US.
+
+!!! note "Pendapatan Otomatis dari Biaya"
+    Beberapa kategori pendapatan nilainya **tidak perlu diinput manual** di sini — nilainya dihitung otomatis dari entri biaya yang di-mapping sebagai *Direct Income*. Konfigurasi mapping dilakukan oleh Admin melalui [Panel Admin → Kategori Biaya](admin.md#mapping-ke-kategori-pendapatan). Pendapatan jenis ini tetap akan muncul di simulasi, tetapi tidak akan tampil di halaman Entri Pendapatan karena bukan input manual.

@@ -16,16 +16,37 @@ Panel Admin memiliki tiga bagian yang dapat diakses lewat submenu:
 
 Halaman ini menampilkan daftar semua kategori biaya operasional dan non-operasional yang tersedia di seluruh aplikasi.
 
+### Tabel Kategori Biaya
+
+Setiap baris menampilkan kolom berikut:
+
+| Kolom | Keterangan |
+|---|---|
+| **Kode Akun** | Kode akun biaya (misal: `5130.01`) |
+| **Label** | Nama kategori |
+| **Operasional** | Apakah kategori ini bersifat operasional |
+| **Komp. UP** | Apakah masuk komponen perhitungan tarif UP |
+| **Direct Inc.** | Apakah biaya ini otomatis menjadi pendapatan |
+| **Mapping Pendapatan** | Kode akun pendapatan tujuan (jika Direct Income aktif) |
+| **Peran Kontribusi** | Peran dalam alokasi kontribusi antar organisasi |
+
 ### Menambah Kategori Biaya
 
-1. Klik tombol **+ Tambah Kategori**.
+1. Klik tombol **+ Tambah**.
 2. Isi form:
-   - **Kode** — Kode akun biaya (misal: 5160).
-   - **Label** — Nama kategori (misal: Biaya Operasional Sekolah).
-   - **Jenis** — Operasional atau Non-Operasional.
-   - **Komponen UP** — Centang bila kategori ini masuk ke perhitungan tarif UP.
-   - **Urutan tampil** — Angka urutan di halaman input biaya.
+   - **Kode Akun** — Kode akun biaya (misal: `5130.01`).
+   - **Label** — Nama kategori (misal: Pengembangan Guru).
+   - **Peran Kontribusi** — Isi bila kategori ini berperan dalam kontribusi antar organisasi (misal: `up_to_pusat`). Kosongkan jika tidak relevan.
+   - **Flag** — Centang flag yang sesuai:
+     - **Operasional** — Biaya operasional rutin.
+     - **Komponen UP** — Masuk ke komponen perhitungan tarif Uang Pangkal.
+     - **Direct Income** — Biaya ini secara langsung menghasilkan pendapatan. Bila dicentang, field **Mapping ke Kategori Pendapatan** akan muncul.
+   - **Mapping ke Kategori Pendapatan** — Muncul hanya bila **Direct Income** dicentang. Pilih satu kategori pendapatan tujuan. Nilai realisasi biaya ini akan otomatis dihitung sebagai pendapatan pada kategori yang dipilih saat simulasi dijalankan.
+   - **Urutan** — Angka urutan tampil di halaman input biaya.
 3. Klik **Simpan**.
+
+!!! info "Pendapatan Otomatis dari Biaya (Direct Income)"
+    Bila sebuah kategori biaya ditandai **Direct Income** dan di-mapping ke kategori pendapatan tertentu, sistem akan otomatis menjumlahkan nilai entri biaya tersebut sebagai pendapatan — tanpa perlu input manual di halaman Entri Pendapatan. Satu kategori biaya hanya bisa di-mapping ke **satu** kategori pendapatan.
 
 ### Mengedit & Menghapus Kategori Biaya
 
