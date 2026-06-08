@@ -1,27 +1,50 @@
+################################################################################
 # Makefile budget-app — perintah pengembangan & pengujian frontend.
 #
-# Jalankan `make test` untuk menjalankan unit test (jest).
+# Gate test (lint + unit) berjalan DALAM Docker via Dockerfile.test.
+# Perintah yang sama (`make test`) dipakai di LOKAL maupun di GitHub Actions.
+# Tidak ada artefak test (coverage/, node_modules lokal, dll) yang tertulis
+# ke folder project karena source di-COPY ke image, bukan bind-mount.
+################################################################################
 
-.PHONY: help install test lint build dev clean
+IMAGE_NAME ?= $(shell basename $(CURDIR))-test
+DOCKERFILE  = Dockerfile.test
+DOCKER_RUN  = docker run --rm $(IMAGE_NAME)
 
-help: ## Tampilkan daftar perintah
-	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | \
-		awk 'BEGIN {FS = ":.*?## "}; {printf "  %-12s %s\n", $$1, $$2}'
+.DEFAULT_GOAL := test
+.PHONY: build lint unit test clean install dev build-app help
 
-install: ## Pasang dependency (npm ci)
+## build: bangun image test (Dockerfile.test)
+build:
+	docker build -f $(DOCKERFILE) -t $(IMAGE_NAME) .
+
+## lint: jalankan eslint di dalam container
+lint: build
+	$(DOCKER_RUN) npm run lint
+
+## unit: jalankan jest di dalam container
+unit: build
+	$(DOCKER_RUN) npm test -- --ci
+
+## test: gate lengkap = lint + unit. Dipakai LOKAL dan CI (identik).
+test: lint unit
+
+## clean: hapus image test
+clean:
+	-docker rmi $(IMAGE_NAME)
+
+## install: pasang dependency (untuk development lokal)
+install:
 	npm ci
 
-test: ## Jalankan unit test (jest)
-	npm test
-
-lint: ## Periksa gaya kode (eslint)
-	npm run lint
-
-build: ## Build produksi Next.js
-	npm run build
-
-dev: ## Jalankan server pengembangan
+## dev: jalankan server pengembangan
+dev:
 	npm run dev
 
-clean: ## Hapus artefak build
-	rm -rf .next coverage
+## build-app: build produksi Next.js
+build-app:
+	npm run build
+
+## help: tampilkan daftar perintah
+help:
+	@grep -E '^## ' $(MAKEFILE_LIST) | sed -e 's/## //'

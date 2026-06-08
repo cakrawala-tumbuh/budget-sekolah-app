@@ -1,0 +1,21 @@
+# Image khusus untuk automated test (lint + unit) budget-app-ypii.
+#
+# Source di-COPY ke dalam image (BUKAN bind-mount). Konsekuensinya:
+#  - Test berjalan terisolasi; hasil sama di lokal maupun CI.
+#  - Artefak test (coverage/, .nyc_output/) hidup di dalam container
+#    dan ikut terhapus saat `docker run --rm`. Folder project bersih.
+#
+# Pin versi base image untuk menjamin parity lokal vs CI.
+FROM node:22-slim
+
+WORKDIR /app
+
+# `npm ci` mengunci ke package-lock.json → versi dependency identik di mana pun.
+COPY package.json package-lock.json ./
+RUN npm ci
+
+# Copy seluruh source (pengecualian diatur di .dockerignore).
+COPY . .
+
+# Jest menyesuaikan perilaku (non-interaktif, tanpa watch) saat CI=true.
+ENV CI=true

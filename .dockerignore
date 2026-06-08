@@ -17,9 +17,8 @@ dist
 .vscode
 .idea
 
-# Tests
+# Tests (coverage artefak dikecualikan; src/__tests__ harus ikut masuk image)
 coverage
-src/__tests__
 
 # Docker files themselves (tidak perlu di dalam image)
 Dockerfile
