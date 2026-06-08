@@ -48,6 +48,18 @@ Menampilkan proyeksi pendapatan dalam dua versi:
 
 Setiap baris menampilkan kode akun, deskripsi, dan nominal.
 
+### Tab Detail BoS *(khusus UNIT)*
+
+Menampilkan rincian sumber dana BoS (Bantuan Operasional Sekolah) yang menjadi komponen pendapatan unit. Data dikelompokkan dalam dua seksi:
+
+- **Komponen Biaya Operasional** — Total kolom Dana BoS dari setiap kategori biaya anggaran (entri biaya yang diisi di tab [Biaya Operasional](biaya-operasional.md) dan [Biaya Non-Operasional](biaya-non-operasional.md)), diurutkan per kategori.
+- **Komponen Investasi** — Total kolom Dana BoS dari setiap kategori investasi (entri yang diisi di tab [Investasi](investasi.md)), diurutkan per kategori.
+
+Setiap seksi menampilkan subtotal, dan tabel diakhiri dengan **Total Pendapatan BoS** yang merupakan penjumlahan kedua seksi.
+
+!!! info "Hubungan dengan Tab Pendapatan"
+    Angka Total Pendapatan BoS di tab ini sama dengan nilai Dana BoS yang muncul sebagai satu baris di Tab Pendapatan. Tab ini hanya menampilkan rincian dari mana saja angka tersebut berasal.
+
 ### Tab Biaya
 
 Menampilkan daftar semua entri biaya (operasional dan non-operasional) beserta totalnya.

@@ -12,6 +12,7 @@ import {
   useExpenseSimulation,
   useAllocationSimulation,
   useDepreciationSummary,
+  useBosIncomeSimulation,
 } from "@/hooks/useSimulation";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -23,6 +24,7 @@ import { SimulationTable } from "@/components/simulation/SimulationTable";
 import { IncomeSimulationTable } from "@/components/simulation/IncomeSimulationTable";
 import { UPSimulationTable } from "@/components/simulation/UPSimulationTable";
 import { USSimulationTable } from "@/components/simulation/USSimulationTable";
+import { BosIncomeTable } from "@/components/simulation/BosIncomeTable";
 import { formatCurrency, formatNumber } from "@/lib/utils";
 
 interface Props {
@@ -41,6 +43,7 @@ export default function SimulationPage({ params }: Props) {
   const { data: expenses } = useExpenseSimulation(orgId);
   const { data: allocation } = useAllocationSimulation(orgId);
   const { data: depreciation } = useDepreciationSummary(orgId);
+  const { data: bosIncome } = useBosIncomeSimulation(orgId);
 
   const isUnit = org?.org_type === "UNIT";
 
@@ -83,6 +86,9 @@ export default function SimulationPage({ params }: Props) {
             </>
           )}
           <TabsTrigger value="income">Pendapatan</TabsTrigger>
+          {isUnit && (
+            <TabsTrigger value="bos-income">Detail BoS</TabsTrigger>
+          )}
           <TabsTrigger value="expenses">Biaya</TabsTrigger>
           {!isUnit && (
             <TabsTrigger value="allocation">Kontribusi</TabsTrigger>
@@ -282,6 +288,37 @@ export default function SimulationPage({ params }: Props) {
             <Skeleton className="h-48 w-full" />
           )}
         </TabsContent>
+
+        {isUnit && (
+          <TabsContent value="bos-income">
+            {bosIncome ? (
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-base">Detail Pendapatan BoS</CardTitle>
+                  <div className="text-sm text-muted-foreground space-y-1">
+                    {bosIncome.total_from_expenses > 0 && (
+                      <p>
+                        Dana BoS dari biaya operasional:{" "}
+                        <strong>{formatCurrency(bosIncome.total_from_expenses)}</strong>
+                      </p>
+                    )}
+                    {bosIncome.total_from_investments > 0 && (
+                      <p>
+                        Dana BoS dari investasi:{" "}
+                        <strong>{formatCurrency(bosIncome.total_from_investments)}</strong>
+                      </p>
+                    )}
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <BosIncomeTable data={bosIncome} />
+                </CardContent>
+              </Card>
+            ) : (
+              <Skeleton className="h-48 w-full" />
+            )}
+          </TabsContent>
+        )}
 
         <TabsContent value="expenses">
           {expenses ? (

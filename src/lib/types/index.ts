@@ -427,6 +427,20 @@ export interface BudgetSummary {
   depreciation: DepreciationSummary;
 }
 
+export interface BosIncomeLineItem {
+  code: string;
+  description: string;
+  amount: number;
+  source: "expense" | "investment";
+}
+
+export interface BosIncomeSimulation {
+  items: BosIncomeLineItem[];
+  total_from_expenses: number;
+  total_from_investments: number;
+  total: number;
+}
+
 // ── Admin – Master Data ───────────────────────────────────────────────────────
 
 export type IncomeCalcMethod =

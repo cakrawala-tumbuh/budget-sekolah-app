@@ -10,6 +10,7 @@ export const simulationKeys = {
   expenses: (id: number) => ["simulation", id, "expenses"] as const,
   allocation: (id: number) => ["simulation", id, "allocation"] as const,
   depreciation: (id: number) => ["simulation", id, "depreciation"] as const,
+  bosIncome: (id: number) => ["simulation", id, "bos-income"] as const,
   summary: (id: number) => ["simulation", id, "summary"] as const,
 };
 
@@ -57,6 +58,14 @@ export function useDepreciationSummary(orgId: number) {
   return useQuery({
     queryKey: simulationKeys.depreciation(orgId),
     queryFn: () => simulationApi.getDepreciation(orgId),
+    enabled: !!orgId,
+  });
+}
+
+export function useBosIncomeSimulation(orgId: number) {
+  return useQuery({
+    queryKey: simulationKeys.bosIncome(orgId),
+    queryFn: () => simulationApi.getBosIncome(orgId),
     enabled: !!orgId,
   });
 }

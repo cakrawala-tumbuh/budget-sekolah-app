@@ -7,6 +7,20 @@ dan proyek ini menganut [Semantic Versioning](https://semver.org/lang/id/).
 
 ## [Unreleased]
 
+## [1.20.0] - 2026-06-08
+
+### Ditambahkan
+- Tab **Detail BoS** pada halaman Simulasi Anggaran (khusus UNIT): menampilkan
+  rincian sumber dana BoS dikelompokkan per kategori biaya operasional dan per
+  kategori investasi, dengan subtotal per seksi dan total keseluruhan.
+- Komponen `BosIncomeTable` di `src/components/simulation/`.
+- Hook `useBosIncomeSimulation` dan key `bosIncome` di `simulationKeys`.
+- Tipe `BosIncomeLineItem` dan `BosIncomeSimulation` di `src/lib/types/index.ts`.
+
+### Diubah
+- Dokumentasi penggunaan `docs-usage/panduan-fitur/simulasi.md` diperbarui
+  dengan deskripsi Tab Detail BoS dan keterangan hubungannya dengan Tab Pendapatan.
+
 ## [1.19.0] - 2026-06-08
 
 ### Ditambahkan

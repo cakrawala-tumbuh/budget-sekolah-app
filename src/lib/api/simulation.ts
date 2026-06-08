@@ -6,6 +6,7 @@ import type {
   ExpenseSimulation,
   AllocationSimulation,
   DepreciationSummary,
+  BosIncomeSimulation,
   BudgetSummary,
 } from "@/lib/types";
 
@@ -48,6 +49,12 @@ export const simulationApi = {
   getDepreciation(orgId: number): Promise<DepreciationSummary> {
     return apiFetch<DepreciationSummary>(
       `/organizations/${orgId}/simulation/depreciation`,
+    );
+  },
+
+  getBosIncome(orgId: number): Promise<BosIncomeSimulation> {
+    return apiFetch<BosIncomeSimulation>(
+      `/organizations/${orgId}/simulation/bos-income`,
     );
   },
 
