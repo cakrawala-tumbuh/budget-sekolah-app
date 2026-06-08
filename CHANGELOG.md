@@ -7,6 +7,8 @@ dan proyek ini menganut [Semantic Versioning](https://semver.org/lang/id/).
 
 ## [Unreleased]
 
+## [1.19.0] - 2026-06-08
+
 ### Ditambahkan
 - Dokumentasi penggunaan lengkap di `docs-usage/` dengan Material for MkDocs:
   panduan fitur per halaman (organisasi, asumsi siswa, label kelas, biaya
@@ -28,5 +30,6 @@ dan proyek ini menganut [Semantic Versioning](https://semver.org/lang/id/).
   nilai BoS ditampilkan dengan warna biru sebagai penanda visual, dan total
   Dana BoS muncul di footer tabel. Mengikuti fitur backend v1.18.0.
 
-[Unreleased]: https://github.com/cakrawala-tumbuh/budget-sekolah-app/compare/v1.18.0...HEAD
+[Unreleased]: https://github.com/cakrawala-tumbuh/budget-sekolah-app/compare/v1.19.0...HEAD
+[1.19.0]: https://github.com/cakrawala-tumbuh/budget-sekolah-app/releases/tag/v1.19.0
 [1.18.0]: https://github.com/cakrawala-tumbuh/budget-sekolah-app/releases/tag/v1.18.0
