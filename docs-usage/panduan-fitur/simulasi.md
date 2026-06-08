@@ -64,20 +64,21 @@ Setiap seksi menampilkan subtotal, dan tabel diakhiri dengan **Total Pendapatan 
 
 Menampilkan rincian biaya yang secara langsung dicatat sebagai pendapatan berdasarkan konfigurasi **Direct Income** pada kategori biaya.
 
-Tabel berisi kolom berikut:
+Data ditampilkan **dikelompokkan per kategori pendapatan**. Setiap grup terdiri dari:
+
+- **Baris header grup** — menampilkan kode dan nama kategori pendapatan beserta subtotal nilai seluruh biaya dalam grup tersebut.
+- **Baris detail** (di bawah header, sedikit diindentasi) — menampilkan kode biaya, uraian biaya, dan nominal masing-masing biaya penyusun grup.
 
 | Kolom | Keterangan |
 |---|---|
 | **Kode Biaya** | Kode akun biaya sumber (5xxx) |
 | **Uraian Biaya** | Nama kategori biaya |
-| **Kode Pendapatan** | Kode akun pendapatan tujuan (4xxx) |
-| **Kategori Pendapatan** | Nama kategori pendapatan yang menerima nilai ini |
 | **Nominal (Rp)** | Nilai dana yayasan dari biaya tersebut |
 
 !!! info "Mengapa hanya dana Yayasan?"
     Nilai dana BoS tidak ikut diakumulasi di tab ini karena sudah diperhitungkan secara terpisah di **Tab Detail BoS** sebagai Pendapatan BoS. Tab Direct Income hanya mencatat porsi dana yayasan agar tidak terjadi penghitungan ganda.
 
-Footer tabel menampilkan **Total Pendapatan dari Biaya** — jumlah keseluruhan semua baris Direct Income.
+Footer tabel menampilkan **Total Pendapatan dari Biaya** — jumlah keseluruhan semua grup.
 
 Bila belum ada kategori biaya yang dikonfigurasi sebagai Direct Income, tabel menampilkan pesan kosong.
 

@@ -7,6 +7,17 @@ dan proyek ini menganut [Semantic Versioning](https://semver.org/lang/id/).
 
 ## [Unreleased]
 
+## [1.23.0] - 2026-06-08
+
+### Diubah
+- Tab **Direct Income** pada Simulasi Anggaran: data kini dikelompokkan per
+  kategori pendapatan. Setiap grup menampilkan kode & nama kategori pendapatan
+  sebagai header baris beserta subtotal, diikuti baris detail biaya penyusunnya
+  (kode biaya, uraian, nominal). Kolom Kode Pendapatan dan Kategori Pendapatan
+  dihapus dari kolom individual karena kini jadi header grup.
+- Dokumentasi penggunaan `docs-usage/panduan-fitur/simulasi.md` diperbarui:
+  deskripsi Tab Direct Income disesuaikan dengan tampilan baru yang terkelompok.
+
 ## [1.22.0] - 2026-06-08
 
 ### Ditambahkan
