@@ -441,6 +441,19 @@ export interface BosIncomeSimulation {
   total: number;
 }
 
+export interface DirectIncomeItem {
+  expense_code: string;
+  expense_label: string;
+  income_code: string;
+  income_label: string;
+  total: number;
+}
+
+export interface DirectIncomeSimulation {
+  items: DirectIncomeItem[];
+  total: number;
+}
+
 // ── Admin – Master Data ───────────────────────────────────────────────────────
 
 export type IncomeCalcMethod =

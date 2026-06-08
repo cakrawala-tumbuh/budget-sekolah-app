@@ -7,6 +7,23 @@ dan proyek ini menganut [Semantic Versioning](https://semver.org/lang/id/).
 
 ## [Unreleased]
 
+## [1.22.0] - 2026-06-08
+
+### Ditambahkan
+- Tab **Direct Income** pada halaman Simulasi Anggaran (khusus UNIT): menampilkan
+  rincian biaya yang ber-flag Direct Income beserta kategori pendapatan tujuannya
+  dan nominal dana Yayasan yang dicatat sebagai pendapatan.
+- Komponen `DirectIncomeTable` di `src/components/simulation/`.
+- Hook `useDirectIncomeSimulation` dan key `directIncome` di `simulationKeys`.
+- Tipe `DirectIncomeItem` dan `DirectIncomeSimulation` di `src/lib/types/index.ts`.
+
+### Diubah
+- Kalkulasi Direct Income hanya mengakumulasi nilai Yayasan — dana BoS tidak
+  ikut dihitung karena sudah diperhitungkan di Tab Detail BoS (Pendapatan BoS).
+- Dokumentasi penggunaan `docs-usage/panduan-fitur/simulasi.md` diperbarui:
+  kolom tabel Direct Income disesuaikan (5 kolom, tanpa Yayasan/BoS terpisah)
+  dan ditambah admonition penjelasan alasan hanya Yayasan yang dihitung.
+
 ## [1.21.0] - 2026-06-08
 
 ### Ditambahkan

@@ -7,6 +7,7 @@ import type {
   AllocationSimulation,
   DepreciationSummary,
   BosIncomeSimulation,
+  DirectIncomeSimulation,
   BudgetSummary,
 } from "@/lib/types";
 
@@ -55,6 +56,12 @@ export const simulationApi = {
   getBosIncome(orgId: number): Promise<BosIncomeSimulation> {
     return apiFetch<BosIncomeSimulation>(
       `/organizations/${orgId}/simulation/bos-income`,
+    );
+  },
+
+  getDirectIncome(orgId: number): Promise<DirectIncomeSimulation> {
+    return apiFetch<DirectIncomeSimulation>(
+      `/organizations/${orgId}/simulation/direct-income`,
     );
   },
 

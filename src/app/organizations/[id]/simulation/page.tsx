@@ -13,6 +13,7 @@ import {
   useAllocationSimulation,
   useDepreciationSummary,
   useBosIncomeSimulation,
+  useDirectIncomeSimulation,
 } from "@/hooks/useSimulation";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -25,6 +26,7 @@ import { IncomeSimulationTable } from "@/components/simulation/IncomeSimulationT
 import { UPSimulationTable } from "@/components/simulation/UPSimulationTable";
 import { USSimulationTable } from "@/components/simulation/USSimulationTable";
 import { BosIncomeTable } from "@/components/simulation/BosIncomeTable";
+import { DirectIncomeTable } from "@/components/simulation/DirectIncomeTable";
 import { formatCurrency, formatNumber } from "@/lib/utils";
 
 interface Props {
@@ -44,6 +46,7 @@ export default function SimulationPage({ params }: Props) {
   const { data: allocation } = useAllocationSimulation(orgId);
   const { data: depreciation } = useDepreciationSummary(orgId);
   const { data: bosIncome } = useBosIncomeSimulation(orgId);
+  const { data: directIncome } = useDirectIncomeSimulation(orgId);
 
   const isUnit = org?.org_type === "UNIT";
 
@@ -88,6 +91,9 @@ export default function SimulationPage({ params }: Props) {
           <TabsTrigger value="income">Pendapatan</TabsTrigger>
           {isUnit && (
             <TabsTrigger value="bos-income">Detail BoS</TabsTrigger>
+          )}
+          {isUnit && (
+            <TabsTrigger value="direct-income">Direct Income</TabsTrigger>
           )}
           <TabsTrigger value="expenses">Biaya</TabsTrigger>
           {!isUnit && (
@@ -312,6 +318,28 @@ export default function SimulationPage({ params }: Props) {
                 </CardHeader>
                 <CardContent>
                   <BosIncomeTable data={bosIncome} />
+                </CardContent>
+              </Card>
+            ) : (
+              <Skeleton className="h-48 w-full" />
+            )}
+          </TabsContent>
+        )}
+
+        {isUnit && (
+          <TabsContent value="direct-income">
+            {directIncome ? (
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-base">Pendapatan dari Biaya (Direct Income)</CardTitle>
+                  <p className="text-sm text-muted-foreground">
+                    Biaya yang secara langsung dicatat sebagai pendapatan berdasarkan mapping kategori.
+                    Total:{" "}
+                    <strong>{formatCurrency(directIncome.total)}</strong>
+                  </p>
+                </CardHeader>
+                <CardContent>
+                  <DirectIncomeTable data={directIncome} />
                 </CardContent>
               </Card>
             ) : (

@@ -60,6 +60,33 @@ Setiap seksi menampilkan subtotal, dan tabel diakhiri dengan **Total Pendapatan 
 !!! info "Hubungan dengan Tab Pendapatan"
     Angka Total Pendapatan BoS di tab ini sama dengan nilai Dana BoS yang muncul sebagai satu baris di Tab Pendapatan. Tab ini hanya menampilkan rincian dari mana saja angka tersebut berasal.
 
+### Tab Direct Income *(khusus UNIT)*
+
+Menampilkan rincian biaya yang secara langsung dicatat sebagai pendapatan berdasarkan konfigurasi **Direct Income** pada kategori biaya.
+
+Tabel berisi kolom berikut:
+
+| Kolom | Keterangan |
+|---|---|
+| **Kode Biaya** | Kode akun biaya sumber (5xxx) |
+| **Uraian Biaya** | Nama kategori biaya |
+| **Kode Pendapatan** | Kode akun pendapatan tujuan (4xxx) |
+| **Kategori Pendapatan** | Nama kategori pendapatan yang menerima nilai ini |
+| **Nominal (Rp)** | Nilai dana yayasan dari biaya tersebut |
+
+!!! info "Mengapa hanya dana Yayasan?"
+    Nilai dana BoS tidak ikut diakumulasi di tab ini karena sudah diperhitungkan secara terpisah di **Tab Detail BoS** sebagai Pendapatan BoS. Tab Direct Income hanya mencatat porsi dana yayasan agar tidak terjadi penghitungan ganda.
+
+Footer tabel menampilkan **Total Pendapatan dari Biaya** — jumlah keseluruhan semua baris Direct Income.
+
+Bila belum ada kategori biaya yang dikonfigurasi sebagai Direct Income, tabel menampilkan pesan kosong.
+
+!!! info "Hubungan dengan Tab Pendapatan"
+    Nilai di tab ini sama persis dengan baris-baris Direct Income yang muncul di **Tab Pendapatan**. Tab ini hanya menampilkan rincian dari biaya mana nilai tersebut berasal dan ke kategori pendapatan mana hasilnya dicatat.
+
+!!! note "Konfigurasi Direct Income"
+    Mapping biaya → pendapatan dikonfigurasi oleh Admin melalui [Panel Admin → Kategori Biaya](admin.md#menambah-kategori-biaya). Satu kategori biaya hanya bisa di-mapping ke satu kategori pendapatan.
+
 ### Tab Biaya
 
 Menampilkan daftar semua entri biaya (operasional dan non-operasional) beserta totalnya.
