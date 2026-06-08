@@ -190,6 +190,7 @@ export interface Investment {
   asset_code: string | null;
   asset_name: string;
   purchase_price: number;
+  bos: number;
   useful_life: number;
   start_month: number;
   dep_per_year: number;
@@ -204,6 +205,7 @@ export interface InvestmentCreate {
   asset_code?: string;
   asset_name: string;
   purchase_price: number;
+  bos?: number;
   useful_life: number;
   start_month: number;
 }
@@ -213,6 +215,7 @@ export interface InvestmentUpdate {
   asset_code?: string;
   asset_name?: string;
   purchase_price?: number;
+  bos?: number;
   useful_life?: number;
   start_month?: number;
 }

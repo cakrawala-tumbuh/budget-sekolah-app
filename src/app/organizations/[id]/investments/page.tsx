@@ -58,6 +58,7 @@ const schema = z.object({
   asset_code: z.string().optional(),
   asset_name: z.string().min(1, "Nama aset wajib diisi"),
   purchase_price: z.coerce.number().positive("Nilai harus lebih dari 0"),
+  bos: z.coerce.number().min(0, "Dana BoS tidak boleh negatif").default(0),
   useful_life: z.coerce.number().int().min(1, "Umur ekonomis minimal 1 tahun"),
   start_month: z.coerce.number().int().min(1).max(12),
 });
@@ -83,7 +84,7 @@ function InvestmentForm({
     formState: { errors },
   } = useForm<FormValues>({
     resolver: zodResolver(schema),
-    defaultValues: { useful_life: 4, start_month: 7, ...defaultValues },
+    defaultValues: { useful_life: 4, start_month: 7, bos: 0, ...defaultValues },
   });
 
   const catId = watch("investment_category_id");
@@ -133,12 +134,21 @@ function InvestmentForm({
         </div>
       </div>
 
-      <div className="space-y-1.5">
-        <Label>Harga Perolehan (Rp)</Label>
-        <Input type="number" min={1} step={1} {...register("purchase_price")} />
-        {errors.purchase_price && (
-          <p className="text-xs text-destructive">{errors.purchase_price.message}</p>
-        )}
+      <div className="grid grid-cols-2 gap-4">
+        <div className="space-y-1.5">
+          <Label>Harga Perolehan (Rp)</Label>
+          <Input type="number" min={1} step={1} {...register("purchase_price")} />
+          {errors.purchase_price && (
+            <p className="text-xs text-destructive">{errors.purchase_price.message}</p>
+          )}
+        </div>
+        <div className="space-y-1.5">
+          <Label>Dana BoS (Rp)</Label>
+          <Input type="number" min={0} step={1} {...register("bos")} />
+          {errors.bos && (
+            <p className="text-xs text-destructive">{errors.bos.message}</p>
+          )}
+        </div>
       </div>
 
       <div className="grid grid-cols-2 gap-4">
@@ -199,6 +209,10 @@ export default function InvestmentsPage({ params }: Props) {
   );
   const totalPrice = (investments ?? []).reduce(
     (s, inv) => s + inv.purchase_price,
+    0,
+  );
+  const totalBos = (investments ?? []).reduce(
+    (s, inv) => s + (inv.bos ?? 0),
     0,
   );
 
@@ -263,6 +277,7 @@ export default function InvestmentsPage({ params }: Props) {
                       <TableHead>Nama Aset</TableHead>
                       <TableHead>Kategori</TableHead>
                       <TableHead className="text-right">Harga Beli</TableHead>
+                      <TableHead className="text-right">Dana BoS</TableHead>
                       <TableHead className="text-center">Umur</TableHead>
                       <TableHead className="text-center">Bln Mulai</TableHead>
                       <TableHead className="text-right">Dep/Tahun</TableHead>
@@ -285,6 +300,15 @@ export default function InvestmentsPage({ params }: Props) {
                         </TableCell>
                         <TableCell className="text-right tabular-nums">
                           {formatCurrency(inv.purchase_price)}
+                        </TableCell>
+                        <TableCell className="text-right tabular-nums">
+                          {inv.bos > 0 ? (
+                            <span className="text-blue-600 dark:text-blue-400">
+                              {formatCurrency(inv.bos)}
+                            </span>
+                          ) : (
+                            <span className="text-muted-foreground">—</span>
+                          )}
                         </TableCell>
                         <TableCell className="text-center">
                           {inv.useful_life} th
@@ -334,6 +358,14 @@ export default function InvestmentsPage({ params }: Props) {
                     {formatCurrency(totalPrice)}
                   </span>
                 </div>
+                {totalBos > 0 && (
+                  <div>
+                    Total Dana BoS:{" "}
+                    <span className="font-semibold tabular-nums text-blue-600 dark:text-blue-400">
+                      {formatCurrency(totalBos)}
+                    </span>
+                  </div>
+                )}
                 <div>
                   Total Depresiasi Tahun Ini:{" "}
                   <span className="font-semibold tabular-nums">
@@ -374,6 +406,7 @@ export default function InvestmentsPage({ params }: Props) {
                 asset_code: editItem.asset_code ?? "",
                 asset_name: editItem.asset_name,
                 purchase_price: editItem.purchase_price,
+                bos: editItem.bos ?? 0,
                 useful_life: editItem.useful_life,
                 start_month: editItem.start_month,
               }}
