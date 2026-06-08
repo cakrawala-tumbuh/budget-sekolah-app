@@ -40,4 +40,4 @@ Klik ikon pensil untuk mengedit atau ikon tempat sampah untuk menghapus entri.
 !!! note "Pendapatan Otomatis dari Biaya (Direct Income)"
     Beberapa kategori pendapatan nilainya **tidak diinput di halaman ini** — nilainya dihitung otomatis dari entri biaya yang di-mapping sebagai *Direct Income*. Kategori jenis ini tidak muncul di daftar pilihan form di atas.
 
-    Bila nilai otomatis tersebut perlu disesuaikan, gunakan fitur **Override Direct Income** di tab **Direct Income** pada halaman [Simulasi Anggaran](simulasi.md#tab-direct-income-khusus-unit).
+    Bila nilai otomatis tersebut perlu disesuaikan, gunakan halaman [Override Direct Income](override-direct-income.md) yang tersedia di kartu navigasi pada halaman detail organisasi.

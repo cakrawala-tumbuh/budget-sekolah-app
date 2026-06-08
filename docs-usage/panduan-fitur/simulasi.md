@@ -81,28 +81,8 @@ Footer tabel menampilkan **Total Pendapatan dari Biaya** dalam dua kolom: total 
 !!! info "Mengapa hanya dana Yayasan?"
     Nilai dana BoS tidak ikut diakumulasi di tab ini karena sudah diperhitungkan secara terpisah di **Tab Detail BoS** sebagai Pendapatan BoS. Tab Direct Income hanya mencatat porsi dana yayasan agar tidak terjadi penghitungan ganda.
 
-## Mengatur Override Direct Income
-
-Gunakan override bila nilai pendapatan yang dipungut dari siswa berbeda dari nominal anggaran biaya terkait.
-
-### Menetapkan Override
-
-1. Temukan baris biaya yang ingin disesuaikan di tab **Direct Income**.
-2. Klik ikon **pensil** di ujung kanan baris.
-3. Ketik nilai baru pada kotak input yang muncul.
-4. Tekan **Enter** atau klik ikon **centang** untuk menyimpan.
-
-Nilai di kolom **Final** akan langsung berubah, dan tab **Pendapatan** serta **Ringkasan Anggaran** ikut diperbarui secara otomatis.
-
-### Menghapus Override (Kembali ke Nilai Otomatis)
-
-1. Pada baris yang memiliki badge **Override**, klik ikon **putar ulang** (↺).
-2. Konfirmasi penghapusan.
-
-Nilai Final akan kembali sama dengan nilai Otomatis.
-
-!!! warning "Perhatian"
-    Override hanya mempengaruhi nilai pendapatan dalam simulasi. Data anggaran biaya di halaman **Biaya Operasional** tidak ikut berubah.
+!!! info "Cara mengatur override"
+    Override Direct Income dikelola di halaman tersendiri — bukan di sini. Kembali ke halaman detail organisasi dan klik kartu **Override Direct Income**. Lihat [panduan Override Direct Income](override-direct-income.md) untuk detail.
 
 !!! info "Hubungan dengan Tab Pendapatan"
     Nilai Final di tab ini sama persis dengan baris-baris Direct Income yang muncul di **Tab Pendapatan**. Tab ini hanya menampilkan rincian dari biaya mana nilai tersebut berasal dan ke kategori pendapatan mana hasilnya dicatat.

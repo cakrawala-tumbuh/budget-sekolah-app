@@ -19,6 +19,7 @@ import {
   HandCoins,
   Pencil,
   Wallet,
+  ArrowRightLeft,
 } from "lucide-react";
 import {
   useOrganization,
@@ -217,6 +218,16 @@ export default function OrganizationDetailPage({ params }: Props) {
             icon: BookOpen,
             color: "text-emerald-600",
           },
+          ...(org.org_type === "UNIT"
+            ? [
+                {
+                  label: "Override Direct Income",
+                  href: `/organizations/${org.id}/direct-income-override`,
+                  icon: ArrowRightLeft,
+                  color: "text-amber-600",
+                },
+              ]
+            : []),
         ].map(({ label, href, icon: Icon, color }) => (
           <Link key={href} href={href}>
             <Card className="hover:shadow-md transition-shadow cursor-pointer h-full">

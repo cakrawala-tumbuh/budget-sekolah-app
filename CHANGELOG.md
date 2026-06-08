@@ -7,6 +7,28 @@ dan proyek ini menganut [Semantic Versioning](https://semver.org/lang/id/).
 
 ## [Unreleased]
 
+## [1.25.0] - 2026-06-08
+
+### Ditambahkan
+- Halaman **Override Direct Income** (`/organizations/[id]/direct-income-override`):
+  tabel input khusus untuk menetapkan dan menghapus override nilai Direct Income
+  per kategori biaya, lengkap dengan kolom Otomatis dan Override serta edit inline.
+- Kartu navigasi **Override Direct Income** (amber) di halaman detail organisasi,
+  hanya tampil untuk tipe UNIT.
+- Dokumentasi penggunaan `panduan-fitur/override-direct-income.md`.
+- Entri nav `Override Direct Income` di `mkdocs-usage.yml`.
+
+### Diubah
+- `DirectIncomeTable` dikembalikan menjadi komponen display-only — prop `orgId` dan
+  semua logika edit/mutasi dipindahkan ke halaman Override Direct Income.
+  Tabel tetap menampilkan kolom Otomatis dan Final serta badge Override untuk keperluan
+  baca simulasi.
+- Dokumentasi `panduan-fitur/simulasi.md`: panduan cara mengatur override dipindah ke
+  halaman Override Direct Income; tab Direct Income di simulasi kini diuraikan sebagai
+  tampilan hasil saja.
+- Dokumentasi `panduan-fitur/pendapatan.md`: tautan Override Direct Income diperbarui
+  ke halaman panduan baru.
+
 ## [1.24.0] - 2026-06-08
 
 ### Ditambahkan
