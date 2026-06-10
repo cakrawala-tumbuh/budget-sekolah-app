@@ -38,11 +38,20 @@ Di setiap baris entri terdapat kolom:
 ## Mengedit Entri Biaya
 
 1. Klik ikon pensil (:pencil2:) pada baris entri yang ingin diubah.
-2. Ubah data pada dialog yang muncul.
+2. Ubah data pada dialog yang muncul — termasuk **kategori biaya** bila perlu.
 3. Klik **Simpan**.
 
-!!! note "Kategori Tidak Dapat Diubah Saat Edit"
-    Saat mengedit, kategori biaya tidak dapat diubah. Hapus entri dan buat baru bila perlu mengganti kategori.
+## Pindah Kategori Massal
+
+Gunakan fitur ini untuk memindahkan banyak entri sekaligus ke kategori lain tanpa perlu menghapus dan membuat ulang satu per satu.
+
+1. Centang entri-entri yang ingin dipindahkan (checkbox di setiap baris).
+2. Klik tombol **Pindah Kategori** yang muncul di bagian atas atau bawah tabel.
+3. Pilih **kategori tujuan** dari daftar yang tersedia.
+4. Klik **Pindahkan**.
+
+!!! tip "Kapan Menggunakan Pindah Kategori Massal"
+    Fitur ini berguna saat Anda perlu merestrukturisasi anggaran — misalnya memindahkan semua entri dari satu kategori yang akan dihapus ke kategori lain.
 
 ## Menghapus Entri Biaya
 

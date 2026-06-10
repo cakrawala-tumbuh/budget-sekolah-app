@@ -19,6 +19,9 @@ Halaman menampilkan tabel alokasi per unit yang dinaungi. Setiap baris mewakili 
 | **Unit** | Nama dan kode organisasi unit penerima |
 | **Komponen Biaya** | Daftar komponen biaya dari Cabang/Pusat yang dialokasikan |
 | **Nominal** | Nilai nominal yang dialokasikan ke unit tersebut |
+| **Proporsi Otomatis** | Proporsi yang dihitung otomatis berdasarkan data siswa unit (UP: jumlah siswa baru; US: total siswa) relatif terhadap seluruh unit |
+| **Override (%)** | Persentase distribusi yang diatur manual, menggantikan proporsi otomatis bila diisi |
+| **Persentase Final** | Persentase yang benar-benar digunakan dalam distribusi — menampilkan Override bila diisi, atau Proporsi Otomatis bila tidak |
 
 ## Mengatur Alokasi
 
@@ -28,13 +31,14 @@ Alokasi UP menentukan komponen biaya dari Cabang/Pusat yang akan dimasukkan ke d
 
 1. Klik tombol **+ Tambah Alokasi** atau klik entri yang sudah ada untuk mengedit.
 2. Pilih **unit penerima**, **kategori biaya** yang dialokasikan, dan **nominal** (Rp).
-3. Klik **Simpan**.
+3. Opsional: isi **Override (%)** bila ingin menentukan proporsi distribusi secara manual, berbeda dari proporsi otomatis berdasarkan jumlah siswa baru.
+4. Klik **Simpan**.
 
 ### Alokasi US
 
 Alokasi US menentukan komponen biaya dari Cabang/Pusat yang akan dimasukkan ke dalam perhitungan tarif **Uang Sekolah** di unit-unit.
 
-Cara penggunaan identik dengan Alokasi UP.
+Cara penggunaan identik dengan Alokasi UP. Proporsi otomatis dihitung berdasarkan **total siswa** masing-masing unit.
 
 ## Menghapus Alokasi
 

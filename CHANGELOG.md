@@ -7,6 +7,18 @@ dan proyek ini menganut [Semantic Versioning](https://semver.org/lang/id/).
 
 ## [Unreleased]
 
+## [1.28.1] - 2026-06-11
+
+### Diubah
+- Panduan fitur **Biaya Operasional**: hapus catatan lama "Kategori Tidak Dapat
+  Diubah Saat Edit" (sudah diperbaiki), tambah instruksi bahwa kategori kini bisa
+  diubah langsung saat edit entri.
+- Panduan fitur **Biaya Operasional**: tambah section **Pindah Kategori Massal**
+  yang menjelaskan cara memindahkan banyak entri sekaligus ke kategori lain.
+- Panduan fitur **Alokasi UP & US**: tambah kolom **Proporsi Otomatis**,
+  **Override (%)**, dan **Persentase Final** di tabel tampilan, beserta penjelasan
+  masing-masing kolom dan opsi override persentase saat mengatur alokasi.
+
 ## [1.28.0] - 2026-06-11
 
 ### Ditambahkan
