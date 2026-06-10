@@ -271,7 +271,7 @@ export default function AlokasiUSPage({ params }: Props) {
   };
 
   const siblingOrgs = allOrgs?.filter(
-    (o) => o.id !== orgId && o.org_type === org.org_type
+    (o) => o.id !== orgId && (o.org_type === "CABANG" || o.org_type === "PUSAT")
   ) ?? [];
 
   const handleCopyFrom = async () => {
