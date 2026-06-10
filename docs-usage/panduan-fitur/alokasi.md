@@ -19,11 +19,20 @@ Halaman menampilkan tabel alokasi per unit yang dinaungi. Setiap baris mewakili 
 | **Unit** | Nama dan kode organisasi unit penerima |
 | **Komponen Biaya** | Daftar komponen biaya dari Cabang/Pusat yang dialokasikan |
 | **Nominal** | Nilai nominal yang dialokasikan ke unit tersebut |
-| **Proporsi Otomatis** | Proporsi yang dihitung otomatis berdasarkan data siswa unit (UP: jumlah siswa baru; US: total siswa) relatif terhadap seluruh unit |
+| **Proporsi Otomatis** | Proporsi yang dihitung otomatis dari **sisa porsi** setelah dikurangi total semua override (UP: berdasarkan jumlah siswa baru; US: berdasarkan total siswa) |
 | **Override (%)** | Persentase distribusi yang diatur manual, menggantikan proporsi otomatis bila diisi |
 | **Persentase Final** | Persentase yang benar-benar digunakan dalam distribusi — menampilkan Override bila diisi, atau Proporsi Otomatis bila tidak |
 
-Di bagian bawah tabel **Proporsi per Unit**, terdapat baris **Total** yang menjumlahkan seluruh kolom Persentase Final dari semua unit. Bila tidak ada override, total seharusnya mendekati **100%**. Bila ada unit dengan override manual, periksa baris Total untuk memastikan distribusi proporsional tetap terjaga.
+Di bagian bawah tabel **Proporsi per Unit**, terdapat baris **Total** yang menjumlahkan seluruh kolom Persentase Final dari semua unit. Total ini **selalu 100%** — sistem menjamin hal ini dengan cara:
+
+1. Unit yang memiliki Override: memakai nilai override secara langsung.
+2. Unit tanpa Override: mendapat bagian dari **sisa** (100% − total semua override), dibagi proporsional berdasarkan jumlah siswa unit tersebut dibanding unit-unit lain yang juga tidak punya override.
+
+!!! example "Contoh"
+    Tiga unit dengan siswa baru: A (override 40%), B (100 siswa, tanpa override), C (300 siswa, tanpa override).
+    Sisa = 100% − 40% = 60%. Total siswa auto = 400.
+    B mendapat 60% × 100/400 = **15%**, C mendapat 60% × 300/400 = **45%**.
+    Total: 40% + 15% + 45% = **100%** ✓
 
 ## Mengatur Alokasi
 
@@ -33,7 +42,7 @@ Alokasi UP menentukan komponen biaya dari Cabang/Pusat yang akan dimasukkan ke d
 
 1. Klik tombol **+ Tambah Alokasi** atau klik entri yang sudah ada untuk mengedit.
 2. Pilih **unit penerima**, **kategori biaya** yang dialokasikan, dan **nominal** (Rp).
-3. Opsional: isi **Override (%)** bila ingin menentukan proporsi distribusi secara manual, berbeda dari proporsi otomatis berdasarkan jumlah siswa baru.
+3. Opsional: isi **Override (%)** bila ingin menentukan proporsi distribusi unit ini secara manual. Unit-unit lain yang **tidak** diisi override akan mendapat bagian dari sisa porsi secara otomatis.
 4. Klik **Simpan**.
 
 ### Alokasi US

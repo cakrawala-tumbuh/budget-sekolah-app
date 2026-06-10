@@ -7,6 +7,14 @@ dan proyek ini menganut [Semantic Versioning](https://semver.org/lang/id/).
 
 ## [Unreleased]
 
+## [1.29.1] - 2026-06-11
+
+### Diubah
+- Panduan fitur **Alokasi UP & US**: perbarui penjelasan kolom Proporsi Otomatis
+  dan mekanisme distribusi untuk mencerminkan algoritma baru — unit tanpa override
+  mendapat sisa porsi (100% − total semua override) secara proporsional berdasarkan
+  jumlah siswa. Ditambahkan contoh angka konkret dan jaminan total selalu 100%.
+
 ## [1.29.0] - 2026-06-11
 
 ### Ditambahkan
