@@ -2,7 +2,7 @@
 
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { budgetEntriesApi } from "@/lib/api/budget-entries";
-import type { BudgetEntryCreate, BudgetEntryUpdate } from "@/lib/types";
+import type { BudgetEntryCreate, BudgetEntryUpdate, BudgetEntryBulkMoveCategory } from "@/lib/types";
 
 const keys = {
   list: (orgId: number) => ["budget-entries", orgId] as const,
@@ -46,6 +46,15 @@ export function useDeleteBudgetEntriesByCategory(orgId: number) {
   return useMutation({
     mutationFn: (categoryId: number) =>
       budgetEntriesApi.removeByCategory(orgId, categoryId),
+    onSuccess: () => qc.invalidateQueries({ queryKey: keys.list(orgId) }),
+  });
+}
+
+export function useBulkMoveBudgetEntryCategory(orgId: number) {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (data: BudgetEntryBulkMoveCategory) =>
+      budgetEntriesApi.bulkMoveCategory(orgId, data),
     onSuccess: () => qc.invalidateQueries({ queryKey: keys.list(orgId) }),
   });
 }

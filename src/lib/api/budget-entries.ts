@@ -4,6 +4,7 @@ import type {
   BudgetEntryCreate,
   BudgetEntryUpdate,
   BudgetEntryBulkCreate,
+  BudgetEntryBulkMoveCategory,
 } from "@/lib/types";
 
 export const budgetEntriesApi = {
@@ -38,6 +39,12 @@ export const budgetEntriesApi = {
     return apiFetch<void>(
       `/organizations/${orgId}/budget-entries/by-category/${categoryId}`,
       { method: "DELETE" },
+    );
+  },
+  bulkMoveCategory(orgId: number, data: BudgetEntryBulkMoveCategory): Promise<BudgetEntry[]> {
+    return apiFetch<BudgetEntry[]>(
+      `/organizations/${orgId}/budget-entries/bulk-move-category`,
+      { method: "PATCH", body: JSON.stringify(data) },
     );
   },
 };

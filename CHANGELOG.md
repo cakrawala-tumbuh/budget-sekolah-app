@@ -7,6 +7,17 @@ dan proyek ini menganut [Semantic Versioning](https://semver.org/lang/id/).
 
 ## [Unreleased]
 
+## [1.26.0] - 2026-06-10
+
+### Ditambahkan
+- Mekanisme pergantian kategori biaya secara masal di halaman Biaya Operasional
+  dan Biaya Non-Operasional. Pengguna dapat memilih satu atau lebih entri via
+  checkbox (per-baris maupun se-kategori sekaligus dengan state indeterminate),
+  lalu menggunakan action bar yang muncul di bagian atas untuk memindahkan
+  semua entri terpilih ke kategori tujuan lewat dialog konfirmasi.
+- Workflow GitHub Actions `release.yml` untuk membuat GitHub Release otomatis
+  setiap kali tag `v*.*.*` di-push.
+
 ## [1.25.1] - 2026-06-10
 
 ### Diperbaiki

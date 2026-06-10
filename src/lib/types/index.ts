@@ -184,6 +184,11 @@ export interface BudgetEntryBulkCreate {
   entries: BudgetEntryCreate[];
 }
 
+export interface BudgetEntryBulkMoveCategory {
+  entry_ids: number[];
+  expense_category_id: number;
+}
+
 export interface Investment {
   id: number;
   organization_id: number;
