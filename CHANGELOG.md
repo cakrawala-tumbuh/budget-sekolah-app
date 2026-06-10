@@ -7,6 +7,14 @@ dan proyek ini menganut [Semantic Versioning](https://semver.org/lang/id/).
 
 ## [Unreleased]
 
+## [1.25.1] - 2026-06-10
+
+### Diperbaiki
+- Kategori biaya kini dapat diubah saat mengedit entri di halaman Biaya
+  Operasional maupun Biaya Non-Operasional. Sebelumnya dropdown kategori
+  muncul di form edit namun nilai yang dipilih tidak dikirim ke backend
+  (`expense_category_id` tidak ada di `BudgetEntryUpdate`).
+
 ## [1.25.0] - 2026-06-08
 
 ### Ditambahkan
@@ -138,6 +146,7 @@ dan proyek ini menganut [Semantic Versioning](https://semver.org/lang/id/).
   nilai BoS ditampilkan dengan warna biru sebagai penanda visual, dan total
   Dana BoS muncul di footer tabel. Mengikuti fitur backend v1.18.0.
 
-[Unreleased]: https://github.com/cakrawala-tumbuh/budget-sekolah-app/compare/v1.19.0...HEAD
+[Unreleased]: https://github.com/cakrawala-tumbuh/budget-sekolah-app/compare/v1.25.1...HEAD
+[1.25.1]: https://github.com/cakrawala-tumbuh/budget-sekolah-app/compare/v1.25.0...v1.25.1
 [1.19.0]: https://github.com/cakrawala-tumbuh/budget-sekolah-app/releases/tag/v1.19.0
 [1.18.0]: https://github.com/cakrawala-tumbuh/budget-sekolah-app/releases/tag/v1.18.0

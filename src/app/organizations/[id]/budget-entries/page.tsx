@@ -218,6 +218,7 @@ export default function BudgetEntriesPage({ params }: Props) {
     if (!editItem) return;
     updateMutation.mutate(
       {
+        expense_category_id: values.expense_category_id,
         description: values.description,
         basis: values.basis,
         foundation: values.foundation,

@@ -172,6 +172,7 @@ export interface BudgetEntryCreate {
 }
 
 export interface BudgetEntryUpdate {
+  expense_category_id?: number;
   description?: string;
   basis?: string;
   foundation?: number;
