@@ -7,6 +7,20 @@ dan proyek ini menganut [Semantic Versioning](https://semver.org/lang/id/).
 
 ## [Unreleased]
 
+## [1.29.0] - 2026-06-11
+
+### Ditambahkan
+- Baris **Total** di bagian bawah tabel **Proporsi per Unit (Siswa Baru UP)**
+  pada halaman Alokasi UP: menjumlahkan seluruh kolom Persentase Final dari
+  semua unit, sehingga operator dapat memverifikasi distribusi proporsional.
+- Baris **Total** di bagian bawah tabel **Proporsi per Unit (Total Siswa US)**
+  pada halaman Alokasi US: serupa dengan UP, memudahkan validasi bahwa total
+  distribusi mendekati 100%.
+
+### Diubah
+- Panduan fitur **Alokasi UP & US**: tambah penjelasan baris Total di tabel
+  Proporsi per Unit beserta panduan validasi distribusi proporsional.
+
 ## [1.28.1] - 2026-06-11
 
 ### Diubah

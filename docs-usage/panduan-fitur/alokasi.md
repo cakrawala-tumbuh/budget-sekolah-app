@@ -23,6 +23,8 @@ Halaman menampilkan tabel alokasi per unit yang dinaungi. Setiap baris mewakili 
 | **Override (%)** | Persentase distribusi yang diatur manual, menggantikan proporsi otomatis bila diisi |
 | **Persentase Final** | Persentase yang benar-benar digunakan dalam distribusi — menampilkan Override bila diisi, atau Proporsi Otomatis bila tidak |
 
+Di bagian bawah tabel **Proporsi per Unit**, terdapat baris **Total** yang menjumlahkan seluruh kolom Persentase Final dari semua unit. Bila tidak ada override, total seharusnya mendekati **100%**. Bila ada unit dengan override manual, periksa baris Total untuk memastikan distribusi proporsional tetap terjaga.
+
 ## Mengatur Alokasi
 
 ### Alokasi UP

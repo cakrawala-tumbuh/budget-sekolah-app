@@ -33,6 +33,7 @@ import {
   Table,
   TableBody,
   TableCell,
+  TableFooter,
   TableHead,
   TableHeader,
   TableRow,
@@ -478,6 +479,24 @@ export default function AlokasiUPPage({ params }: Props) {
                 );
               })}
             </TableBody>
+            <TableFooter>
+              <TableRow>
+                <TableCell colSpan={5} className="font-semibold">Total</TableCell>
+                <TableCell className="text-right font-bold">
+                  {(() => {
+                    const total = childUnits.reduce((sum, unit) => {
+                      const assumption = assumptionMap.get(unit.id);
+                      const alloc = allocations?.find((a) => a.from_organization_id === unit.id);
+                      const newStudents = alloc?.new_students ?? assumption?.new_student_count ?? 0;
+                      const autoPct = totalNewStudents > 0 ? newStudents / totalNewStudents : 0;
+                      return sum + (alloc?.override_pct_up ?? autoPct);
+                    }, 0);
+                    return childUnits.length > 0 ? `${(total * 100).toFixed(2)}%` : "—";
+                  })()}
+                </TableCell>
+                <TableCell />
+              </TableRow>
+            </TableFooter>
           </Table>
         )}
       </div>
