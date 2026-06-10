@@ -65,6 +65,7 @@ function AllocUnitForm({
   unitName,
   assumption,
   currentOverride,
+  autoPct,
   onSubmit,
   isLoading,
   onClose,
@@ -72,6 +73,7 @@ function AllocUnitForm({
   unitName: string;
   assumption: UnitAssumption | undefined;
   currentOverride: number | null | undefined;
+  autoPct: number;
   onSubmit: (v: AllocValues) => void;
   isLoading?: boolean;
   onClose: () => void;
@@ -104,6 +106,10 @@ function AllocUnitForm({
             <strong>
               {assumption ? assumption.total_students.toLocaleString("id-ID") : "—"}
             </strong>
+          </div>
+          <div className="col-span-2">
+            <span className="text-muted-foreground">Proporsi Otomatis:</span>{" "}
+            <strong>{autoPct > 0 ? `${(autoPct * 100).toFixed(2)}%` : "—"}</strong>
           </div>
         </div>
         {!assumption && (
@@ -270,6 +276,13 @@ export default function AlokasiUPPage({ params }: Props) {
     }
   };
 
+  // Hitung total siswa baru dari semua unit untuk proporsi otomatis
+  const totalNewStudents = childUnits.reduce((sum, unit) => {
+    const alloc = allocations?.find((a) => a.from_organization_id === unit.id);
+    const n = alloc?.new_students ?? assumptionMap.get(unit.id)?.new_student_count ?? 0;
+    return sum + n;
+  }, 0);
+
   const siblingOrgs = allOrgs?.filter(
     (o) => o.id !== orgId && (o.org_type === "CABANG" || o.org_type === "PUSAT")
   ) ?? [];
@@ -407,7 +420,9 @@ export default function AlokasiUPPage({ params }: Props) {
                 <TableHead>Unit</TableHead>
                 <TableHead className="text-right">Siswa Baru</TableHead>
                 <TableHead className="text-right">Total Siswa</TableHead>
-                <TableHead className="text-right">Override UP (%)</TableHead>
+                <TableHead className="text-right">Proporsi Otomatis</TableHead>
+                <TableHead className="text-right">Override (%)</TableHead>
+                <TableHead className="text-right">Persentase Final</TableHead>
                 <TableHead className="w-24"></TableHead>
               </TableRow>
             </TableHeader>
@@ -415,6 +430,10 @@ export default function AlokasiUPPage({ params }: Props) {
               {childUnits.map((unit) => {
                 const assumption = assumptionMap.get(unit.id);
                 const alloc = allocations?.find((a) => a.from_organization_id === unit.id);
+                const newStudents = alloc?.new_students ?? assumption?.new_student_count ?? 0;
+                const autoPct = totalNewStudents > 0 ? newStudents / totalNewStudents : 0;
+                const finalPct = alloc?.override_pct_up ?? autoPct;
+                const hasOverride = alloc?.override_pct_up != null;
                 return (
                   <TableRow key={unit.id}>
                     <TableCell>
@@ -431,10 +450,20 @@ export default function AlokasiUPPage({ params }: Props) {
                         ? assumption.total_students.toLocaleString("id-ID")
                         : <span className="text-muted-foreground text-xs">—</span>}
                     </TableCell>
+                    <TableCell className="text-right text-muted-foreground">
+                      {totalNewStudents > 0
+                        ? `${(autoPct * 100).toFixed(2)}%`
+                        : <span className="text-xs">—</span>}
+                    </TableCell>
                     <TableCell className="text-right">
-                      {alloc?.override_pct_up != null
-                        ? `${(alloc.override_pct_up * 100).toFixed(1)}%`
-                        : <span className="text-muted-foreground text-xs">Otomatis</span>}
+                      {hasOverride
+                        ? <Badge variant="outline">{(alloc.override_pct_up! * 100).toFixed(2)}%</Badge>
+                        : <span className="text-muted-foreground text-xs">—</span>}
+                    </TableCell>
+                    <TableCell className="text-right font-semibold">
+                      {totalNewStudents > 0 || hasOverride
+                        ? <span className={hasOverride ? "text-blue-600" : ""}>{(finalPct * 100).toFixed(2)}%</span>
+                        : <span className="text-muted-foreground text-xs">—</span>}
                     </TableCell>
                     <TableCell>
                       <Button
@@ -561,16 +590,22 @@ export default function AlokasiUPPage({ params }: Props) {
           <DialogHeader>
             <DialogTitle>Atur Proporsi UP</DialogTitle>
           </DialogHeader>
-          {editingUnit && (
-            <AllocUnitForm
-              unitName={editingUnit.name}
-              assumption={assumptionMap.get(editingUnit.id)}
-              currentOverride={editingAlloc?.override_pct_up}
-              onSubmit={(v) => handleSaveAlloc(editingUnit.id, v)}
-              isLoading={upsertAlloc.isPending}
-              onClose={() => setEditingUnitId(null)}
-            />
-          )}
+          {editingUnit && (() => {
+            const editingAssumption = assumptionMap.get(editingUnit.id);
+            const editingNewStudents = editingAlloc?.new_students ?? editingAssumption?.new_student_count ?? 0;
+            const editingAutoPct = totalNewStudents > 0 ? editingNewStudents / totalNewStudents : 0;
+            return (
+              <AllocUnitForm
+                unitName={editingUnit.name}
+                assumption={editingAssumption}
+                currentOverride={editingAlloc?.override_pct_up}
+                autoPct={editingAutoPct}
+                onSubmit={(v) => handleSaveAlloc(editingUnit.id, v)}
+                isLoading={upsertAlloc.isPending}
+                onClose={() => setEditingUnitId(null)}
+              />
+            );
+          })()}
         </DialogContent>
       </Dialog>
     </div>

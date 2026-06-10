@@ -7,6 +7,19 @@ dan proyek ini menganut [Semantic Versioning](https://semver.org/lang/id/).
 
 ## [Unreleased]
 
+## [1.27.0] - 2026-06-11
+
+### Ditambahkan
+- Tabel **Proporsi per Unit (Siswa Baru UP)** di halaman Alokasi UP kini
+  menampilkan tiga kolom persentase: **Proporsi Otomatis** (dihitung dari
+  `siswa_baru / total_siswa_baru` seluruh unit), **Override (%)** (nilai
+  manual bila diset, ditampilkan sebagai badge), dan **Persentase Final**
+  (nilai yang benar-benar digunakan simulasi — override bila aktif, atau
+  otomatis; disorot biru bila override aktif).
+- Dialog "Atur Proporsi UP" kini menampilkan Proporsi Otomatis di panel
+  data asumsi sehingga pengguna dapat melihat nilai baseline sebelum
+  mengisi override.
+
 ## [1.26.0] - 2026-06-10
 
 ### Ditambahkan
