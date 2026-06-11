@@ -277,9 +277,21 @@ export default function AlokasiUPPage({ params }: Props) {
     }
   };
 
-  // Hitung total siswa baru dari semua unit untuk proporsi otomatis
+  // Hitung total siswa baru dari semua unit untuk kolom Proporsi Otomatis (referensi mentah)
   const totalNewStudents = childUnits.reduce((sum, unit) => {
     const alloc = allocations?.find((a) => a.from_organization_id === unit.id);
+    const n = alloc?.new_students ?? assumptionMap.get(unit.id)?.new_student_count ?? 0;
+    return sum + n;
+  }, 0);
+
+  // Algoritma proporsi final: sisa (1 - total_override) dibagi ke unit tanpa override
+  const sumOverrideUp = (allocations ?? []).reduce(
+    (sum, a) => sum + (a.override_pct_up ?? 0), 0
+  );
+  const remainingUp = Math.max(0, 1 - sumOverrideUp);
+  const autoNewStudentsTotal = childUnits.reduce((sum, unit) => {
+    const alloc = allocations?.find((a) => a.from_organization_id === unit.id);
+    if (alloc?.override_pct_up != null) return sum;
     const n = alloc?.new_students ?? assumptionMap.get(unit.id)?.new_student_count ?? 0;
     return sum + n;
   }, 0);
@@ -433,8 +445,12 @@ export default function AlokasiUPPage({ params }: Props) {
                 const alloc = allocations?.find((a) => a.from_organization_id === unit.id);
                 const newStudents = alloc?.new_students ?? assumption?.new_student_count ?? 0;
                 const autoPct = totalNewStudents > 0 ? newStudents / totalNewStudents : 0;
-                const finalPct = alloc?.override_pct_up ?? autoPct;
                 const hasOverride = alloc?.override_pct_up != null;
+                const finalPct = hasOverride
+                  ? alloc!.override_pct_up!
+                  : autoNewStudentsTotal > 0
+                    ? remainingUp * (newStudents / autoNewStudentsTotal)
+                    : 0;
                 return (
                   <TableRow key={unit.id}>
                     <TableCell>
@@ -488,8 +504,13 @@ export default function AlokasiUPPage({ params }: Props) {
                       const assumption = assumptionMap.get(unit.id);
                       const alloc = allocations?.find((a) => a.from_organization_id === unit.id);
                       const newStudents = alloc?.new_students ?? assumption?.new_student_count ?? 0;
-                      const autoPct = totalNewStudents > 0 ? newStudents / totalNewStudents : 0;
-                      return sum + (alloc?.override_pct_up ?? autoPct);
+                      const hasOverride = alloc?.override_pct_up != null;
+                      const pct = hasOverride
+                        ? alloc!.override_pct_up!
+                        : autoNewStudentsTotal > 0
+                          ? remainingUp * (newStudents / autoNewStudentsTotal)
+                          : 0;
+                      return sum + pct;
                     }, 0);
                     return childUnits.length > 0 ? `${(total * 100).toFixed(2)}%` : "—";
                   })()}
@@ -612,7 +633,12 @@ export default function AlokasiUPPage({ params }: Props) {
           {editingUnit && (() => {
             const editingAssumption = assumptionMap.get(editingUnit.id);
             const editingNewStudents = editingAlloc?.new_students ?? editingAssumption?.new_student_count ?? 0;
-            const editingAutoPct = totalNewStudents > 0 ? editingNewStudents / totalNewStudents : 0;
+            const sumOthersUp = sumOverrideUp - (editingAlloc?.override_pct_up ?? 0);
+            const remainingForEdit = Math.max(0, 1 - sumOthersUp);
+            const autoStudentsForEdit = autoNewStudentsTotal + (editingAlloc?.override_pct_up != null ? editingNewStudents : 0);
+            const editingAutoPct = autoStudentsForEdit > 0
+              ? remainingForEdit * (editingNewStudents / autoStudentsForEdit)
+              : 0;
             return (
               <AllocUnitForm
                 unitName={editingUnit.name}

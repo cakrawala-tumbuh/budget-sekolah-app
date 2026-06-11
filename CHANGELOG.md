@@ -7,6 +7,19 @@ dan proyek ini menganut [Semantic Versioning](https://semver.org/lang/id/).
 
 ## [Unreleased]
 
+## [1.29.2] - 2026-06-11
+
+### Diperbaiki
+- Halaman **Alokasi UP**: kolom Persentase Final dan baris Total kini menampilkan
+  nilai yang dihitung dengan algoritma baru — unit tanpa override mendapat sisa
+  (100% − total semua override) dibagi proporsional berdasarkan siswa baru, bukan
+  dibagi total semua siswa baru. Total seluruh kolom Persentase Final selalu 100%.
+- Halaman **Alokasi US**: perbaikan serupa untuk kolom Persentase Final berbasis
+  total siswa.
+- Dialog **Atur Proporsi UP/US**: nilai "Proporsi Otomatis" yang ditampilkan kini
+  menghitung proporsi hipotetikal — berapa proporsi unit ini jika override-nya
+  dihapus — berdasarkan algoritma sisa yang sama.
+
 ## [1.29.1] - 2026-06-11
 
 ### Diubah
