@@ -2,7 +2,7 @@
 
 import { use, useState } from "react";
 import Link from "next/link";
-import { ArrowLeft, Plus, Pencil, Trash2, ChevronDown, ChevronRight, FolderInput } from "lucide-react";
+import { ArrowLeft, Plus, Pencil, Trash2, ChevronDown, ChevronRight, FolderInput, Lock } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -293,11 +293,22 @@ export default function BudgetEntriesPage({ params }: Props) {
             <p className="text-sm text-muted-foreground">{org.name}</p>
           )}
         </div>
-        <Button onClick={() => setCreateOpen(true)}>
-          <Plus className="h-4 w-4" />
-          Tambah Entri
-        </Button>
+        {!org?.is_locked && (
+          <Button onClick={() => setCreateOpen(true)}>
+            <Plus className="h-4 w-4" />
+            Tambah Entri
+          </Button>
+        )}
       </div>
+
+      {org?.is_locked && (
+        <Alert className="mb-4 border-red-200 bg-red-50 text-red-800">
+          <Lock className="h-4 w-4" />
+          <AlertDescription>
+            Budget dikunci oleh <strong>{org.locked_by_username}</strong>. Data tidak dapat diubah.
+          </AlertDescription>
+        </Alert>
+      )}
 
       {isError && (
         <Alert variant="destructive" className="mb-4">
@@ -429,6 +440,7 @@ export default function BudgetEntriesPage({ params }: Props) {
                           <TableCell className="text-right tabular-nums font-medium">
                             {formatCurrency(entry.total)}
                           </TableCell>
+                          {!org?.is_locked && (
                           <TableCell>
                             <div className="flex gap-1 justify-end">
                               <Button
@@ -449,6 +461,7 @@ export default function BudgetEntriesPage({ params }: Props) {
                               </Button>
                             </div>
                           </TableCell>
+                          )}
                         </TableRow>
                       ))}
                     </TableBody>

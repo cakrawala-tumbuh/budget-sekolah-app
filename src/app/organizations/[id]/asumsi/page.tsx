@@ -2,7 +2,7 @@
 
 import { use, useEffect } from "react";
 import Link from "next/link";
-import { ArrowLeft, Save } from "lucide-react";
+import { ArrowLeft, Save, Lock } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -183,6 +183,15 @@ export default function AsumsiPage({ params }: Props) {
         </div>
       </div>
 
+      {org.is_locked && (
+        <Alert className="mb-4 border-red-200 bg-red-50 text-red-800">
+          <Lock className="h-4 w-4" />
+          <AlertDescription>
+            Budget dikunci oleh <strong>{org.locked_by_username}</strong>. Data tidak dapat diubah.
+          </AlertDescription>
+        </Alert>
+      )}
+
       {assumptionLoading ? (
         <div className="space-y-3">
           <Skeleton className="h-40 w-full" />
@@ -350,7 +359,7 @@ export default function AsumsiPage({ params }: Props) {
           <div className="flex items-center gap-3">
             <Button
               type="submit"
-              disabled={upsert.isPending}
+              disabled={upsert.isPending || org.is_locked}
               className="min-w-32"
             >
               <Save className="h-4 w-4 mr-1.5" />

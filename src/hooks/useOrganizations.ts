@@ -70,3 +70,25 @@ export function useDeleteOrganization() {
     },
   });
 }
+
+export function useLockOrganization(id: number) {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: () => organizationsApi.lock(id),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: organizationKeys.all });
+      qc.invalidateQueries({ queryKey: organizationKeys.detail(id) });
+    },
+  });
+}
+
+export function useUnlockOrganization(id: number) {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: () => organizationsApi.unlock(id),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: organizationKeys.all });
+      qc.invalidateQueries({ queryKey: organizationKeys.detail(id) });
+    },
+  });
+}

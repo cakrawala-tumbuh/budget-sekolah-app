@@ -35,6 +35,9 @@ export interface Organization {
   /** Saldo kas & setara kas awal organisasi */
   cash_balance: number;
   parent_id: number | null;
+  is_locked: boolean;
+  locked_at: string | null;
+  locked_by_username: string | null;
   created_at: string;
   updated_at: string;
 }

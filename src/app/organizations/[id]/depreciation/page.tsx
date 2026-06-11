@@ -2,7 +2,7 @@
 
 import { use, useState } from "react";
 import Link from "next/link";
-import { ArrowLeft, Plus, Pencil, Trash2 } from "lucide-react";
+import { ArrowLeft, Plus, Pencil, Trash2, Lock } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -164,11 +164,22 @@ export default function DepreciationPage({ params }: Props) {
             <p className="text-sm text-muted-foreground">{org.name}</p>
           )}
         </div>
-        <Button onClick={() => setCreateOpen(true)}>
-          <Plus className="h-4 w-4" />
-          Tambah Aset Lama
-        </Button>
+        {!org?.is_locked && (
+          <Button onClick={() => setCreateOpen(true)}>
+            <Plus className="h-4 w-4" />
+            Tambah Aset Lama
+          </Button>
+        )}
       </div>
+
+      {org?.is_locked && (
+        <Alert className="mb-4 border-red-200 bg-red-50 text-red-800">
+          <Lock className="h-4 w-4" />
+          <AlertDescription>
+            Budget dikunci oleh <strong>{org.locked_by_username}</strong>. Data tidak dapat diubah.
+          </AlertDescription>
+        </Alert>
+      )}
 
       {isError && (
         <Alert variant="destructive" className="mb-4">

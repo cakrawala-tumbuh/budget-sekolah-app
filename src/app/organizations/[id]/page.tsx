@@ -20,11 +20,15 @@ import {
   Pencil,
   Wallet,
   ArrowRightLeft,
+  Lock,
+  LockOpen,
 } from "lucide-react";
 import {
   useOrganization,
   useUpdateOrganization,
   useUpdateCashBalance,
+  useLockOrganization,
+  useUnlockOrganization,
 } from "@/hooks/useOrganizations";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -55,6 +59,8 @@ export default function OrganizationDetailPage({ params }: Props) {
   const { data: org, isLoading, isError } = useOrganization(orgId);
   const updateMutation = useUpdateOrganization(orgId);
   const cashMutation = useUpdateCashBalance(orgId);
+  const lockMutation = useLockOrganization(orgId);
+  const unlockMutation = useUnlockOrganization(orgId);
   const [editOpen, setEditOpen] = useState(false);
   const [cashOpen, setCashOpen] = useState(false);
   const [cashInput, setCashInput] = useState("");
@@ -101,7 +107,30 @@ export default function OrganizationDetailPage({ params }: Props) {
           </p>
         </div>
         <div className="flex flex-wrap gap-2 w-full sm:w-auto">
-          {isAdmin && (
+          {org.is_locked ? (
+            <Button
+              variant="outline"
+              size="sm"
+              className="border-red-300 text-red-700 hover:bg-red-50"
+              disabled={lockMutation.isPending || unlockMutation.isPending}
+              onClick={() => unlockMutation.mutate()}
+            >
+              <LockOpen className="h-4 w-4" />
+              Buka Kunci
+            </Button>
+          ) : (
+            <Button
+              variant="outline"
+              size="sm"
+              className="border-amber-300 text-amber-700 hover:bg-amber-50"
+              disabled={lockMutation.isPending || unlockMutation.isPending}
+              onClick={() => lockMutation.mutate()}
+            >
+              <Lock className="h-4 w-4" />
+              Kunci Budget
+            </Button>
+          )}
+          {isAdmin && !org.is_locked && (
             <Dialog open={editOpen} onOpenChange={setEditOpen}>
               <DialogTrigger asChild>
                 <Button variant="outline" size="sm">
@@ -152,6 +181,19 @@ export default function OrganizationDetailPage({ params }: Props) {
           </Button>
         </div>
       </div>
+
+      {/* Status Penguncian Budget */}
+      {org.is_locked && (
+        <Alert className="mb-4 border-red-200 bg-red-50 text-red-800">
+          <Lock className="h-4 w-4" />
+          <AlertDescription>
+            Budget dikunci oleh <strong>{org.locked_by_username}</strong>
+            {org.locked_at && (
+              <> pada {new Date(org.locked_at).toLocaleString("id-ID", { dateStyle: "long", timeStyle: "short" })}</>
+            )}. Data anggaran tidak dapat diubah.
+          </AlertDescription>
+        </Alert>
+      )}
 
       {/* Asumsi Siswa & Konfigurasi Kelas — hanya untuk UNIT */}
       {org.org_type === "UNIT" && (
@@ -293,6 +335,22 @@ export default function OrganizationDetailPage({ params }: Props) {
             </div>
             <div className="flex justify-between">
               <span className="flex items-center gap-1.5 text-muted-foreground">
+                <Lock className="h-3.5 w-3.5" />
+                Status Budget
+              </span>
+              <span className="flex items-center gap-1.5">
+                {org.is_locked ? (
+                  <>
+                    <span className="text-red-600 font-medium text-xs px-1.5 py-0.5 bg-red-50 rounded">Terkunci</span>
+                    <span className="text-xs text-muted-foreground">oleh {org.locked_by_username}</span>
+                  </>
+                ) : (
+                  <span className="text-green-600 font-medium text-xs px-1.5 py-0.5 bg-green-50 rounded">Terbuka</span>
+                )}
+              </span>
+            </div>
+            <div className="flex justify-between">
+              <span className="flex items-center gap-1.5 text-muted-foreground">
                 <Wallet className="h-3.5 w-3.5" />
                 Saldo Kas &amp; Setara Kas
               </span>
@@ -300,7 +358,7 @@ export default function OrganizationDetailPage({ params }: Props) {
                 <span className="font-medium tabular-nums">
                   {formatCurrency(org.cash_balance)}
                 </span>
-                {!isAdmin && (
+                {!isAdmin && !org.is_locked && (
                   <Dialog
                     open={cashOpen}
                     onOpenChange={(open) => {

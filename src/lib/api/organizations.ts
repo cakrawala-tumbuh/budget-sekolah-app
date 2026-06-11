@@ -44,4 +44,12 @@ export const organizationsApi = {
   remove(id: number): Promise<void> {
     return apiFetch<void>(`/organizations/${id}`, { method: "DELETE" });
   },
+
+  lock(id: number): Promise<Organization> {
+    return apiFetch<Organization>(`/organizations/${id}/lock`, { method: "POST" });
+  },
+
+  unlock(id: number): Promise<Organization> {
+    return apiFetch<Organization>(`/organizations/${id}/unlock`, { method: "POST" });
+  },
 };
