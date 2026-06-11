@@ -49,3 +49,11 @@ export async function getMeApi(): Promise<AuthUser> {
     headers: token ? { Authorization: `Bearer ${token}` } : {},
   });
 }
+
+export async function logoutApi(): Promise<void> {
+  try {
+    await apiFetch<void>("/auth/logout", { method: "POST" });
+  } catch {
+    // Token sudah tidak valid — tetap lanjutkan logout lokal
+  }
+}

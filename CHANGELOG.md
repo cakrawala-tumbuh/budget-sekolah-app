@@ -7,6 +7,15 @@ dan proyek ini menganut [Semantic Versioning](https://semver.org/lang/id/).
 
 ## [Unreleased]
 
+## [1.32.0] - 2026-06-11
+
+### Ditambahkan
+- Fungsi `logoutApi()` di `src/lib/api/auth.ts` yang memanggil endpoint
+  `POST /auth/logout` pada backend saat user keluar.
+- Logout kini memanggil backend terlebih dahulu sebelum menghapus token lokal
+  sehingga sesi diinvalidasi di sisi server; bila request gagal (token sudah
+  tidak valid), logout lokal tetap berjalan normal.
+
 ## [1.31.0] - 2026-06-11
 
 ### Ditambahkan

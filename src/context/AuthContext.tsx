@@ -5,6 +5,7 @@ import type { AuthUser } from "@/lib/types";
 import {
   loginApi,
   getMeApi,
+  logoutApi,
   getStoredToken,
   setStoredToken,
   clearStoredToken,
@@ -14,7 +15,7 @@ interface AuthContextValue {
   user: AuthUser | null;
   loading: boolean;
   login: (username: string, password: string) => Promise<void>;
-  logout: () => void;
+  logout: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextValue | null>(null);
@@ -40,7 +41,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setUser(me);
   }, []);
 
-  const logout = useCallback(() => {
+  const logout = useCallback(async () => {
+    await logoutApi();
     clearStoredToken();
     setUser(null);
   }, []);
