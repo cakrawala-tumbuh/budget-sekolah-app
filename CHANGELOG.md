@@ -7,6 +7,15 @@ dan proyek ini menganut [Semantic Versioning](https://semver.org/lang/id/).
 
 ## [Unreleased]
 
+## [1.31.0] - 2026-06-11
+
+### Ditambahkan
+- **Kartu organisasi**: badge "Terkunci" (merah, ikon gembok) kini muncul langsung
+  di tile organisasi bila budget sudah dikunci — status kunci dapat diketahui tanpa
+  harus membuka halaman detail.
+- **Dokumentasi**: panduan fitur Organisasi dan Penguncian Budget diperbarui untuk
+  mencerminkan badge status kunci di kartu organisasi.
+
 ## [1.29.2] - 2026-06-11
 
 ### Diperbaiki

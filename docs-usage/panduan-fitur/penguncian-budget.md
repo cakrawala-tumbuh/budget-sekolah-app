@@ -33,7 +33,13 @@ Hak penguncian mengikuti hierarki organisasi:
 
 ## Informasi yang Ditampilkan Saat Terkunci
 
-Ketika sebuah organisasi sudah dikunci, halaman detail menampilkan:
+Ketika sebuah organisasi sudah dikunci, status terkunci terlihat di beberapa tempat:
+
+**Kartu organisasi (halaman daftar):**
+
+- **Badge "Terkunci"** berwarna merah dengan ikon gembok muncul di sudut kanan atas kartu, di bawah badge tipe organisasi. Status ini langsung terlihat tanpa perlu membuka halaman detail.
+
+**Halaman detail organisasi:**
 
 - **Banner merah** di bagian atas: menampilkan nama pengguna yang mengunci dan keterangan bahwa data tidak dapat diubah.
 - **Badge "Terkunci"** di kartu Informasi Organisasi, dilengkapi nama pengunci dan tanggal penguncian.

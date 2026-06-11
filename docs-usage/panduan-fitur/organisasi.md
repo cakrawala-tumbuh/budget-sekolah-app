@@ -14,6 +14,7 @@ Halaman menampilkan kartu-kartu organisasi. Setiap kartu memuat:
 - Tipe organisasi (UNIT, CABANG, atau PUSAT)
 - Kota (bila diisi)
 - Jumlah unit di bawahnya (bila ada)
+- **Badge "Terkunci"** (merah, ikon gembok) — muncul bila budget organisasi tersebut sudah dikunci
 
 ### Mencari Organisasi
 

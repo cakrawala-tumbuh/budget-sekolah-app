@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Building2, ChevronRight, TrendingUp } from "lucide-react";
+import { Building2, ChevronRight, Lock, TrendingUp } from "lucide-react";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -40,9 +40,17 @@ export function OrganizationCard({ org, onDelete }: OrganizationCardProps) {
               )}
             </div>
           </div>
-          <Badge variant={ORG_TYPE_BADGE[org.org_type]}>
-            {ORG_TYPE_LABEL[org.org_type] ?? org.org_type}
-          </Badge>
+          <div className="flex flex-col items-end gap-1.5">
+            <Badge variant={ORG_TYPE_BADGE[org.org_type]}>
+              {ORG_TYPE_LABEL[org.org_type] ?? org.org_type}
+            </Badge>
+            {org.is_locked && (
+              <Badge variant="destructive" className="gap-1 text-xs">
+                <Lock className="h-3 w-3" />
+                Terkunci
+              </Badge>
+            )}
+          </div>
         </div>
       </CardContent>
       <CardFooter className="gap-2 pt-0">
