@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import {
   Building2,
+  Database,
   LayoutDashboard,
   TrendingUp,
   LogOut,
@@ -65,6 +66,11 @@ const adminNavItems: {
     label: "Kategori Investasi",
     href: "/admin/investment-categories",
     icon: Landmark,
+  },
+  {
+    label: "Database",
+    href: "/admin/database",
+    icon: Database,
   },
 ];
 

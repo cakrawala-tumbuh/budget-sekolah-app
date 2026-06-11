@@ -1,4 +1,4 @@
-import { apiFetch } from "./client";
+import { apiFetch, apiFetchForm, apiFetchRaw } from "./client";
 import type {
   IncomeCategory,
   IncomeCategoryCreate,
@@ -99,6 +99,29 @@ export const investmentCategoriesApi = {
       "/investment-categories/seed-defaults",
       { method: "POST" },
     );
+  },
+};
+
+// ── Database ──────────────────────────────────────────────────────────────────
+
+export const databaseApi = {
+  async backup(): Promise<void> {
+    const res = await apiFetchRaw("/database/backup");
+    const blob = await res.blob();
+    const disposition = res.headers.get("Content-Disposition") ?? "";
+    const match = disposition.match(/filename="([^"]+)"/);
+    const filename = match?.[1] ?? "backup.db";
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = filename;
+    a.click();
+    URL.revokeObjectURL(url);
+  },
+  restore(file: File): Promise<{ message: string }> {
+    const formData = new FormData();
+    formData.append("file", file);
+    return apiFetchForm<{ message: string }>("/database/restore", formData);
   },
 };
 

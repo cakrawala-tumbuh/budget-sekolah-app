@@ -25,6 +25,7 @@ Daftar lengkap fitur aplikasi Budget YPII beserta deskripsi singkat dan tautan k
 | Fitur | Deskripsi |
 |---|---|
 | [Panel Admin](admin.md) | Mengelola kategori biaya, kategori investasi, dan mereset password akun organisasi |
+| [Manajemen Database](database.md) | Mengunduh backup database dan memulihkan database dari file backup |
 
 ## Hierarki Organisasi
 

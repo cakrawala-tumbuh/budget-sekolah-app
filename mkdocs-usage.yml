@@ -86,6 +86,7 @@ nav:
     - Summary Anggaran: panduan-fitur/summary.md
     - Penguncian Budget: panduan-fitur/penguncian-budget.md
     - Panel Admin: panduan-fitur/admin.md
+    - Manajemen Database: panduan-fitur/database.md
   - Tutorial:
     - Daftar Tutorial: tutorial/index.md
     - Input Anggaran Unit Baru: tutorial/input-anggaran-unit.md

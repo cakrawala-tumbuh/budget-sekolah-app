@@ -7,6 +7,18 @@ dan proyek ini menganut [Semantic Versioning](https://semver.org/lang/id/).
 
 ## [Unreleased]
 
+## [1.33.0] - 2026-06-11
+
+### Ditambahkan
+- **Manajemen Database** (halaman `/admin/database`): Admin dapat mengunduh backup
+  database SQLite aktif dan memulihkan database dari file backup — tersedia di sidebar
+  bagian Administrasi.
+- Helper API `apiFetchRaw` (download binary) dan `apiFetchForm` (upload multipart)
+  di `src/lib/api/client.ts` untuk mendukung operasi backup/restore.
+- Hooks `useBackupDatabase` dan `useRestoreDatabase` di `src/hooks/useAdmin.ts`.
+- Panduan penggunaan: halaman baru **Manajemen Database** di `docs-usage/panduan-fitur/database.md`,
+  beserta pembaruan halaman Panel Admin, overview fitur, dan FAQ.
+
 ## [1.32.0] - 2026-06-11
 
 ### Ditambahkan

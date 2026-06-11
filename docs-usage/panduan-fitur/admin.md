@@ -1,16 +1,17 @@
 # Panel Admin
 
-Panel Admin hanya dapat diakses oleh pengguna dengan peran **Admin**. Di sini Admin dapat mengelola data master (kategori biaya, kategori investasi) dan mereset password akun organisasi.
+Panel Admin hanya dapat diakses oleh pengguna dengan peran **Admin**. Di sini Admin dapat mengelola data master (kategori biaya, kategori investasi), mereset password akun organisasi, serta melakukan backup dan restore database.
 
 ## Mengakses Panel Admin
 
-Klik menu **Admin** di sidebar. Menu ini hanya tampil bila Anda login sebagai Admin.
+Klik bagian **Administrasi** di sidebar. Menu ini hanya tampil bila Anda login sebagai Admin.
 
-Panel Admin memiliki tiga bagian yang dapat diakses lewat submenu:
+Panel Admin memiliki empat halaman yang dapat diakses lewat submenu:
 
 - **Kategori Biaya**
 - **Kategori Investasi**
-- **Manajemen Pengguna**
+- **Pengguna**
+- **Database**
 
 ## Kategori Biaya
 
@@ -81,3 +82,9 @@ Bila pengguna organisasi lupa password, Admin dapat mereset passwordnya:
 
 !!! danger "Password Ditampilkan Sekali"
     Setelah dialog reset password ditutup, password baru tidak dapat dilihat lagi dari sistem. Pastikan sudah menyalinnya sebelum menutup dialog.
+
+## Manajemen Database
+
+Halaman **Database** menyediakan fitur backup dan restore database aplikasi.
+
+Lihat [Panduan Manajemen Database](database.md) untuk petunjuk lengkap.

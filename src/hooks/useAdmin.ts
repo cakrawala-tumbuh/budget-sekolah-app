@@ -6,6 +6,7 @@ import {
   expenseCategoriesApi,
   investmentCategoriesApi,
   usersApi,
+  databaseApi,
 } from "@/lib/api/admin";
 import type {
   IncomeCategoryCreate,
@@ -176,5 +177,23 @@ export function useUsers() {
 export function useResetOrgPassword() {
   return useMutation({
     mutationFn: (orgId: number) => usersApi.resetPassword(orgId),
+  });
+}
+
+// ── Database ──────────────────────────────────────────────────────────────────
+
+export function useBackupDatabase() {
+  return useMutation({
+    mutationFn: databaseApi.backup,
+  });
+}
+
+export function useRestoreDatabase() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (file: File) => databaseApi.restore(file),
+    onSuccess: () => {
+      qc.invalidateQueries();
+    },
   });
 }

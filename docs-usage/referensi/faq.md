@@ -71,6 +71,19 @@ Buka halaman detail organisasi, lalu klik tombol **Buka Kunci** (ikon gembok ter
 
 ---
 
+## Backup & Restore
+
+**Seberapa sering saya harus melakukan backup?**  
+Lakukan backup sebelum melakukan perubahan data yang besar — misalnya sebelum restore dari backup lama, sebelum reset database, atau di akhir setiap sesi input anggaran yang penting.
+
+**Apakah backup bisa digunakan di instance yang berbeda?**  
+Ya, selama versi aplikasinya sama. File backup berisi seluruh struktur dan data database.
+
+**Apa yang terjadi jika saya mengunggah file yang salah saat restore?**  
+Sistem akan menolak file yang bukan database SQLite valid. Namun bila file valid tetapi berisi data yang salah, data aktif akan tertimpa. Selalu buat backup terbaru sebelum melakukan restore.
+
+---
+
 ## Summary & Cetak
 
 **Bagaimana cara mencetak Summary Anggaran sebagai PDF?**  
