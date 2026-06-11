@@ -1,0 +1,72 @@
+# docker-compose untuk test e2e.
+#
+# Port yang dipakai (non-standard agar tidak bentrok dengan dev lokal):
+#   backend  → host:18000  (internal: 8000)
+#   app      → host:3099   (internal: 3000) — sama dengan baseURL di playwright.config.ts
+#
+# Cara pakai:
+#   make e2e-up   → hidupkan semua service, tunggu sampai healthy
+#   make e2e      → e2e-up kemudian jalankan playwright dari host
+#   make e2e-down → hentikan semua service + hapus volume
+
+services:
+
+  # ── Backend FastAPI ─────────────────────────────────────────────────────────
+  backend:
+    build:
+      context: ../budget-sekolah-backend
+      dockerfile: Dockerfile
+      target: production
+    ports:
+      - "18000:8000"
+    environment:
+      DATABASE_URL: sqlite:///./budget.db
+      ADMIN_PASSWORD: admin123
+      JWT_SECRET_KEY: e2e-test-jwt-secret-key-for-local-only
+      JWT_EXPIRE_MINUTES: "480"
+      BUDGET_YEAR: "2025-2026"
+    volumes:
+      - backend_data:/app
+    healthcheck:
+      test: ["CMD-SHELL", "python -c \"import urllib.request; urllib.request.urlopen('http://localhost:8000/docs')\""]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+      start_period: 10s
+
+  # ── Seed data (jalankan sekali, keluar setelah selesai) ─────────────────────
+  seed:
+    image: curlimages/curl:latest
+    depends_on:
+      backend:
+        condition: service_healthy
+    volumes:
+      - ./e2e/seed.sh:/seed.sh:ro
+    entrypoint: ["sh", "/seed.sh"]
+    environment:
+      BACKEND_URL: http://backend:8000
+      ADMIN_PASSWORD: admin123
+
+  # ── Frontend Next.js ────────────────────────────────────────────────────────
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: runner
+    ports:
+      - "3099:3000"
+    environment:
+      BACKEND_URL: http://backend:8000
+      NODE_ENV: production
+    depends_on:
+      seed:
+        condition: service_completed_successfully
+    healthcheck:
+      test: ["CMD-SHELL", "node -e \"require('http').get('http://localhost:3000',r=>process.exit(r.statusCode<500?0:1)).on('error',()=>process.exit(1))\""]
+      interval: 5s
+      timeout: 5s
+      retries: 15
+      start_period: 15s
+
+volumes:
+  backend_data:

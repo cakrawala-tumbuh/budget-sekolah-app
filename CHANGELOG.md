@@ -7,6 +7,22 @@ dan proyek ini menganut [Semantic Versioning](https://semver.org/lang/id/).
 
 ## [Unreleased]
 
+## [1.33.1] - 2026-06-11
+
+### Diperbaiki
+- Selektor e2e pada spec ringkasan diubah dari `text=Komponen Uang Pangkal` menjadi
+  `text=Simulasi Uang Pangkal` agar cocok dengan judul CardTitle yang sebenarnya.
+
+### Build
+- Tambah `Dockerfile.e2e` untuk menjalankan Playwright dalam container.
+- Tambah `docker-compose.e2e.yml` yang menghidupkan backend + app + seed secara
+  terintegrasi pada port non-standard (backend `:18000`, app `:3099`).
+- Tambah `e2e/seed.sh`: skrip seed idempotent yang membuat tiga organisasi
+  (PUSAT, CABANG, UNIT), asumsi siswa, alokasi kontribusi, dan alokasi biaya UP
+  yang dibutuhkan test e2e.
+- Tambah target Makefile `e2e-up`, `e2e`, dan `e2e-down` untuk mengelola siklus
+  hidup environment e2e dari terminal.
+
 ## [1.33.0] - 2026-06-11
 
 ### Ditambahkan

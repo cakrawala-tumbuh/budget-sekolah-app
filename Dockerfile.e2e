@@ -1,0 +1,15 @@
+# Image untuk menjalankan Playwright e2e test di dalam container.
+# Dipakai oleh service `playwright` di docker-compose.e2e.yml.
+#
+# Menggunakan network_mode: host sehingga bisa menjangkau localhost:3099 (app)
+# yang di-expose oleh service `app` ke host.
+FROM mcr.microsoft.com/playwright:v1.60.0-jammy
+
+WORKDIR /app
+
+COPY package.json package-lock.json ./
+RUN npm ci
+
+COPY e2e/ ./e2e/
+COPY playwright.config.ts ./
+COPY tsconfig.json ./

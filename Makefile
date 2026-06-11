@@ -11,8 +11,11 @@ IMAGE_NAME ?= $(shell basename $(CURDIR))-test
 DOCKERFILE  = Dockerfile.test
 DOCKER_RUN  = docker run --rm $(IMAGE_NAME)
 
+COMPOSE_E2E = docker compose -f docker-compose.e2e.yml
+
 .DEFAULT_GOAL := test
-.PHONY: build lint unit test clean install dev build-app help
+.PHONY: build lint unit test clean install dev build-app \
+        e2e-up e2e e2e-down help
 
 ## build: bangun image test (Dockerfile.test)
 build:
@@ -44,6 +47,22 @@ dev:
 ## build-app: build produksi Next.js
 build-app:
 	npm run build
+
+## e2e-up: hidupkan backend + app + seed, tunggu sampai semua healthy
+e2e-up:
+	$(COMPOSE_E2E) up --build -d --wait
+	@echo ""
+	@echo "Service berjalan:"
+	@echo "  Backend → http://localhost:18000  (docs: http://localhost:18000/docs)"
+	@echo "  App     → http://localhost:3099"
+
+## e2e: hidupkan service lalu jalankan playwright dari host
+e2e: e2e-up
+	npx playwright test
+
+## e2e-down: hentikan semua service dan hapus volume
+e2e-down:
+	$(COMPOSE_E2E) down -v
 
 ## help: tampilkan daftar perintah
 help:

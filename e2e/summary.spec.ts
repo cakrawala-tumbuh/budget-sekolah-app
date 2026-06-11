@@ -156,8 +156,8 @@ test.describe("Verifikasi efek alokasi di Sekolah", () => {
     await page.waitForTimeout(1000);
     await page.screenshot({ path: "test-results/verify-sekolah-up.png", fullPage: true });
 
-    // Tab Uang Pangkal harus menampilkan data (bukan error)
-    await expect(page.locator('text=Komponen Uang Pangkal')).toBeVisible();
+    // Tab Uang Pangkal harus menampilkan data (bukan error) — judul CardTitle simulation
+    await expect(page.locator('text=Simulasi Uang Pangkal')).toBeVisible();
     console.log("✓ Simulasi UP Sekolah memuat setelah alokasi dari Pusat/Cabang");
   });
 
