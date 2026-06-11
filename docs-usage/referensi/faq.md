@@ -55,6 +55,22 @@ Cabang Anda telah mengalokasikan sebagian biaya mereka ke unit Anda. Biaya ini i
 
 ---
 
+## Penguncian Budget
+
+**Apa yang terjadi setelah budget dikunci?**  
+Semua halaman input anggaran (biaya, investasi, pendapatan, asumsi, dsb.) pada organisasi tersebut menjadi hanya-baca. Tombol tambah, edit, dan hapus tidak aktif. Banner merah muncul di setiap halaman sebagai penanda.
+
+**Siapa yang bisa mengunci budget sebuah unit?**  
+Pengguna unit itu sendiri dapat mengunci unitnya. Pengguna Cabang dapat mengunci unit-unit di bawahnya. Pengguna Pusat dan Admin dapat mengunci semua organisasi.
+
+**Bisakah Cabang tetap menyinkronkan alokasi UP/US ke unit yang sudah terkunci?**  
+Ya. Alokasi UP/US dan alokasi biaya dari induk ke unit adalah pengecualian — operasi ini tetap bisa dilakukan meski unit sudah terkunci. Ini memungkinkan Cabang melakukan penyesuaian struktural setelah unit-unit mengunci anggaran mereka.
+
+**Bagaimana cara membuka kunci yang sudah terpasang?**  
+Buka halaman detail organisasi, lalu klik tombol **Buka Kunci** (ikon gembok terbuka) di pojok kanan atas. Hak membuka kunci sama dengan hak mengunci.
+
+---
+
 ## Summary & Cetak
 
 **Bagaimana cara mencetak Summary Anggaran sebagai PDF?**  

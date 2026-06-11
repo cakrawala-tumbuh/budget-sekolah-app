@@ -55,6 +55,18 @@ Pengguna organisasi (bukan Admin) dapat memperbarui saldo kas awal.
 2. Isi form: kode, nama, tipe organisasi, kota (opsional), saldo kas (opsional), dan organisasi induk (opsional).
 3. Klik **Simpan**.
 
+## Mengunci dan Membuka Kunci Budget
+
+Setelah data anggaran selesai disusun, budget dapat dikunci agar tidak bisa diedit lagi.
+
+1. Buka halaman detail organisasi.
+2. Klik tombol **Kunci Budget** (ikon gembok, berwarna kuning-oranye) di pojok kanan atas.
+3. Halaman akan menampilkan banner merah beserta nama pengunci sebagai tanda budget sudah terkunci.
+
+Untuk membuka kunci kembali, klik tombol **Buka Kunci** (ikon gembok terbuka, berwarna merah) di posisi yang sama.
+
+Lihat [Panduan Penguncian Budget](penguncian-budget.md) untuk detail lengkap, termasuk siapa yang berhak mengunci siapa dan pengecualian alokasi UP/US.
+
 ## Menghapus Organisasi *(Admin)*
 
 Klik ikon tempat sampah pada kartu organisasi di halaman daftar. Konfirmasi penghapusan pada dialog yang muncul.

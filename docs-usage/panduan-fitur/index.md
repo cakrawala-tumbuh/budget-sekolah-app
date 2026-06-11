@@ -18,6 +18,7 @@ Daftar lengkap fitur aplikasi Budget YPII beserta deskripsi singkat dan tautan k
 | [Subsidi ke Unit](subsidi.md) | Mencatat subsidi yang diberikan dari Cabang/Pusat kepada unit tertentu *(hanya CABANG & PUSAT)* |
 | [Simulasi Anggaran](simulasi.md) | Melihat hasil kalkulasi tarif UP/US, simulasi pendapatan, biaya, kontribusi, dan depresiasi |
 | [Summary Anggaran](summary.md) | Melihat ringkasan anggaran kas dan akrual dalam format siap cetak |
+| [Penguncian Budget](penguncian-budget.md) | Mengunci budget organisasi agar tidak dapat diedit; menampilkan siapa yang mengunci dan kapan |
 
 ## Fitur Admin
 
