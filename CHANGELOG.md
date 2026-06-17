@@ -7,6 +7,12 @@ dan proyek ini menganut [Semantic Versioning](https://semver.org/lang/id/).
 
 ## [Unreleased]
 
+## [1.34.1] - 2026-06-17
+
+### Diperbaiki
+- Tambah komponen `Textarea` (`src/components/ui/textarea.tsx`) yang hilang
+  sehingga build Docker `v1.34.0` gagal karena `module-not-found`.
+
 ## [1.34.0] - 2026-06-17
 
 ### Ditambahkan
