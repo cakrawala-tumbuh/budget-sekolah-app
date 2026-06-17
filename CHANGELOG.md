@@ -7,6 +7,26 @@ dan proyek ini menganut [Semantic Versioning](https://semver.org/lang/id/).
 
 ## [Unreleased]
 
+## [1.34.0] - 2026-06-17
+
+### Ditambahkan
+- **Halaman Investasi Keuangan** (`/organizations/[id]/financial-investments`):
+  CABANG dan PUSAT dapat mendata instrumen investasi keuangan (saham, reksa dana,
+  obligasi, deposito, dll.) beserta nominal dan catatan. Halaman lengkap dengan
+  CRUD — tambah, edit, hapus.
+- Kartu navigasi "Investasi Keuangan" ditambahkan ke halaman detail organisasi
+  CABANG/PUSAT, di samping Alokasi UP, Alokasi US, dan Subsidi.
+- API client `financialInvestmentsApi` dan hooks `useFinancialInvestments`,
+  `useCreateFinancialInvestment`, `useUpdateFinancialInvestment`,
+  `useDeleteFinancialInvestment`.
+- Tabel simulasi UP (`UPSimulationTable`) kini menampilkan baris
+  "Investasi Keuangan Cabang (alokasi)" dan "Investasi Keuangan Pusat (alokasi)"
+  bila ada alokasi dari induk.
+- Tipe baru `InstrumentType`, `FinancialInvestment`, `FinancialInvestmentCreate`,
+  `FinancialInvestmentUpdate` ditambahkan ke `src/lib/types/index.ts`.
+- Field `cabang_financial_investment_allocated` dan
+  `pusat_financial_investment_allocated` ditambahkan ke interface `UPSimulation`.
+
 ## [1.33.1] - 2026-06-11
 
 ### Diperbaiki

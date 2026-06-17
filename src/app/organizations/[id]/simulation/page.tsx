@@ -196,6 +196,8 @@ export default function SimulationPage({ params }: Props) {
                       pusatAllocatedNewInvestmentDep={up.pusat_allocated_new_investment_dep}
                       cabangAllocatedOldAssetDep={up.cabang_allocated_old_asset_dep}
                       pusatAllocatedOldAssetDep={up.pusat_allocated_old_asset_dep}
+                      cabangFinancialInvestmentAllocated={up.cabang_financial_investment_allocated}
+                      pusatFinancialInvestmentAllocated={up.pusat_financial_investment_allocated}
                       totalUpCostWithDep={up.total_up_cost_with_dep}
                       autoUpRate={up.auto_up_rate}
                       finalUpRate={up.final_up_rate}

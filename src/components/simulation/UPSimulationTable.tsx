@@ -22,6 +22,8 @@ interface Props {
   pusatAllocatedNewInvestmentDep: number;
   cabangAllocatedOldAssetDep: number;
   pusatAllocatedOldAssetDep: number;
+  cabangFinancialInvestmentAllocated: number;
+  pusatFinancialInvestmentAllocated: number;
   totalUpCostWithDep: number;
   autoUpRate: number;
   finalUpRate: number;
@@ -39,6 +41,8 @@ export function UPSimulationTable({
   pusatAllocatedNewInvestmentDep,
   cabangAllocatedOldAssetDep,
   pusatAllocatedOldAssetDep,
+  cabangFinancialInvestmentAllocated,
+  pusatFinancialInvestmentAllocated,
   totalUpCostWithDep,
   autoUpRate,
   finalUpRate,
@@ -57,6 +61,8 @@ export function UPSimulationTable({
     pusatAllocatedNewInvestmentDep > 0 ||
     cabangAllocatedOldAssetDep > 0 ||
     pusatAllocatedOldAssetDep > 0 ||
+    cabangFinancialInvestmentAllocated > 0 ||
+    pusatFinancialInvestmentAllocated > 0 ||
     cabangAllocatedComponents.length > 0 ||
     pusatAllocatedComponents.length > 0;
 
@@ -192,6 +198,32 @@ export function UPSimulationTable({
               </TableCell>
               <TableCell className="text-right tabular-nums">
                 {perStudent(pusatAllocatedOldAssetDep)}
+              </TableCell>
+            </TableRow>
+          )}
+
+          {/* Alokasi investasi keuangan dari Cabang & Pusat */}
+          {cabangFinancialInvestmentAllocated > 0 && (
+            <TableRow className="text-muted-foreground italic">
+              <TableCell className="font-mono text-xs">FIN-INV-CABANG</TableCell>
+              <TableCell>Investasi Keuangan Cabang (alokasi)</TableCell>
+              <TableCell className="text-right tabular-nums">
+                {formatCurrency(cabangFinancialInvestmentAllocated)}
+              </TableCell>
+              <TableCell className="text-right tabular-nums">
+                {perStudent(cabangFinancialInvestmentAllocated)}
+              </TableCell>
+            </TableRow>
+          )}
+          {pusatFinancialInvestmentAllocated > 0 && (
+            <TableRow className="text-muted-foreground italic">
+              <TableCell className="font-mono text-xs">FIN-INV-PUSAT</TableCell>
+              <TableCell>Investasi Keuangan Pusat (alokasi)</TableCell>
+              <TableCell className="text-right tabular-nums">
+                {formatCurrency(pusatFinancialInvestmentAllocated)}
+              </TableCell>
+              <TableCell className="text-right tabular-nums">
+                {perStudent(pusatFinancialInvestmentAllocated)}
               </TableCell>
             </TableRow>
           )}

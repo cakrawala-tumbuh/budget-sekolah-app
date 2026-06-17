@@ -314,6 +314,8 @@ export interface UPSimulation {
   pusat_allocated_new_investment_dep: number;
   cabang_allocated_old_asset_dep: number;
   pusat_allocated_old_asset_dep: number;
+  cabang_financial_investment_allocated: number;
+  pusat_financial_investment_allocated: number;
   total_up_cost_with_dep: number;
   new_student_count: number;
   auto_up_rate: number;
@@ -465,6 +467,40 @@ export interface DirectIncomeSimulation {
   items: DirectIncomeItem[];
   total: number;
   total_auto: number;
+}
+
+// ── Financial Investments (Investasi Keuangan CABANG/PUSAT) ──────────────────
+
+export type InstrumentType =
+  | "SAHAM"
+  | "REKSA_DANA"
+  | "OBLIGASI"
+  | "DEPOSITO"
+  | "LAINNYA";
+
+export interface FinancialInvestment {
+  id: number;
+  organization_id: number;
+  instrument_type: InstrumentType;
+  name: string;
+  amount: number;
+  notes: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface FinancialInvestmentCreate {
+  instrument_type: InstrumentType;
+  name: string;
+  amount: number;
+  notes?: string;
+}
+
+export interface FinancialInvestmentUpdate {
+  instrument_type?: InstrumentType;
+  name?: string;
+  amount?: number;
+  notes?: string;
 }
 
 export interface DirectIncomeOverride {
