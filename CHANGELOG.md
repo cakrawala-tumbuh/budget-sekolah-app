@@ -7,6 +7,15 @@ dan proyek ini menganut [Semantic Versioning](https://semver.org/lang/id/).
 
 ## [Unreleased]
 
+## [1.36.1] - 2026-06-17
+
+### Diubah
+- Tab **Biaya** pada halaman Simulasi Anggaran kini memisahkan alokasi dari
+  induk ke dalam seksi **Alokasi Biaya Cabang** (kuning) dan **Alokasi Biaya
+  Pusat** (biru muda) dengan header dan total, konsisten dengan tampilan di
+  tabel simulasi UP dan US. Biaya unit sendiri (Biaya Operasional dan
+  Non-Operasional) ditampilkan tanpa bercampur dengan item alokasi.
+
 ## [1.36.0] - 2026-06-17
 
 ### Diubah

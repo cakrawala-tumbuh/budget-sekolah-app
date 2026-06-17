@@ -361,7 +361,6 @@ export default function SimulationPage({ params }: Props) {
                 <ExpensesSimulationTable
                   operational={expenses.operational}
                   nonOperational={expenses.non_operational}
-                  totalOperational={expenses.total_operational}
                   totalNonOperational={expenses.total_non_operational}
                   total={expenses.total}
                 />
