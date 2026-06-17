@@ -27,8 +27,15 @@ Menampilkan kalkulasi tarif Uang Pangkal:
 - **Siswa baru** — Jumlah siswa baru yang digunakan sebagai pembagi.
 - **Tarif UP otomatis** — Tarif yang dihitung dari total komponen UP dibagi jumlah siswa baru.
 - **Tarif UP override** — Muncul bila override diisi di halaman [Asumsi Siswa](asumsi-siswa.md).
-- Tabel komponen biaya UP dari unit sendiri, Cabang, dan Pusat.
-- Kolom **Per Siswa** menampilkan kontribusi tiap komponen terhadap tarif UP.
+- Tabel komponen biaya UP dari unit sendiri.
+- Kolom **Tarif / Siswa Baru** menampilkan kontribusi tiap komponen terhadap tarif UP.
+
+Bila ada alokasi dari organisasi induk, tabel menampilkan dua seksi tambahan:
+
+- **Alokasi Biaya Cabang** — heading berlatar kuning yang merangkum semua biaya yang dialokasikan dari Cabang ke unit ini, termasuk komponen UP, depresiasi, dan investasi keuangan. Total seksi dan tarif per siswa ditampilkan langsung di baris heading.
+- **Alokasi Biaya Pusat** — heading berlatar biru muda dengan informasi serupa untuk alokasi dari Pusat.
+
+Di bawah masing-masing heading ditampilkan detail baris per item (komponen, depresiasi, investasi keuangan) dengan tampilan miring.
 
 ### Tab Uang Sekolah *(khusus UNIT)*
 
@@ -107,5 +114,5 @@ Menampilkan ringkasan semua beban depresiasi — baik dari investasi baru maupun
 !!! tip "Tarif UP Override"
     Bila tarif UP override ditampilkan (warna biru), artinya unit menggunakan tarif tetap, bukan hasil kalkulasi. Tarif ini tidak ditambahkan komponen depresiasi.
 
-!!! tip "Komponen dari Cabang/Pusat"
-    Bagian "Alokasi biaya dari Cabang" atau "Alokasi biaya dari Pusat" di tab UP/US menunjukkan biaya yang dialokasikan oleh hierarki di atasnya dan menjadi tanggung jawab unit ini.
+!!! tip "Alokasi Biaya Cabang & Pusat"
+    Heading **Alokasi Biaya Cabang** (kuning) dan **Alokasi Biaya Pusat** (biru muda) di tab Uang Pangkal merangkum semua beban yang dialokasikan oleh hierarki induk ke unit ini — termasuk komponen UP, depresiasi aset, dan investasi keuangan. Total pada baris heading adalah jumlah seluruh item di bawahnya. Data ini bersumber dari konfigurasi [Alokasi UP & US](alokasi.md) dan [Investasi Keuangan](investasi-keuangan.md) di organisasi Cabang/Pusat.

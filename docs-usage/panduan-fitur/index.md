@@ -15,6 +15,7 @@ Daftar lengkap fitur aplikasi Budget YPII beserta deskripsi singkat dan tautan k
 | [Depresiasi Aset Lama](depresiasi-aset-lama.md) | Mencatat beban depresiasi aset tetap yang sudah ada sebelumnya |
 | [Entri Pendapatan](pendapatan.md) | Mencatat entri pendapatan non-UP/US (pendapatan lain-lain, kontribusi, dsb.) |
 | [Alokasi UP & US](alokasi.md) | Mengatur alokasi komponen biaya UP/US dari Cabang atau Pusat ke unit-unit *(hanya CABANG & PUSAT)* |
+| [Investasi Keuangan](investasi-keuangan.md) | Mencatat instrumen investasi keuangan yang nominalnya dialokasikan sebagai beban UP ke unit anak *(hanya CABANG & PUSAT)* |
 | [Subsidi ke Unit](subsidi.md) | Mencatat subsidi yang diberikan dari Cabang/Pusat kepada unit tertentu *(hanya CABANG & PUSAT)* |
 | [Simulasi Anggaran](simulasi.md) | Melihat hasil kalkulasi tarif UP/US, simulasi pendapatan, biaya, kontribusi, dan depresiasi |
 | [Summary Anggaran](summary.md) | Melihat ringkasan anggaran kas dan akrual dalam format siap cetak |

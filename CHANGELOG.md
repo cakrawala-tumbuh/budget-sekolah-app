@@ -7,6 +7,25 @@ dan proyek ini menganut [Semantic Versioning](https://semver.org/lang/id/).
 
 ## [Unreleased]
 
+## [1.35.0] - 2026-06-17
+
+### Diubah
+- Tabel simulasi Uang Pangkal (`UPSimulationTable`) kini menampilkan heading
+  **Alokasi Biaya Cabang** (berlatar kuning) dan **Alokasi Biaya Pusat** (berlatar
+  biru muda) yang merangkum semua item alokasi dari masing-masing induk — komponen UP,
+  depresiasi, dan investasi keuangan — beserta total dan tarif per siswa baru langsung
+  di baris heading. Item detail tetap ditampilkan di bawah heading dengan gaya miring.
+
+### Dokumentasi
+- Tambah halaman panduan **Investasi Keuangan** (`docs-usage/panduan-fitur/investasi-keuangan.md`)
+  yang menjelaskan cara mendata instrumen investasi di CABANG/PUSAT dan dampaknya
+  terhadap simulasi UP unit.
+- Perbarui panduan **Simulasi Anggaran** (`docs-usage/panduan-fitur/simulasi.md`):
+  seksi Tab Uang Pangkal kini menjelaskan heading Alokasi Biaya Cabang/Pusat beserta tip
+  yang diperbarui.
+- Tambah entri Investasi Keuangan ke tabel fitur di `docs-usage/panduan-fitur/index.md`
+  dan navigasi `mkdocs-usage.yml`.
+
 ## [1.34.1] - 2026-06-17
 
 ### Diperbaiki

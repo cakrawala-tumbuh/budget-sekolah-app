@@ -66,6 +66,30 @@ export function UPSimulationTable({
     cabangAllocatedComponents.length > 0 ||
     pusatAllocatedComponents.length > 0;
 
+  const hasCabang =
+    cabangAllocatedComponents.length > 0 ||
+    cabangAllocatedNewInvestmentDep > 0 ||
+    cabangAllocatedOldAssetDep > 0 ||
+    cabangFinancialInvestmentAllocated > 0;
+
+  const hasPusat =
+    pusatAllocatedComponents.length > 0 ||
+    pusatAllocatedNewInvestmentDep > 0 ||
+    pusatAllocatedOldAssetDep > 0 ||
+    pusatFinancialInvestmentAllocated > 0;
+
+  const totalCabang =
+    cabangAllocatedComponents.reduce((sum, r) => sum + (r.total ?? 0), 0) +
+    cabangAllocatedNewInvestmentDep +
+    cabangAllocatedOldAssetDep +
+    cabangFinancialInvestmentAllocated;
+
+  const totalPusat =
+    pusatAllocatedComponents.reduce((sum, r) => sum + (r.total ?? 0), 0) +
+    pusatAllocatedNewInvestmentDep +
+    pusatAllocatedOldAssetDep +
+    pusatFinancialInvestmentAllocated;
+
   const renderAllocRows = (rows: UPComponent[], keyPrefix: string) =>
     rows.map((row, i) => (
       <TableRow key={`${keyPrefix}-${i}`} className="text-muted-foreground italic">
@@ -150,7 +174,21 @@ export function UPSimulationTable({
             </TableRow>
           )}
 
-          {/* Alokasi depresiasi investasi baru dari Cabang (terpisah dari Pusat) */}
+          {/* Seksi: Alokasi Biaya Cabang */}
+          {hasCabang && (
+            <TableRow className="bg-amber-50 dark:bg-amber-950/30">
+              <TableCell colSpan={2} className="font-semibold text-sm text-amber-800 dark:text-amber-300">
+                Alokasi Biaya Cabang
+              </TableCell>
+              <TableCell className="text-right font-semibold text-sm tabular-nums text-amber-800 dark:text-amber-300">
+                {formatCurrency(totalCabang)}
+              </TableCell>
+              <TableCell className="text-right font-semibold text-sm tabular-nums text-amber-800 dark:text-amber-300">
+                {perStudent(totalCabang)}
+              </TableCell>
+            </TableRow>
+          )}
+          {renderAllocRows(cabangAllocatedComponents, "cabang")}
           {cabangAllocatedNewInvestmentDep > 0 && (
             <TableRow className="text-muted-foreground italic">
               <TableCell className="font-mono text-xs">DEP-NEW-CABANG</TableCell>
@@ -163,20 +201,6 @@ export function UPSimulationTable({
               </TableCell>
             </TableRow>
           )}
-          {pusatAllocatedNewInvestmentDep > 0 && (
-            <TableRow className="text-muted-foreground italic">
-              <TableCell className="font-mono text-xs">DEP-NEW-PUSAT</TableCell>
-              <TableCell>Depresiasi Investasi Baru Pusat</TableCell>
-              <TableCell className="text-right tabular-nums">
-                {formatCurrency(pusatAllocatedNewInvestmentDep)}
-              </TableCell>
-              <TableCell className="text-right tabular-nums">
-                {perStudent(pusatAllocatedNewInvestmentDep)}
-              </TableCell>
-            </TableRow>
-          )}
-
-          {/* Alokasi depresiasi aset lama dari Cabang (terpisah dari Pusat) */}
           {cabangAllocatedOldAssetDep > 0 && (
             <TableRow className="text-muted-foreground italic">
               <TableCell className="font-mono text-xs">DEP-OLD-CABANG</TableCell>
@@ -186,6 +210,46 @@ export function UPSimulationTable({
               </TableCell>
               <TableCell className="text-right tabular-nums">
                 {perStudent(cabangAllocatedOldAssetDep)}
+              </TableCell>
+            </TableRow>
+          )}
+          {cabangFinancialInvestmentAllocated > 0 && (
+            <TableRow className="text-muted-foreground italic">
+              <TableCell className="font-mono text-xs">FIN-INV-CABANG</TableCell>
+              <TableCell>Investasi Keuangan Cabang (alokasi)</TableCell>
+              <TableCell className="text-right tabular-nums">
+                {formatCurrency(cabangFinancialInvestmentAllocated)}
+              </TableCell>
+              <TableCell className="text-right tabular-nums">
+                {perStudent(cabangFinancialInvestmentAllocated)}
+              </TableCell>
+            </TableRow>
+          )}
+
+          {/* Seksi: Alokasi Biaya Pusat */}
+          {hasPusat && (
+            <TableRow className="bg-sky-50 dark:bg-sky-950/30">
+              <TableCell colSpan={2} className="font-semibold text-sm text-sky-800 dark:text-sky-300">
+                Alokasi Biaya Pusat
+              </TableCell>
+              <TableCell className="text-right font-semibold text-sm tabular-nums text-sky-800 dark:text-sky-300">
+                {formatCurrency(totalPusat)}
+              </TableCell>
+              <TableCell className="text-right font-semibold text-sm tabular-nums text-sky-800 dark:text-sky-300">
+                {perStudent(totalPusat)}
+              </TableCell>
+            </TableRow>
+          )}
+          {renderAllocRows(pusatAllocatedComponents, "pusat")}
+          {pusatAllocatedNewInvestmentDep > 0 && (
+            <TableRow className="text-muted-foreground italic">
+              <TableCell className="font-mono text-xs">DEP-NEW-PUSAT</TableCell>
+              <TableCell>Depresiasi Investasi Baru Pusat</TableCell>
+              <TableCell className="text-right tabular-nums">
+                {formatCurrency(pusatAllocatedNewInvestmentDep)}
+              </TableCell>
+              <TableCell className="text-right tabular-nums">
+                {perStudent(pusatAllocatedNewInvestmentDep)}
               </TableCell>
             </TableRow>
           )}
@@ -201,20 +265,6 @@ export function UPSimulationTable({
               </TableCell>
             </TableRow>
           )}
-
-          {/* Alokasi investasi keuangan dari Cabang & Pusat */}
-          {cabangFinancialInvestmentAllocated > 0 && (
-            <TableRow className="text-muted-foreground italic">
-              <TableCell className="font-mono text-xs">FIN-INV-CABANG</TableCell>
-              <TableCell>Investasi Keuangan Cabang (alokasi)</TableCell>
-              <TableCell className="text-right tabular-nums">
-                {formatCurrency(cabangFinancialInvestmentAllocated)}
-              </TableCell>
-              <TableCell className="text-right tabular-nums">
-                {perStudent(cabangFinancialInvestmentAllocated)}
-              </TableCell>
-            </TableRow>
-          )}
           {pusatFinancialInvestmentAllocated > 0 && (
             <TableRow className="text-muted-foreground italic">
               <TableCell className="font-mono text-xs">FIN-INV-PUSAT</TableCell>
@@ -227,10 +277,6 @@ export function UPSimulationTable({
               </TableCell>
             </TableRow>
           )}
-
-          {/* Alokasi biaya dari Cabang (terpisah dari Pusat) */}
-          {renderAllocRows(cabangAllocatedComponents, "cabang")}
-          {renderAllocRows(pusatAllocatedComponents, "pusat")}
         </TableBody>
         <TableFooter>
           {/* Versi otomatis: total biaya ÷ siswa baru = tarif otomatis */}
