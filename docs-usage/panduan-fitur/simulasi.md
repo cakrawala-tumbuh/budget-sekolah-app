@@ -44,7 +44,15 @@ Menampilkan kalkulasi tarif Uang Sekolah:
 - **Total siswa** — Jumlah siswa aktif (dasar pembagi US).
 - **Tarif US otomatis** — Tarif per siswa per bulan hasil kalkulasi.
 - **Tarif US override** — Muncul bila override diisi di halaman [Asumsi Siswa](asumsi-siswa.md).
-- Tabel komponen biaya US dari unit sendiri, Cabang, dan Pusat.
+- Tabel komponen biaya US dari unit sendiri.
+- Kolom **Tarif / Siswa / Bln** menampilkan kontribusi tiap komponen terhadap tarif US.
+
+Bila ada alokasi dari organisasi induk, tabel menampilkan dua seksi tambahan:
+
+- **Alokasi Biaya Cabang** — heading berlatar kuning yang merangkum semua komponen biaya US yang dialokasikan dari Cabang, beserta total dan tarif per siswa per bulan.
+- **Alokasi Biaya Pusat** — heading berlatar biru muda dengan informasi serupa untuk alokasi dari Pusat.
+
+Di bawah masing-masing heading ditampilkan detail baris per komponen dengan tampilan miring.
 
 ### Tab Pendapatan
 
@@ -115,4 +123,4 @@ Menampilkan ringkasan semua beban depresiasi — baik dari investasi baru maupun
     Bila tarif UP override ditampilkan (warna biru), artinya unit menggunakan tarif tetap, bukan hasil kalkulasi. Tarif ini tidak ditambahkan komponen depresiasi.
 
 !!! tip "Alokasi Biaya Cabang & Pusat"
-    Heading **Alokasi Biaya Cabang** (kuning) dan **Alokasi Biaya Pusat** (biru muda) di tab Uang Pangkal merangkum semua beban yang dialokasikan oleh hierarki induk ke unit ini — termasuk komponen UP, depresiasi aset, dan investasi keuangan. Total pada baris heading adalah jumlah seluruh item di bawahnya. Data ini bersumber dari konfigurasi [Alokasi UP & US](alokasi.md) dan [Investasi Keuangan](investasi-keuangan.md) di organisasi Cabang/Pusat.
+    Heading **Alokasi Biaya Cabang** (kuning) dan **Alokasi Biaya Pusat** (biru muda) tampil di tab Uang Pangkal maupun Uang Sekolah bila ada alokasi dari induk. Setiap heading merangkum total seluruh komponen yang dialokasikan beserta tarif per siswa, sehingga kontribusi masing-masing induk terlihat sekaligus. Data bersumber dari konfigurasi [Alokasi UP & US](alokasi.md) di Cabang/Pusat; khusus tab UP, termasuk juga alokasi [Investasi Keuangan](investasi-keuangan.md).

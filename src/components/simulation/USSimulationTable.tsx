@@ -38,8 +38,18 @@ export function USSimulationTable({
   const hasOverride = Math.abs(finalUsRate - autoUsRate) > 0.5;
   const overrideRevenue = finalUsRate * totalStudents * 12;
 
-  const hasAllocation =
-    cabangAllocatedComponents.length > 0 || pusatAllocatedComponents.length > 0;
+  const hasCabang = cabangAllocatedComponents.length > 0;
+  const hasPusat = pusatAllocatedComponents.length > 0;
+  const hasAllocation = hasCabang || hasPusat;
+
+  const totalCabang = cabangAllocatedComponents.reduce(
+    (sum, r) => sum + (r.total ?? 0),
+    0
+  );
+  const totalPusat = pusatAllocatedComponents.reduce(
+    (sum, r) => sum + (r.total ?? 0),
+    0
+  );
 
   const renderAllocRows = (rows: USComponent[], keyPrefix: string) =>
     rows.map((row, i) => (
@@ -99,8 +109,36 @@ export function USSimulationTable({
             </TableRow>
           )}
 
-          {/* Alokasi biaya dari Cabang (terpisah dari Pusat) */}
+          {/* Seksi: Alokasi Biaya Cabang */}
+          {hasCabang && (
+            <TableRow className="bg-amber-50 dark:bg-amber-950/30">
+              <TableCell colSpan={2} className="font-semibold text-sm text-amber-800 dark:text-amber-300">
+                Alokasi Biaya Cabang
+              </TableCell>
+              <TableCell className="text-right font-semibold text-sm tabular-nums text-amber-800 dark:text-amber-300">
+                {formatCurrency(totalCabang)}
+              </TableCell>
+              <TableCell className="text-right font-semibold text-sm tabular-nums text-amber-800 dark:text-amber-300">
+                {perStudentMonth(totalCabang)}
+              </TableCell>
+            </TableRow>
+          )}
           {renderAllocRows(cabangAllocatedComponents, "cabang")}
+
+          {/* Seksi: Alokasi Biaya Pusat */}
+          {hasPusat && (
+            <TableRow className="bg-sky-50 dark:bg-sky-950/30">
+              <TableCell colSpan={2} className="font-semibold text-sm text-sky-800 dark:text-sky-300">
+                Alokasi Biaya Pusat
+              </TableCell>
+              <TableCell className="text-right font-semibold text-sm tabular-nums text-sky-800 dark:text-sky-300">
+                {formatCurrency(totalPusat)}
+              </TableCell>
+              <TableCell className="text-right font-semibold text-sm tabular-nums text-sky-800 dark:text-sky-300">
+                {perStudentMonth(totalPusat)}
+              </TableCell>
+            </TableRow>
+          )}
           {renderAllocRows(pusatAllocatedComponents, "pusat")}
         </TableBody>
         <TableFooter>
