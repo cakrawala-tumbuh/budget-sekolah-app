@@ -79,6 +79,12 @@ export function USSimulationTable({
           </TableRow>
         </TableHeader>
         <TableBody>
+          {/* Seksi: Biaya Unit */}
+          <TableRow className="bg-muted/40">
+            <TableCell colSpan={4} className="font-semibold text-sm">
+              Biaya Unit
+            </TableCell>
+          </TableRow>
           {components.map((row, i) => (
             <TableRow key={i}>
               <TableCell className="font-mono text-xs text-muted-foreground">
@@ -93,21 +99,17 @@ export function USSimulationTable({
               </TableCell>
             </TableRow>
           ))}
-
-          {/* Subtotal komponen (hanya tampil jika ada alokasi) */}
-          {hasAllocation && (
-            <TableRow className="bg-muted/40 font-medium">
-              <TableCell colSpan={2} className="text-sm">
-                Total Komponen Biaya US
-              </TableCell>
-              <TableCell className="text-right tabular-nums text-sm">
-                {formatCurrency(totalOwnCost)}
-              </TableCell>
-              <TableCell className="text-right tabular-nums text-sm">
-                {perStudentMonth(totalOwnCost)}
-              </TableCell>
-            </TableRow>
-          )}
+          <TableRow className="bg-muted/40 font-medium">
+            <TableCell colSpan={2} className="text-sm">
+              Total Biaya Unit
+            </TableCell>
+            <TableCell className="text-right tabular-nums text-sm">
+              {formatCurrency(totalOwnCost)}
+            </TableCell>
+            <TableCell className="text-right tabular-nums text-sm">
+              {perStudentMonth(totalOwnCost)}
+            </TableCell>
+          </TableRow>
 
           {/* Seksi: Alokasi Biaya Cabang */}
           {hasCabang && (

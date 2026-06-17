@@ -54,17 +54,7 @@ export function UPSimulationTable({
   const hasOverride = Math.abs(finalUpRate - autoUpRate) > 0.5;
   const overrideRevenue = finalUpRate * newStudentCount;
 
-  const hasExtra =
-    newInvestmentDep > 0 ||
-    oldAssetDep > 0 ||
-    cabangAllocatedNewInvestmentDep > 0 ||
-    pusatAllocatedNewInvestmentDep > 0 ||
-    cabangAllocatedOldAssetDep > 0 ||
-    pusatAllocatedOldAssetDep > 0 ||
-    cabangFinancialInvestmentAllocated > 0 ||
-    pusatFinancialInvestmentAllocated > 0 ||
-    cabangAllocatedComponents.length > 0 ||
-    pusatAllocatedComponents.length > 0;
+  const totalUnit = totalOwnCost + newInvestmentDep + oldAssetDep;
 
   const hasCabang =
     cabangAllocatedComponents.length > 0 ||
@@ -118,6 +108,12 @@ export function UPSimulationTable({
           </TableRow>
         </TableHeader>
         <TableBody>
+          {/* Seksi: Biaya Unit */}
+          <TableRow className="bg-muted/40">
+            <TableCell colSpan={4} className="font-semibold text-sm">
+              Biaya Unit
+            </TableCell>
+          </TableRow>
           {components.map((row, i) => (
             <TableRow key={i}>
               <TableCell className="font-mono text-xs text-muted-foreground">
@@ -132,23 +128,6 @@ export function UPSimulationTable({
               </TableCell>
             </TableRow>
           ))}
-
-          {/* Subtotal komponen (hanya tampil jika ada item tambahan) */}
-          {hasExtra && (
-            <TableRow className="bg-muted/40 font-medium">
-              <TableCell colSpan={2} className="text-sm">
-                Total Komponen Biaya UP
-              </TableCell>
-              <TableCell className="text-right tabular-nums text-sm">
-                {formatCurrency(totalOwnCost)}
-              </TableCell>
-              <TableCell className="text-right tabular-nums text-sm">
-                {perStudent(totalOwnCost)}
-              </TableCell>
-            </TableRow>
-          )}
-
-          {/* Depresiasi aset unit sendiri */}
           {newInvestmentDep > 0 && (
             <TableRow className="text-muted-foreground italic">
               <TableCell className="font-mono text-xs">DEP-NEW</TableCell>
@@ -173,6 +152,17 @@ export function UPSimulationTable({
               </TableCell>
             </TableRow>
           )}
+          <TableRow className="bg-muted/40 font-medium">
+            <TableCell colSpan={2} className="text-sm">
+              Total Biaya Unit
+            </TableCell>
+            <TableCell className="text-right tabular-nums text-sm">
+              {formatCurrency(totalUnit)}
+            </TableCell>
+            <TableCell className="text-right tabular-nums text-sm">
+              {perStudent(totalUnit)}
+            </TableCell>
+          </TableRow>
 
           {/* Seksi: Alokasi Biaya Cabang */}
           {hasCabang && (

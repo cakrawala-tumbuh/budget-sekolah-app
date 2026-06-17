@@ -27,6 +27,7 @@ import { UPSimulationTable } from "@/components/simulation/UPSimulationTable";
 import { USSimulationTable } from "@/components/simulation/USSimulationTable";
 import { BosIncomeTable } from "@/components/simulation/BosIncomeTable";
 import { DirectIncomeTable } from "@/components/simulation/DirectIncomeTable";
+import { ExpensesSimulationTable } from "@/components/simulation/ExpensesSimulationTable";
 import { formatCurrency, formatNumber } from "@/lib/utils";
 
 interface Props {
@@ -357,10 +358,12 @@ export default function SimulationPage({ params }: Props) {
                 <CardTitle className="text-base">Simulasi Biaya</CardTitle>
               </CardHeader>
               <CardContent>
-                <SimulationTable
-                  rows={[...expenses.operational, ...expenses.non_operational]}
-                  totalLabel="Total Biaya"
-                  totalAmount={expenses.total}
+                <ExpensesSimulationTable
+                  operational={expenses.operational}
+                  nonOperational={expenses.non_operational}
+                  totalOperational={expenses.total_operational}
+                  totalNonOperational={expenses.total_non_operational}
+                  total={expenses.total}
                 />
               </CardContent>
             </Card>

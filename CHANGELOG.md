@@ -7,6 +7,19 @@ dan proyek ini menganut [Semantic Versioning](https://semver.org/lang/id/).
 
 ## [Unreleased]
 
+## [1.36.0] - 2026-06-17
+
+### Diubah
+- Tabel simulasi UP kini menampilkan seksi **Biaya Unit** (header abu-abu di atas,
+  total di bawah) yang mencakup komponen biaya UP unit sendiri beserta depresiasi
+  investasi baru dan aset lama. Subtotal berlaku selalu, bukan hanya saat ada alokasi.
+- Tabel simulasi US kini menampilkan seksi **Biaya Unit** (header + total) dengan
+  pola yang sama untuk komponen biaya US unit sendiri.
+- Tab **Biaya** pada halaman Simulasi Anggaran kini menggunakan komponen baru
+  `ExpensesSimulationTable` yang memisahkan biaya menjadi dua seksi:
+  **Biaya Operasional** dan **Biaya Non-Operasional**, masing-masing dengan header
+  dan subtotal, diakhiri grand total di footer.
+
 ## [1.35.2] - 2026-06-17
 
 ### Diubah
