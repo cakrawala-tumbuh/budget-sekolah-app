@@ -7,6 +7,22 @@ dan proyek ini menganut [Semantic Versioning](https://semver.org/lang/id/).
 
 ## [Unreleased]
 
+## [1.35.2] - 2026-06-17
+
+### Diubah
+- Heading **Alokasi Biaya Cabang** dan **Alokasi Biaya Pusat** di tabel simulasi UP
+  dan US kini hanya menampilkan judul. Total alokasi dipindah ke baris subtotal
+  **Total Alokasi Cabang** / **Total Alokasi Pusat** di bawah item detail,
+  sehingga pola header–detail–total konsisten di kedua tabel.
+
+## [1.35.1] - 2026-06-17
+
+### Diubah
+- Tabel simulasi Uang Sekolah (`USSimulationTable`) kini menampilkan heading
+  **Alokasi Biaya Cabang** (berlatar kuning) dan **Alokasi Biaya Pusat** (berlatar
+  biru muda), konsisten dengan tampilan di tabel simulasi Uang Pangkal. Setiap heading
+  memuat total komponen alokasi dan tarif per siswa per bulan.
+
 ## [1.35.0] - 2026-06-17
 
 ### Diubah

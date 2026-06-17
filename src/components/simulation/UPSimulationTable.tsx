@@ -177,14 +177,8 @@ export function UPSimulationTable({
           {/* Seksi: Alokasi Biaya Cabang */}
           {hasCabang && (
             <TableRow className="bg-amber-50 dark:bg-amber-950/30">
-              <TableCell colSpan={2} className="font-semibold text-sm text-amber-800 dark:text-amber-300">
+              <TableCell colSpan={4} className="font-semibold text-sm text-amber-800 dark:text-amber-300">
                 Alokasi Biaya Cabang
-              </TableCell>
-              <TableCell className="text-right font-semibold text-sm tabular-nums text-amber-800 dark:text-amber-300">
-                {formatCurrency(totalCabang)}
-              </TableCell>
-              <TableCell className="text-right font-semibold text-sm tabular-nums text-amber-800 dark:text-amber-300">
-                {perStudent(totalCabang)}
               </TableCell>
             </TableRow>
           )}
@@ -225,18 +219,25 @@ export function UPSimulationTable({
               </TableCell>
             </TableRow>
           )}
+          {hasCabang && (
+            <TableRow className="bg-amber-50 dark:bg-amber-950/30 font-medium">
+              <TableCell colSpan={2} className="text-sm text-amber-800 dark:text-amber-300">
+                Total Alokasi Cabang
+              </TableCell>
+              <TableCell className="text-right text-sm tabular-nums text-amber-800 dark:text-amber-300">
+                {formatCurrency(totalCabang)}
+              </TableCell>
+              <TableCell className="text-right text-sm tabular-nums text-amber-800 dark:text-amber-300">
+                {perStudent(totalCabang)}
+              </TableCell>
+            </TableRow>
+          )}
 
           {/* Seksi: Alokasi Biaya Pusat */}
           {hasPusat && (
             <TableRow className="bg-sky-50 dark:bg-sky-950/30">
-              <TableCell colSpan={2} className="font-semibold text-sm text-sky-800 dark:text-sky-300">
+              <TableCell colSpan={4} className="font-semibold text-sm text-sky-800 dark:text-sky-300">
                 Alokasi Biaya Pusat
-              </TableCell>
-              <TableCell className="text-right font-semibold text-sm tabular-nums text-sky-800 dark:text-sky-300">
-                {formatCurrency(totalPusat)}
-              </TableCell>
-              <TableCell className="text-right font-semibold text-sm tabular-nums text-sky-800 dark:text-sky-300">
-                {perStudent(totalPusat)}
               </TableCell>
             </TableRow>
           )}
@@ -274,6 +275,19 @@ export function UPSimulationTable({
               </TableCell>
               <TableCell className="text-right tabular-nums">
                 {perStudent(pusatFinancialInvestmentAllocated)}
+              </TableCell>
+            </TableRow>
+          )}
+          {hasPusat && (
+            <TableRow className="bg-sky-50 dark:bg-sky-950/30 font-medium">
+              <TableCell colSpan={2} className="text-sm text-sky-800 dark:text-sky-300">
+                Total Alokasi Pusat
+              </TableCell>
+              <TableCell className="text-right text-sm tabular-nums text-sky-800 dark:text-sky-300">
+                {formatCurrency(totalPusat)}
+              </TableCell>
+              <TableCell className="text-right text-sm tabular-nums text-sky-800 dark:text-sky-300">
+                {perStudent(totalPusat)}
               </TableCell>
             </TableRow>
           )}
