@@ -7,6 +7,18 @@ dan proyek ini menganut [Semantic Versioning](https://semver.org/lang/id/).
 
 ## [Unreleased]
 
+## [1.38.1] - 2026-07-03
+
+### Diubah
+- Halaman **Summary Komparatif** kini memakai warna semantik yang konsisten
+  dengan halaman Simulasi: kolom **Pendapatan** hijau, **Beban** merah, serta
+  **Surplus/Defisit Kas & Akrual** hijau bila ≥0 dan merah bila <0 (dengan
+  latar tipis). Header tabel bergaya biru seperti Summary RAB, badge tipe
+  organisasi diberi warna (UNIT biru, CABANG amber, PUSAT hijau) beserta aksen
+  garis kiri, baris organisasi induk ditonjolkan sebagai baris rekap, dan
+  ditambahkan legenda warna. Perubahan tampilan saja, tidak mengubah data
+  maupun perhitungan.
+
 ## [1.38.0] - 2026-07-03
 
 ### Ditambahkan

@@ -18,7 +18,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { formatCurrency, ORG_TYPE_LABEL } from "@/lib/utils";
+import { cn, formatCurrency, ORG_TYPE_COLOR, ORG_TYPE_LABEL } from "@/lib/utils";
 import type { BudgetSummary, ComparativeSummary, OrgSummaryRow } from "@/lib/types";
 
 interface Props {
@@ -27,6 +27,49 @@ interface Props {
 
 type SummaryMode = "auto" | "final";
 type AllocationView = "with" | "without";
+
+/** Aksen garis kiri per tipe organisasi — konsisten dengan kartu di halaman simulasi. */
+const ORG_TYPE_BORDER: Record<string, string> = {
+  UNIT: "border-l-blue-500",
+  CABANG: "border-l-amber-500",
+  PUSAT: "border-l-green-500",
+};
+
+/**
+ * Sel angka dengan warna semantik yang konsisten dengan halaman simulasi:
+ * pendapatan hijau, beban merah, surplus/defisit hijau bila ≥0 dan merah bila <0.
+ */
+function MoneyCell({
+  value,
+  tone,
+}: {
+  value: number;
+  tone: "revenue" | "expenses" | "signed";
+}) {
+  if (tone === "signed") {
+    const positive = value >= 0;
+    return (
+      <TableCell
+        className={cn(
+          "text-right tabular-nums font-semibold",
+          positive ? "text-green-700 bg-green-50" : "text-red-700 bg-red-50",
+        )}
+      >
+        {formatCurrency(value)}
+      </TableCell>
+    );
+  }
+  return (
+    <TableCell
+      className={cn(
+        "text-right tabular-nums",
+        tone === "revenue" ? "text-green-700" : "text-red-600",
+      )}
+    >
+      {formatCurrency(value)}
+    </TableCell>
+  );
+}
 
 function pickValue(
   summary: BudgetSummary,
@@ -52,33 +95,36 @@ function ComparativeRow({
   row,
   mode,
   allocation,
+  isParent = false,
 }: {
   row: OrgSummaryRow;
   mode: SummaryMode;
   allocation: AllocationView;
+  /** Baris organisasi induk (CABANG/PUSAT) — ditonjolkan sebagai baris rekap. */
+  isParent?: boolean;
 }) {
   const summary =
     allocation === "with" ? row.summary_with_allocation : row.summary_without_allocation;
   return (
-    <TableRow>
-      <TableCell>
+    <TableRow className={cn(isParent && "bg-muted/60 font-semibold")}>
+      <TableCell
+        className={cn(
+          "border-l-4",
+          ORG_TYPE_BORDER[summary.org_type] ?? "border-l-transparent",
+        )}
+      >
         <div className="font-medium">{summary.organization_name}</div>
-        <Badge variant="outline" className="text-xs">
+        <Badge
+          variant="outline"
+          className={cn("mt-1 border-transparent text-xs", ORG_TYPE_COLOR[summary.org_type])}
+        >
           {ORG_TYPE_LABEL[summary.org_type] ?? summary.org_type}
         </Badge>
       </TableCell>
-      <TableCell className="text-right tabular-nums">
-        {formatCurrency(pickValue(summary, "revenue", mode))}
-      </TableCell>
-      <TableCell className="text-right tabular-nums">
-        {formatCurrency(pickValue(summary, "expenses", mode))}
-      </TableCell>
-      <TableCell className="text-right tabular-nums">
-        {formatCurrency(pickValue(summary, "cashSD", mode))}
-      </TableCell>
-      <TableCell className="text-right tabular-nums">
-        {formatCurrency(pickValue(summary, "accrualSD", mode))}
-      </TableCell>
+      <MoneyCell value={pickValue(summary, "revenue", mode)} tone="revenue" />
+      <MoneyCell value={pickValue(summary, "expenses", mode)} tone="expenses" />
+      <MoneyCell value={pickValue(summary, "cashSD", mode)} tone="signed" />
+      <MoneyCell value={pickValue(summary, "accrualSD", mode)} tone="signed" />
     </TableRow>
   );
 }
@@ -93,32 +139,34 @@ function ComparativeTable({
   allocation: AllocationView;
 }) {
   return (
-    <Table>
-      <TableHeader>
-        <TableRow>
-          <TableHead>Organisasi</TableHead>
-          <TableHead className="text-right">Pendapatan</TableHead>
-          <TableHead className="text-right">Beban</TableHead>
-          <TableHead className="text-right">Surplus/Defisit Kas</TableHead>
-          <TableHead className="text-right">Surplus/Defisit Akrual</TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        <ComparativeRow row={data.organization} mode={mode} allocation={allocation} />
-        {data.units.map((unit) => (
-          <ComparativeRow
-            key={
-              allocation === "with"
-                ? unit.summary_with_allocation.organization_id
-                : unit.summary_without_allocation.organization_id
-            }
-            row={unit}
-            mode={mode}
-            allocation={allocation}
-          />
-        ))}
-      </TableBody>
-    </Table>
+    <div className="overflow-hidden rounded-md border">
+      <Table>
+        <TableHeader>
+          <TableRow className="bg-blue-800 hover:bg-blue-800">
+            <TableHead className="text-white">Organisasi</TableHead>
+            <TableHead className="text-right text-white">Pendapatan</TableHead>
+            <TableHead className="text-right text-white">Beban</TableHead>
+            <TableHead className="text-right text-white">Surplus/Defisit Kas</TableHead>
+            <TableHead className="text-right text-white">Surplus/Defisit Akrual</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          <ComparativeRow row={data.organization} mode={mode} allocation={allocation} isParent />
+          {data.units.map((unit) => (
+            <ComparativeRow
+              key={
+                allocation === "with"
+                  ? unit.summary_with_allocation.organization_id
+                  : unit.summary_without_allocation.organization_id
+              }
+              row={unit}
+              mode={mode}
+              allocation={allocation}
+            />
+          ))}
+        </TableBody>
+      </Table>
+    </div>
   );
 }
 
@@ -209,7 +257,19 @@ export default function SummaryKomparatifPage({ params }: Props) {
       )}
 
       {data && (
-        <Tabs defaultValue="with">
+        <>
+          <div className="mb-3 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-muted-foreground">
+            <span className="flex items-center gap-1.5">
+              <span className="h-2.5 w-2.5 rounded-full bg-green-600" />
+              Pendapatan / Surplus
+            </span>
+            <span className="flex items-center gap-1.5">
+              <span className="h-2.5 w-2.5 rounded-full bg-red-600" />
+              Beban / Defisit
+            </span>
+            <span className="ml-auto italic">Baris berlatar abu-abu = organisasi induk (rekap)</span>
+          </div>
+          <Tabs defaultValue="with">
           <TabsList>
             <TabsTrigger value="with">Dengan Alokasi ke Induk</TabsTrigger>
             <TabsTrigger value="without">Tanpa Alokasi ke Induk</TabsTrigger>
@@ -220,7 +280,8 @@ export default function SummaryKomparatifPage({ params }: Props) {
           <TabsContent value="without">
             <ComparativeTable data={data} mode={mode} allocation="without" />
           </TabsContent>
-        </Tabs>
+          </Tabs>
+        </>
       )}
     </div>
   );
