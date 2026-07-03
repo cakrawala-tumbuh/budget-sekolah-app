@@ -7,6 +7,18 @@ dan proyek ini menganut [Semantic Versioning](https://semver.org/lang/id/).
 
 ## [Unreleased]
 
+## [1.38.0] - 2026-07-03
+
+### Ditambahkan
+- Halaman **Summary Komparatif** (`/organizations/{id}/summary-komparatif`),
+  khusus organisasi CABANG/PUSAT (organisasi UNIT melihat pesan pembatasan
+  akses). Menampilkan tabel perbandingan Pendapatan, Beban, Surplus/Defisit
+  Kas, dan Surplus/Defisit Akrual antara organisasi tersebut dengan seluruh
+  UNIT di bawahnya (untuk PUSAT: lintas semua cabang), dengan toggle mode
+  **Otomatis / Override UP-US** dan tab **Dengan Alokasi ke Induk / Tanpa
+  Alokasi ke Induk**. Diakses lewat card baru "Summary Komparatif" di halaman
+  detail organisasi (hanya tampil untuk CABANG/PUSAT).
+
 ## [1.37.0] - 2026-07-03
 
 ### Ditambahkan

@@ -9,6 +9,7 @@ import type {
   BosIncomeSimulation,
   DirectIncomeSimulation,
   BudgetSummary,
+  ComparativeSummary,
 } from "@/lib/types";
 
 export type SimulationType =
@@ -85,6 +86,12 @@ export const simulationApi = {
   ): Promise<BudgetSummary> {
     return apiFetch<BudgetSummary>(
       `/organizations/${orgId}/simulation/summary${allocationQuery(includeParentAllocation)}`,
+    );
+  },
+
+  getComparativeSummary(orgId: number): Promise<ComparativeSummary> {
+    return apiFetch<ComparativeSummary>(
+      `/organizations/${orgId}/simulation/summary-comparative`,
     );
   },
 };

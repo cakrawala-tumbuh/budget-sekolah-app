@@ -438,6 +438,17 @@ export interface BudgetSummary {
   depreciation: DepreciationSummary;
 }
 
+export interface OrgSummaryRow {
+  parent_id: number | null;
+  summary_with_allocation: BudgetSummary;
+  summary_without_allocation: BudgetSummary;
+}
+
+export interface ComparativeSummary {
+  organization: OrgSummaryRow;
+  units: OrgSummaryRow[];
+}
+
 export interface BosIncomeLineItem {
   code: string;
   description: string;

@@ -283,9 +283,9 @@ export default function OrganizationDetailPage({ params }: Props) {
         ))}
       </div>
 
-      {/* Alokasi UP/US & Subsidi & Investasi Keuangan — hanya untuk CABANG dan PUSAT */}
+      {/* Alokasi UP/US & Subsidi & Investasi Keuangan & Summary Komparatif — hanya untuk CABANG dan PUSAT */}
       {org.org_type !== "UNIT" && (
-        <div className="grid gap-3 grid-cols-2 sm:grid-cols-4 mb-6">
+        <div className="grid gap-3 grid-cols-2 sm:grid-cols-5 mb-6">
           <Link href={`/organizations/${org.id}/alokasi-up`}>
             <Card className="hover:shadow-md transition-shadow cursor-pointer h-full border-blue-200">
               <CardContent className="flex flex-col items-center justify-center gap-2 py-4 text-center">
@@ -319,6 +319,15 @@ export default function OrganizationDetailPage({ params }: Props) {
                 <PiggyBank className="h-6 w-6 text-violet-700" />
                 <span className="text-xs font-medium leading-tight">Investasi Keuangan</span>
                 <span className="text-xs text-muted-foreground">Saham, reksa dana, dll. → beban UP unit</span>
+              </CardContent>
+            </Card>
+          </Link>
+          <Link href={`/organizations/${org.id}/summary-komparatif`}>
+            <Card className="hover:shadow-md transition-shadow cursor-pointer h-full border-cyan-200">
+              <CardContent className="flex flex-col items-center justify-center gap-2 py-4 text-center">
+                <BarChart3 className="h-6 w-6 text-cyan-700" />
+                <span className="text-xs font-medium leading-tight">Summary Komparatif</span>
+                <span className="text-xs text-muted-foreground">Bandingkan dengan semua unit di bawahnya</span>
               </CardContent>
             </Card>
           </Link>

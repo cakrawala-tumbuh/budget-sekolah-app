@@ -18,6 +18,8 @@ export const simulationKeys = {
   directIncome: (id: number) => ["simulation", id, "direct-income"] as const,
   summary: (id: number, includeParentAllocation = true) =>
     ["simulation", id, "summary", includeParentAllocation] as const,
+  comparativeSummary: (id: number) =>
+    ["simulation", id, "summary-comparative"] as const,
 };
 
 export function useUPSimulation(orgId: number, includeParentAllocation = true) {
@@ -88,6 +90,14 @@ export function useBudgetSummary(orgId: number, includeParentAllocation = true) 
   return useQuery({
     queryKey: simulationKeys.summary(orgId, includeParentAllocation),
     queryFn: () => simulationApi.getSummary(orgId, includeParentAllocation),
+    enabled: !!orgId,
+  });
+}
+
+export function useComparativeSummary(orgId: number) {
+  return useQuery({
+    queryKey: simulationKeys.comparativeSummary(orgId),
+    queryFn: () => simulationApi.getComparativeSummary(orgId),
     enabled: !!orgId,
   });
 }
