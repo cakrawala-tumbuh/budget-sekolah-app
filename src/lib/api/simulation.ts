@@ -20,24 +20,38 @@ export type SimulationType =
   | "depreciation"
   | "summary";
 
+function allocationQuery(includeParentAllocation: boolean): string {
+  return includeParentAllocation ? "" : "?include_parent_allocation=false";
+}
+
 export const simulationApi = {
-  getUP(orgId: number): Promise<UPSimulation> {
-    return apiFetch<UPSimulation>(`/organizations/${orgId}/simulation/up`);
-  },
-
-  getUS(orgId: number): Promise<USSimulation> {
-    return apiFetch<USSimulation>(`/organizations/${orgId}/simulation/us`);
-  },
-
-  getIncome(orgId: number): Promise<IncomeSimulation> {
-    return apiFetch<IncomeSimulation>(
-      `/organizations/${orgId}/simulation/income`,
+  getUP(orgId: number, includeParentAllocation = true): Promise<UPSimulation> {
+    return apiFetch<UPSimulation>(
+      `/organizations/${orgId}/simulation/up${allocationQuery(includeParentAllocation)}`,
     );
   },
 
-  getExpenses(orgId: number): Promise<ExpenseSimulation> {
+  getUS(orgId: number, includeParentAllocation = true): Promise<USSimulation> {
+    return apiFetch<USSimulation>(
+      `/organizations/${orgId}/simulation/us${allocationQuery(includeParentAllocation)}`,
+    );
+  },
+
+  getIncome(
+    orgId: number,
+    includeParentAllocation = true,
+  ): Promise<IncomeSimulation> {
+    return apiFetch<IncomeSimulation>(
+      `/organizations/${orgId}/simulation/income${allocationQuery(includeParentAllocation)}`,
+    );
+  },
+
+  getExpenses(
+    orgId: number,
+    includeParentAllocation = true,
+  ): Promise<ExpenseSimulation> {
     return apiFetch<ExpenseSimulation>(
-      `/organizations/${orgId}/simulation/expenses`,
+      `/organizations/${orgId}/simulation/expenses${allocationQuery(includeParentAllocation)}`,
     );
   },
 
@@ -65,9 +79,12 @@ export const simulationApi = {
     );
   },
 
-  getSummary(orgId: number): Promise<BudgetSummary> {
+  getSummary(
+    orgId: number,
+    includeParentAllocation = true,
+  ): Promise<BudgetSummary> {
     return apiFetch<BudgetSummary>(
-      `/organizations/${orgId}/simulation/summary`,
+      `/organizations/${orgId}/simulation/summary${allocationQuery(includeParentAllocation)}`,
     );
   },
 };

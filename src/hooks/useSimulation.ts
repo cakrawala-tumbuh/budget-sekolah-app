@@ -4,45 +4,50 @@ import { useQuery } from "@tanstack/react-query";
 import { simulationApi } from "@/lib/api/simulation";
 
 export const simulationKeys = {
-  up: (id: number) => ["simulation", id, "up"] as const,
-  us: (id: number) => ["simulation", id, "us"] as const,
-  income: (id: number) => ["simulation", id, "income"] as const,
-  expenses: (id: number) => ["simulation", id, "expenses"] as const,
+  up: (id: number, includeParentAllocation = true) =>
+    ["simulation", id, "up", includeParentAllocation] as const,
+  us: (id: number, includeParentAllocation = true) =>
+    ["simulation", id, "us", includeParentAllocation] as const,
+  income: (id: number, includeParentAllocation = true) =>
+    ["simulation", id, "income", includeParentAllocation] as const,
+  expenses: (id: number, includeParentAllocation = true) =>
+    ["simulation", id, "expenses", includeParentAllocation] as const,
   allocation: (id: number) => ["simulation", id, "allocation"] as const,
   depreciation: (id: number) => ["simulation", id, "depreciation"] as const,
   bosIncome: (id: number) => ["simulation", id, "bos-income"] as const,
   directIncome: (id: number) => ["simulation", id, "direct-income"] as const,
-  summary: (id: number) => ["simulation", id, "summary"] as const,
+  summary: (id: number, includeParentAllocation = true) =>
+    ["simulation", id, "summary", includeParentAllocation] as const,
 };
 
-export function useUPSimulation(orgId: number) {
+export function useUPSimulation(orgId: number, includeParentAllocation = true) {
   return useQuery({
-    queryKey: simulationKeys.up(orgId),
-    queryFn: () => simulationApi.getUP(orgId),
+    queryKey: simulationKeys.up(orgId, includeParentAllocation),
+    queryFn: () => simulationApi.getUP(orgId, includeParentAllocation),
     enabled: !!orgId,
   });
 }
 
-export function useUSSimulation(orgId: number) {
+export function useUSSimulation(orgId: number, includeParentAllocation = true) {
   return useQuery({
-    queryKey: simulationKeys.us(orgId),
-    queryFn: () => simulationApi.getUS(orgId),
+    queryKey: simulationKeys.us(orgId, includeParentAllocation),
+    queryFn: () => simulationApi.getUS(orgId, includeParentAllocation),
     enabled: !!orgId,
   });
 }
 
-export function useIncomeSimulation(orgId: number) {
+export function useIncomeSimulation(orgId: number, includeParentAllocation = true) {
   return useQuery({
-    queryKey: simulationKeys.income(orgId),
-    queryFn: () => simulationApi.getIncome(orgId),
+    queryKey: simulationKeys.income(orgId, includeParentAllocation),
+    queryFn: () => simulationApi.getIncome(orgId, includeParentAllocation),
     enabled: !!orgId,
   });
 }
 
-export function useExpenseSimulation(orgId: number) {
+export function useExpenseSimulation(orgId: number, includeParentAllocation = true) {
   return useQuery({
-    queryKey: simulationKeys.expenses(orgId),
-    queryFn: () => simulationApi.getExpenses(orgId),
+    queryKey: simulationKeys.expenses(orgId, includeParentAllocation),
+    queryFn: () => simulationApi.getExpenses(orgId, includeParentAllocation),
     enabled: !!orgId,
   });
 }
@@ -79,10 +84,10 @@ export function useDirectIncomeSimulation(orgId: number) {
   });
 }
 
-export function useBudgetSummary(orgId: number) {
+export function useBudgetSummary(orgId: number, includeParentAllocation = true) {
   return useQuery({
-    queryKey: simulationKeys.summary(orgId),
-    queryFn: () => simulationApi.getSummary(orgId),
+    queryKey: simulationKeys.summary(orgId, includeParentAllocation),
+    queryFn: () => simulationApi.getSummary(orgId, includeParentAllocation),
     enabled: !!orgId,
   });
 }

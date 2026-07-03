@@ -7,6 +7,15 @@ dan proyek ini menganut [Semantic Versioning](https://semver.org/lang/id/).
 
 ## [Unreleased]
 
+## [1.37.0] - 2026-07-03
+
+### Ditambahkan
+- Toggle **"Dengan Alokasi Induk" / "Tanpa Alokasi Induk"** pada halaman
+  Simulasi Anggaran (khusus organisasi UNIT). Saat "Tanpa Alokasi Induk"
+  dipilih, tab Uang Pangkal, Uang Sekolah, Pendapatan, Biaya, dan ringkasan
+  KPI menampilkan simulasi murni berdasarkan data unit sendiri, tanpa beban
+  yang dialokasikan dari Cabang/Pusat.
+
 ## [1.36.1] - 2026-06-17
 
 ### Diubah

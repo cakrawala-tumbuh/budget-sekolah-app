@@ -1,6 +1,6 @@
 "use client";
 
-import { use } from "react";
+import { use, useState } from "react";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { useOrganization } from "@/hooks/useOrganizations";
@@ -37,13 +37,17 @@ interface Props {
 export default function SimulationPage({ params }: Props) {
   const { id } = use(params);
   const orgId = Number(id);
+  const [includeAllocation, setIncludeAllocation] = useState(true);
 
   const { data: org } = useOrganization(orgId);
-  const { data: summary, isLoading: loadingSummary } = useBudgetSummary(orgId);
-  const { data: up } = useUPSimulation(orgId);
-  const { data: us } = useUSSimulation(orgId);
-  const { data: income } = useIncomeSimulation(orgId);
-  const { data: expenses } = useExpenseSimulation(orgId);
+  const { data: summary, isLoading: loadingSummary } = useBudgetSummary(
+    orgId,
+    includeAllocation,
+  );
+  const { data: up } = useUPSimulation(orgId, includeAllocation);
+  const { data: us } = useUSSimulation(orgId, includeAllocation);
+  const { data: income } = useIncomeSimulation(orgId, includeAllocation);
+  const { data: expenses } = useExpenseSimulation(orgId, includeAllocation);
   const { data: allocation } = useAllocationSimulation(orgId);
   const { data: depreciation } = useDepreciationSummary(orgId);
   const { data: bosIncome } = useBosIncomeSimulation(orgId);
@@ -67,6 +71,24 @@ export default function SimulationPage({ params }: Props) {
             </p>
           )}
         </div>
+        {isUnit && (
+          <div className="ml-auto flex gap-1">
+            <Button
+              size="sm"
+              variant={includeAllocation ? "default" : "outline"}
+              onClick={() => setIncludeAllocation(true)}
+            >
+              Dengan Alokasi Induk
+            </Button>
+            <Button
+              size="sm"
+              variant={!includeAllocation ? "default" : "outline"}
+              onClick={() => setIncludeAllocation(false)}
+            >
+              Tanpa Alokasi Induk
+            </Button>
+          </div>
+        )}
       </div>
 
       {loadingSummary ? (
