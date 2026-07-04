@@ -7,6 +7,8 @@ dan proyek ini menganut [Semantic Versioning](https://semver.org/lang/id/).
 
 ## [Unreleased]
 
+## [1.38.2] - 2026-07-04
+
 ### Ditambahkan
 - Dokumen tata kelola & operasional RAB di `docs-usage/tata-kelola/` mengikuti
   taksonomi SOP/Instruksi Kerja/Decision Table/Otomasi Sistem: 6 SOP (siklus
