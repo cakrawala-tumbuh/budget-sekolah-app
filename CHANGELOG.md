@@ -7,6 +7,15 @@ dan proyek ini menganut [Semantic Versioning](https://semver.org/lang/id/).
 
 ## [Unreleased]
 
+### Ditambahkan
+- Dokumen tata kelola & operasional RAB di `docs-usage/tata-kelola/` mengikuti
+  taksonomi SOP/Instruksi Kerja/Decision Table/Otomasi Sistem: 6 SOP (siklus
+  konsolidasi RAB berjenjang Unit→Cabang→Pusat, penyusunan RAB unit, evaluasi
+  & konsolidasi cabang, evaluasi/konsolidasi/subsidi pusat, persiapan tahun
+  anggaran baru, pemeliharaan & pemulihan database), 4 Decision Table, 2
+  Otomasi Sistem, dan 24 Instruksi Kerja hasil konversi panduan fitur. Beserta
+  `docs-usage/rencana-dokumen-tata-kelola.md` sebagai peta dokumen.
+
 ## [1.38.1] - 2026-07-03
 
 ### Diubah
