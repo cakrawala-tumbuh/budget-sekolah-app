@@ -7,6 +7,22 @@ dan proyek ini menganut [Semantic Versioning](https://semver.org/lang/id/).
 
 ## [Unreleased]
 
+## [1.38.3] - 2026-07-05
+
+### Diperbaiki
+- Sintaks Wiki.js (`{.dense}`, `{.is-info}`, `{.is-warning}`, `{.is-danger}`,
+  `{.is-tip}`) pada 30 dokumen tata kelola (SOP/DT/OTS/IK) diganti dengan
+  admonition MkDocs standar (`!!! info` dkk.) — situs docs-usage dideploy
+  dengan MkDocs Material, bukan Wiki.js, sehingga sintaks lama tidak
+  dikenali temanya (tabel Decision Table bahkan bocor jadi teks di HTML).
+
+### Diubah
+- `docs-usage/panduan-fitur/` dan `docs-usage/tutorial/` dipensiunkan
+  menjadi halaman stub yang menautkan ke Instruksi Kerja/SOP pengganti di
+  `docs-usage/tata-kelola/`, karena kontennya tumpang tindih. Seksi
+  "Panduan Fitur" dan "Tutorial" dihapus dari nav situs; Tata Kelola kini
+  satu-satunya dokumentasi fitur yang dinavigasi.
+
 ## [1.38.2] - 2026-07-04
 
 ### Ditambahkan
