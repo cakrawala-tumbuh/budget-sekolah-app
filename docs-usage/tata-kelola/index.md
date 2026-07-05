@@ -1,8 +1,10 @@
 # Dokumen Tata Kelola & Operasional RAB
 
 Bagian ini memuat dokumen tata kelola & operasional penyusunan Rencana Anggaran Belanja (RAB) yayasan
-pendidikan, disusun mengikuti taksonomi SOP / IK / DT / OTS. Rencana lengkap pemetaan fitur ke tiap
-jenis dokumen ada di [Rencana Dokumen Tata Kelola](../rencana-dokumen-tata-kelola.md).
+pendidikan, disusun mengikuti taksonomi SOP / IK / DT / OTS. Bagian ini adalah **satu-satunya sumber**
+dokumentasi cara memakai fitur aplikasi Budget YPII — menggantikan Panduan Fitur & Tutorial yang lama.
+Rencana lengkap pemetaan fitur ke tiap jenis dokumen ada di
+[Rencana Dokumen Tata Kelola](../rencana-dokumen-tata-kelola.md).
 
 ## Jenis Dokumen
 
@@ -28,6 +30,16 @@ atau jabatan spesifik:
 | Pengelola Anggaran Cabang | Cabang | Evaluasi & konsolidasi unit di bawahnya |
 | Pengelola Anggaran Pusat | Pusat | Evaluasi akhir, kontribusi, subsidi, finalisasi |
 | Sistem | — | Kalkulasi tarif & depresiasi, pengaliran alokasi |
+
+## Hierarki Organisasi
+
+Aplikasi Budget YPII mengenal tiga tipe organisasi, masing-masing dengan cakupan fitur berbeda:
+
+| Tipe | Keterangan |
+|---|---|
+| **UNIT** | Sekolah individual. Memiliki asumsi siswa, label kelas, dan input anggaran operasional lengkap. |
+| **CABANG** | Yayasan cabang yang menaungi beberapa unit. Memiliki fitur alokasi UP/US dan subsidi. |
+| **PUSAT** | Pusat yayasan. Memiliki fitur yang sama dengan CABANG serta visibilitas ke semua organisasi. |
 
 ## Alur Proses Inti (Kategori B)
 

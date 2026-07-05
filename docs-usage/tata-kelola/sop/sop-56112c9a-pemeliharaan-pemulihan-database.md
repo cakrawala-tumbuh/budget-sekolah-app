@@ -135,10 +135,11 @@ Terdampak
 **Akhir Proses (End Event)**: "Backup tersimpan aman" (alur backup) atau "Database dipulihkan &
 terverifikasi" (alur restore).
 
-> Operasi restore (langkah 5) tidak dapat dibatalkan dan menggantikan seluruh data aktif; langkah 4
-> (mengunduh backup pengaman) wajib dilakukan lebih dulu. Rincian teknis backup/restore ada pada
-> Instruksi Kerja terkait.
-{.is-danger}
+!!! danger
+
+    Operasi restore (langkah 5) tidak dapat dibatalkan dan menggantikan seluruh data aktif; langkah 4
+    (mengunduh backup pengaman) wajib dilakukan lebih dulu. Rincian teknis backup/restore ada pada
+    Instruksi Kerja terkait.
 
 ```mermaid
 flowchart TD

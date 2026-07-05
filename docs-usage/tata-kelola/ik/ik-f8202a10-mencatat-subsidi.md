@@ -35,9 +35,10 @@ organisasi pemberi subsidi, kategori biaya di sisi pemberi dan kategori pendapat
 telah tersedia, dan keputusan pemberian subsidi telah ditetapkan sebagai upaya terakhir setelah opsi
 penanganan defisit lain dipertimbangkan.
 
-> **Subsidi adalah upaya terakhir:** Pemberian subsidi ditempuh hanya setelah opsi penanganan defisit
-> lain dinilai tidak memadai, sesuai Decision Table Opsi Penanganan Defisit `DT-e348eca6`.
-{.is-warning}
+!!! warning
+
+    **Subsidi adalah upaya terakhir:** Pemberian subsidi ditempuh hanya setelah opsi penanganan defisit
+    lain dinilai tidak memadai, sesuai Decision Table Opsi Penanganan Defisit `DT-e348eca6`.
 
 ## Peralatan / Akses yang Dibutuhkan
 

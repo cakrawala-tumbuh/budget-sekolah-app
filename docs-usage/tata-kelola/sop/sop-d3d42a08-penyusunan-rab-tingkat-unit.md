@@ -182,10 +182,11 @@ dievaluasi.
 **Akhir Proses (End Event)**: "RAB unit terkunci & seimbang" (tanpa defisit) atau "RAB unit terkunci
 & dieskalasi ke Cabang" (dengan sisa defisit).
 
-> Keputusan penyesuaian defisit di langkah 8 mengikuti Decision Table `DT-e348eca6`. Klasifikasi
-> komponen biaya pembentuk tarif (langkah 5) mengikuti `DT-b7d9cedd`. Kalkulasi tarif dan depresiasi
-> dijalankan sistem — lihat `OTS-6f1cf35a` dan `OTS-9c82d229`.
-{.is-info}
+!!! info
+
+    Keputusan penyesuaian defisit di langkah 8 mengikuti Decision Table `DT-e348eca6`. Klasifikasi
+    komponen biaya pembentuk tarif (langkah 5) mengikuti `DT-b7d9cedd`. Kalkulasi tarif dan depresiasi
+    dijalankan sistem — lihat `OTS-6f1cf35a` dan `OTS-9c82d229`.
 
 ```mermaid
 flowchart TD

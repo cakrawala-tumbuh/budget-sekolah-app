@@ -65,10 +65,11 @@ nilai.
 | **Dengan alokasi ke induk** | Nilai unit sudah termasuk komponen biaya yang dialokasikan ke Cabang/Pusat |
 | **Tanpa alokasi ke induk** | Nilai unit tanpa memperhitungkan alokasi ke induk, memperlihatkan posisi mandiri unit |
 
-> **Membaca dua varian:** Varian "dengan alokasi ke induk" mencerminkan beban unit setelah menanggung
-> kontribusi ke Cabang/Pusat, sedangkan varian "tanpa alokasi ke induk" memperlihatkan posisi unit
-> seolah berdiri sendiri. Bandingkan keduanya untuk menilai dampak alokasi terhadap tiap unit.
-{.is-info}
+!!! info
+
+    **Membaca dua varian:** Varian "dengan alokasi ke induk" mencerminkan beban unit setelah menanggung
+    kontribusi ke Cabang/Pusat, sedangkan varian "tanpa alokasi ke induk" memperlihatkan posisi unit
+    seolah berdiri sendiri. Bandingkan keduanya untuk menilai dampak alokasi terhadap tiap unit.
 
 ### 3. Membandingkan antar-unit
 

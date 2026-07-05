@@ -18,7 +18,9 @@ Jika ini pertama kali Anda menggunakan aplikasi, mulai dari halaman [Cara Memula
 
 ## Panduan Fitur
 
-Lihat [Semua Fitur](panduan-fitur/index.md) untuk daftar lengkap panduan per fitur.
+Dokumentasi cara memakai tiap fitur kini dikelola sebagai **Instruksi Kerja (IK)** dalam
+[Tata Kelola](tata-kelola/index.md). Lihat [Daftar Instruksi Kerja](tata-kelola/ik/index.md) untuk
+panduan per fitur, atau [Daftar SOP](tata-kelola/sop/index.md) untuk alur kerja end-to-end.
 
 ## Dukungan
 

@@ -59,9 +59,10 @@ Hak penguncian mengikuti hierarki organisasi:
 1. Pastikan halaman menampilkan banner merah dan status **Terkunci** beserta nama pengguna yang
    mengunci.
 
-Tidak ada dialog konfirmasi; tombol langsung mengunci budget. Pastikan semua data sudah lengkap dan
-benar sebelum mengunci.
-{.is-warning}
+!!! warning
+
+    Tidak ada dialog konfirmasi; tombol langsung mengunci budget. Pastikan semua data sudah lengkap dan
+    benar sebelum mengunci.
 
 ### 2. Membuka penguncian budget
 
@@ -69,9 +70,10 @@ benar sebelum mengunci.
 1. Klik tombol **Buka Kunci** (ikon gembok terbuka, berwarna merah) di bagian kanan atas halaman.
 1. Pastikan budget kembali terbuka dan dapat diedit.
 
-Pengguna yang berwenang mengunci sebuah organisasi juga berwenang membukanya kembali, mengikuti
-hierarki kewenangan yang sama.
-{.is-info}
+!!! info
+
+    Pengguna yang berwenang mengunci sebuah organisasi juga berwenang membukanya kembali, mengikuti
+    hierarki kewenangan yang sama.
 
 ### 3. Memverifikasi tanda status terkunci
 
@@ -80,10 +82,11 @@ hierarki kewenangan yang sama.
 1. Pada halaman detail, periksa **banner merah**, **badge "Terkunci"** dengan nama pengunci dan tanggal
    penguncian, serta hilangnya tombol Edit dan tombol edit saldo kas.
 
-Saat terkunci, seluruh input data anggaran diblokir: asumsi siswa, label kelas, entri biaya operasional
-dan non-operasional, investasi aset tetap, depresiasi aset lama, entri pendapatan, override direct
-income, subsidi ke unit, saldo kas, serta informasi dasar organisasi.
-{.is-danger}
+!!! danger
+
+    Saat terkunci, seluruh input data anggaran diblokir: asumsi siswa, label kelas, entri biaya operasional
+    dan non-operasional, investasi aset tetap, depresiasi aset lama, entri pendapatan, override direct
+    income, subsidi ke unit, saldo kas, serta informasi dasar organisasi.
 
 ### 4. Menyesuaikan alokasi UP & US pada organisasi terkunci (khusus CABANG/PUSAT)
 
@@ -92,9 +95,10 @@ income, subsidi ke unit, saldo kas, serta informasi dasar organisasi.
 1. Ubah persentase kontribusi UP/US, sinkronkan alokasi biaya UP/US ke unit-unit di bawahnya, atau atur
    alokasi biaya dari induk ke unit sesuai kebutuhan.
 
-Pengelolaan alokasi biaya UP/US oleh CABANG atau PUSAT tetap dapat dilakukan meski budget unit sudah
-dikunci, sehingga penyesuaian struktural komposisi biaya unit tetap dimungkinkan.
-{.is-tip}
+!!! tip
+
+    Pengelolaan alokasi biaya UP/US oleh CABANG atau PUSAT tetap dapat dilakukan meski budget unit sudah
+    dikunci, sehingga penyesuaian struktural komposisi biaya unit tetap dimungkinkan.
 
 ## Hasil yang Diharapkan
 

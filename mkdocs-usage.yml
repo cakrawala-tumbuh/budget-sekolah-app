@@ -69,28 +69,12 @@ nav:
   - Beranda: index.md
   - Memulai:
     - Cara Memulai: memulai/index.md
-  - Panduan Fitur:
-    - Semua Fitur: panduan-fitur/index.md
-    - Organisasi: panduan-fitur/organisasi.md
-    - Asumsi Siswa: panduan-fitur/asumsi-siswa.md
-    - Label Kelas: panduan-fitur/label-kelas.md
-    - Biaya Operasional: panduan-fitur/biaya-operasional.md
-    - Biaya Non-Operasional: panduan-fitur/biaya-non-operasional.md
-    - Investasi Aset Tetap: panduan-fitur/investasi.md
-    - Depresiasi Aset Lama: panduan-fitur/depresiasi-aset-lama.md
-    - Entri Pendapatan: panduan-fitur/pendapatan.md
-    - Override Direct Income: panduan-fitur/override-direct-income.md
-    - Alokasi UP & US: panduan-fitur/alokasi.md
-    - Investasi Keuangan: panduan-fitur/investasi-keuangan.md
-    - Subsidi ke Unit: panduan-fitur/subsidi.md
-    - Simulasi Anggaran: panduan-fitur/simulasi.md
-    - Summary Anggaran: panduan-fitur/summary.md
-    - Penguncian Budget: panduan-fitur/penguncian-budget.md
-    - Panel Admin: panduan-fitur/admin.md
-    - Manajemen Database: panduan-fitur/database.md
-  - Tutorial:
-    - Daftar Tutorial: tutorial/index.md
-    - Input Anggaran Unit Baru: tutorial/input-anggaran-unit.md
-    - Membaca Hasil Simulasi: tutorial/membaca-simulasi.md
+  - Tata Kelola:
+    - Ringkasan: tata-kelola/index.md
+    - Rencana Dokumen Tata Kelola: rencana-dokumen-tata-kelola.md
+    - SOP: tata-kelola/sop/index.md
+    - Decision Table: tata-kelola/dt/index.md
+    - Otomasi Sistem: tata-kelola/ots/index.md
+    - Instruksi Kerja: tata-kelola/ik/index.md
   - Referensi:
     - FAQ: referensi/faq.md

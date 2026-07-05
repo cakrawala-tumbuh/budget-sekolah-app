@@ -57,8 +57,9 @@ Income, dengan kolom Kode Biaya, Uraian Biaya, Otomatis (Rp), dan Override (Rp).
 1. Tekan **Enter** atau klik ikon **centang** untuk menyimpan.
 1. Perhatikan badge **Override** berwarna amber muncul pada baris tersebut.
 
-Simulasi pendapatan dan ringkasan anggaran otomatis memakai nilai override tersebut.
-{.is-info}
+!!! info
+
+    Simulasi pendapatan dan ringkasan anggaran otomatis memakai nilai override tersebut.
 
 ### 3. Menghapus override (kembali ke nilai otomatis)
 
@@ -66,9 +67,10 @@ Simulasi pendapatan dan ringkasan anggaran otomatis memakai nilai override terse
 1. Konfirmasi penghapusan.
 1. Perhatikan kolom Override kembali menampilkan tanda **—**.
 
-Override tidak mengubah data anggaran biaya di halaman Biaya Operasional; override hanya mempengaruhi
-nilai pendapatan yang diakui dalam simulasi.
-{.is-warning}
+!!! warning
+
+    Override tidak mengubah data anggaran biaya di halaman Biaya Operasional; override hanya mempengaruhi
+    nilai pendapatan yang diakui dalam simulasi.
 
 ## Hasil yang Diharapkan
 

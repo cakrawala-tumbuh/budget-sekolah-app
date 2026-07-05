@@ -1,8 +1,8 @@
 # Daftar Tutorial
 
-Tutorial berikut memandu Anda menyelesaikan skenario kerja nyata dari awal hingga akhir.
+!!! info "Halaman ini telah dipindahkan"
+    Tutorial alur kerja end-to-end kini dikelola sebagai bagian dokumen tata kelola RAB:
 
-| Tutorial | Deskripsi | Waktu |
-|---|---|---|
-| [Input Anggaran Unit Baru](input-anggaran-unit.md) | Memasukkan seluruh data anggaran untuk satu unit sekolah yang baru mulai menggunakan aplikasi | ± 30 menit |
-| [Membaca Hasil Simulasi](membaca-simulasi.md) | Memahami cara membaca halaman Simulasi Anggaran dan menginterpretasikan tarif UP/US | ± 10 menit |
+    - [SOP Penyusunan RAB Tingkat Unit](../tata-kelola/sop/sop-d3d42a08-penyusunan-rab-tingkat-unit.md)
+    - [IK Menjalankan & Membaca Simulasi Anggaran](../tata-kelola/ik/ik-e54fa33c-menjalankan-membaca-simulasi.md)
+    - [Daftar SOP](../tata-kelola/sop/index.md)

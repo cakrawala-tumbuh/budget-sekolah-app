@@ -76,10 +76,12 @@ berikut.
 1. Isi **Urutan** — angka urutan tampil di halaman input biaya.
 1. Klik **Simpan**.
 
-> Bila sebuah kategori biaya ditandai **Direct Income** dan di-mapping ke kategori pendapatan tertentu,
-> sistem akan otomatis menjumlahkan nilai entri biaya tersebut sebagai pendapatan tanpa perlu input
-> manual di halaman Entri Pendapatan. Satu kategori biaya hanya bisa di-mapping ke **satu** kategori
-> pendapatan. {.is-info}
+!!! info
+
+    Bila sebuah kategori biaya ditandai **Direct Income** dan di-mapping ke kategori pendapatan tertentu,
+    sistem akan otomatis menjumlahkan nilai entri biaya tersebut sebagai pendapatan tanpa perlu input
+    manual di halaman Entri Pendapatan. Satu kategori biaya hanya bisa di-mapping ke **satu** kategori
+    pendapatan.
 
 ### 3. Mengedit kategori biaya
 
@@ -92,8 +94,10 @@ berikut.
 1. Klik ikon tempat sampah pada baris kategori yang ingin dihapus.
 1. Konfirmasi penghapusan pada dialog yang muncul.
 
-> Menghapus kategori biaya yang sudah memiliki entri akan menyebabkan entri tersebut kehilangan
-> referensi. Sebaiknya jangan hapus kategori yang sudah digunakan. {.is-danger}
+!!! danger
+
+    Menghapus kategori biaya yang sudah memiliki entri akan menyebabkan entri tersebut kehilangan
+    referensi. Sebaiknya jangan hapus kategori yang sudah digunakan.
 
 ## Hasil yang Diharapkan
 

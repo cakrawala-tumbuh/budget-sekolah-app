@@ -149,10 +149,11 @@ Sistem
 
 **Akhir Proses (End Event)**: "Fondasi tahun anggaran siap, siklus RAB dapat dibuka".
 
-> Langkah peninjauan master kategori dan penyiapan akun dirinci pada Instruksi Kerja terkait di
-> bagian Dokumen Terkait. Prosedur ini mendahului dan menjadi prasyarat SOP Siklus Konsolidasi RAB
-> Berjenjang (`SOP-f68b0b7a`).
-{.is-info}
+!!! info
+
+    Langkah peninjauan master kategori dan penyiapan akun dirinci pada Instruksi Kerja terkait di
+    bagian Dokumen Terkait. Prosedur ini mendahului dan menjadi prasyarat SOP Siklus Konsolidasi RAB
+    Berjenjang (`SOP-f68b0b7a`).
 
 ```mermaid
 flowchart TD

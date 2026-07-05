@@ -70,8 +70,10 @@ Halaman Kategori Investasi menampilkan kategori aset tetap beserta umur ekonomis
 1. Klik ikon tempat sampah pada baris kategori yang ingin dihapus.
 1. Konfirmasi penghapusan pada dialog yang muncul.
 
-> Menghapus kategori investasi yang sudah memiliki entri aset akan menyebabkan entri tersebut
-> kehilangan referensi. Sebaiknya jangan hapus kategori yang sudah digunakan. {.is-danger}
+!!! danger
+
+    Menghapus kategori investasi yang sudah memiliki entri aset akan menyebabkan entri tersebut
+    kehilangan referensi. Sebaiknya jangan hapus kategori yang sudah digunakan.
 
 ## Hasil yang Diharapkan
 

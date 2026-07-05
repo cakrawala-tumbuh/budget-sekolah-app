@@ -63,11 +63,12 @@ yang bersangkutan.
 1. Bila terdapat alokasi dari induk, perhatikan seksi **Alokasi Biaya Cabang** (latar kuning) dan
    **Alokasi Biaya Pusat** (latar biru muda) beserta total dan tarif per siswa pada baris heading.
 
-Bila tarif UP/US override ditampilkan (warna biru), unit memakai tarif tetap, bukan hasil kalkulasi,
-dan tarif tersebut tidak ditambahkan komponen depresiasi. Ketersediaan tab menurut tipe organisasi
-dijelaskan pada Decision Table Ketersediaan Tipe Simulasi `DT-80c8a72a`; mekanisme perhitungan tarif
-pada Otomasi Sistem Kalkulasi Tarif UP/US `OTS-6f1cf35a`.
-{.is-tip}
+!!! tip
+
+    Bila tarif UP/US override ditampilkan (warna biru), unit memakai tarif tetap, bukan hasil kalkulasi,
+    dan tarif tersebut tidak ditambahkan komponen depresiasi. Ketersediaan tab menurut tipe organisasi
+    dijelaskan pada Decision Table Ketersediaan Tipe Simulasi `DT-80c8a72a`; mekanisme perhitungan tarif
+    pada Otomasi Sistem Kalkulasi Tarif UP/US `OTS-6f1cf35a`.
 
 ### 4. Menelaah tab pendapatan, BoS, dan direct income
 

@@ -70,11 +70,12 @@ Setelah Instruksi Kerja Input Investasi Aset Tetap selesai, seluruh aset baru te
 kalkulasi Dep/Tahun, Dep Th Ini (proporsional sejak bulan mulai), dan Nilai Akhir. Depresiasi aset baru
 ikut menaikkan tarif Uang Pangkal dalam simulasi.
 
-> Depresiasi tahun berjalan dihitung otomatis sebagai `(Harga Beli / Umur Ekonomis) × (13 - Bulan Mulai) / 12`.
-> Contoh: aset seharga Rp 12.000.000 dengan umur 4 tahun mulai Juli (bulan 7) → Dep. tahun ini =
-> (12.000.000 / 4) × (13 - 7) / 12 = **Rp 1.500.000**. Rincian mekanisme kalkulasi lihat Otomasi Sistem
-> Kalkulasi Depresiasi Proporsional (`OTS-9c82d229`).
-{.is-tip}
+!!! tip
+
+    Depresiasi tahun berjalan dihitung otomatis sebagai `(Harga Beli / Umur Ekonomis) × (13 - Bulan Mulai) / 12`.
+    Contoh: aset seharga Rp 12.000.000 dengan umur 4 tahun mulai Juli (bulan 7) → Dep. tahun ini =
+    (12.000.000 / 4) × (13 - 7) / 12 = **Rp 1.500.000**. Rincian mekanisme kalkulasi lihat Otomasi Sistem
+    Kalkulasi Depresiasi Proporsional (`OTS-9c82d229`).
 
 ## Troubleshooting
 

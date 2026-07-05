@@ -209,5 +209,15 @@ Selain itu terdapat **4 DT** dan **2 OTS** yang dirujuk (bukan SOP/IK).
    tautkan ke SOP induk & DT/OTS terkait.
 6. ✅ Tulis SOP Kategori A (`SOP-955c5e4b` Persiapan Tahun Anggaran Baru, `SOP-56112c9a`
    Pemeliharaan & Pemulihan Database) di `docs-usage/tata-kelola/sop/`.
-7. **Seluruh dokumen tata kelola (6 SOP + 4 DT + 2 OTS + 24 IK) LENGKAP.** Berikutnya: terapkan
-   mekanik Wiki.js (frontmatter, path, tautan) via skill `wikijs-page` saat publikasi.
+7. ✅ **Seluruh dokumen tata kelola (6 SOP + 4 DT + 2 OTS + 24 IK) LENGKAP.**
+8. ✅ Perbaiki sintaks Wiki.js (`{.is-info}`, `{.is-warning}`, `{.is-danger}`, `{.is-tip}`, `{.dense}`)
+   di 30 dokumen tata kelola menjadi admonition MkDocs standar (`!!! info` dkk.) — situs yang
+   dideploy memakai MkDocs Material, bukan Wiki.js, sehingga sintaks Wiki.js asli tidak dikenali
+   temanya (tabel `{.dense}` bahkan bocor jadi teks di HTML sebelum diperbaiki).
+9. ✅ **Pensiunkan `panduan-fitur/*.md` & `tutorial/*.md`** — kontennya tumpang tindih persis
+   dengan IK/SOP hasil konversi. Kedua folder kini berisi halaman stub singkat yang menautkan ke
+   IK/SOP pengganti (bukan dihapus, agar bookmark/tautan lama tidak 404), dan **dikeluarkan dari
+   nav** `mkdocs-usage.yml`. `docs-usage/tata-kelola/` kini satu-satunya sumber dokumentasi fitur
+   yang dinavigasi.
+10. Berikutnya: terapkan mekanik Wiki.js (frontmatter, path, tautan) via skill `wikijs-page` bila
+    dokumen ini suatu saat juga dipublikasikan ke instance Wiki.js terpisah.

@@ -144,9 +144,10 @@ Pusat untuk dievaluasi.
 **Akhir Proses (End Event)**: "RAB Cabang terkunci & seluruh unit seimbang" atau "RAB Cabang terkunci
 & dieskalasi ke Pusat" (dengan sisa unit defisit).
 
-> Pemilihan tuas penanganan defisit di langkah 2 dan gerbang loop di langkah 5 mengikuti Decision
-> Table `DT-e348eca6`. Redistribusi alokasi (langkah 4) memakai tarif kontribusi acuan `DT-e80fe01d`.
-{.is-info}
+!!! info
+
+    Pemilihan tuas penanganan defisit di langkah 2 dan gerbang loop di langkah 5 mengikuti Decision
+    Table `DT-e348eca6`. Redistribusi alokasi (langkah 4) memakai tarif kontribusi acuan `DT-e80fe01d`.
 
 ```mermaid
 flowchart TD

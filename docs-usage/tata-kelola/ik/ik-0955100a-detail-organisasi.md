@@ -64,8 +64,9 @@ organisasi yang bersangkutan.
 1. Ubah nama dan/atau kota organisasi sesuai kebutuhan.
 1. Klik **Simpan Perubahan**.
 
-Kode organisasi tidak dapat diubah setelah dibuat. Bila kode perlu dikoreksi, hubungi Admin.
-{.is-info}
+!!! info
+
+    Kode organisasi tidak dapat diubah setelah dibuat. Bila kode perlu dikoreksi, hubungi Admin.
 
 ### 4. Memperbarui saldo kas & setara kas
 
@@ -74,8 +75,9 @@ Kode organisasi tidak dapat diubah setelah dibuat. Bila kode perlu dikoreksi, hu
 1. Masukkan nilai saldo kas awal yang baru.
 1. Klik **Simpan Perubahan**.
 
-Saldo kas digunakan sebagai dasar perhitungan anggaran kas pada halaman Summary.
-{.is-info}
+!!! info
+
+    Saldo kas digunakan sebagai dasar perhitungan anggaran kas pada halaman Summary.
 
 ## Hasil yang Diharapkan
 

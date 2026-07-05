@@ -72,9 +72,10 @@ sisa (100% dikurangi total semua override) yang dibagi proporsional berdasarkan 
 dibanding unit lain yang juga tanpa override. Perbedaan utama Alokasi US dari Alokasi UP adalah dasar
 proporsi otomatis memakai total siswa, bukan jumlah siswa baru.
 
-> **Perbedaan dengan Alokasi UP:** Cara pengaturan Alokasi US identik dengan Alokasi UP, tetapi
-> proporsi otomatis dihitung berdasarkan total siswa masing-masing unit.
-{.is-info}
+!!! info
+
+    **Perbedaan dengan Alokasi UP:** Cara pengaturan Alokasi US identik dengan Alokasi UP, tetapi
+    proporsi otomatis dihitung berdasarkan total siswa masing-masing unit.
 
 ### 3. Menambah alokasi US
 

@@ -48,11 +48,11 @@ adalah tindakan yang berlaku. Tuas yang tersedia bertambah seiring naik tingkat.
 | Pusat | Ada unit defisit & masih ada tuas non-subsidi | Minta/terapkan pengurangan biaya unit; kurangi kontribusi dari unit defisit |
 | Pusat | Unit defisit & hanya subsidi tersisa | Berikan subsidi ke unit defisit (upaya terakhir) |
 | Pusat | Semua unit tertangani | Kunci & finalisasi RAB Pusat |
-{.dense}
 
-> Kombinasi lengkap untuk tiap tingkat (defisit-dengan-tuas, defisit-tanpa-tuas, seimbang) dan tidak
-> kontradiktif. Subsidi hanya muncul di baris Pusat saat tuas non-subsidi telah habis.
-{.is-warning}
+!!! warning
+
+    Kombinasi lengkap untuk tiap tingkat (defisit-dengan-tuas, defisit-tanpa-tuas, seimbang) dan tidak
+    kontradiktif. Subsidi hanya muncul di baris Pusat saat tuas non-subsidi telah habis.
 
 ## Penjelasan Tindakan
 

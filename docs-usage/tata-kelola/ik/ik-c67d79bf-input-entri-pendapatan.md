@@ -67,10 +67,11 @@ Instruksi Kerja Input Entri Pendapatan dijalankan pada aplikasi Budget YPII, hal
 Setelah Instruksi Kerja Input Entri Pendapatan selesai, seluruh entri pendapatan manual tercatat di bawah
 kategori yang tepat dan muncul di tab Pendapatan pada simulasi, berdampingan dengan pendapatan dari UP dan US.
 
-> Beberapa kategori pendapatan nilainya **tidak diinput di halaman ini** — nilainya dihitung otomatis
-> dari entri biaya yang di-mapping sebagai *Direct Income*, dan kategori jenis ini tidak muncul di daftar
-> pilihan form. Bila nilai otomatis tersebut perlu disesuaikan, gunakan halaman Override Direct Income.
-{.is-info}
+!!! info
+
+    Beberapa kategori pendapatan nilainya **tidak diinput di halaman ini** — nilainya dihitung otomatis
+    dari entri biaya yang di-mapping sebagai *Direct Income*, dan kategori jenis ini tidak muncul di daftar
+    pilihan form. Bila nilai otomatis tersebut perlu disesuaikan, gunakan halaman Override Direct Income.
 
 ## Troubleshooting
 

@@ -58,9 +58,11 @@ Halaman Manajemen Database menampilkan dua kartu, yaitu **Backup Database** dan 
 1. Baca pesan pada dialog konfirmasi dengan seksama, lalu klik **OK** untuk melanjutkan.
 1. Tunggu hingga muncul pesan **"Database berhasil dipulihkan dari file backup"**.
 
-> Setelah restore selesai, semua data yang ada sebelumnya akan hilang permanen dan digantikan oleh isi
-> file backup. Operasi ini tidak dapat dibatalkan. Pastikan Anda telah mengunduh backup data terkini
-> sebelum melakukan restore. {.is-danger}
+!!! danger
+
+    Setelah restore selesai, semua data yang ada sebelumnya akan hilang permanen dan digantikan oleh isi
+    file backup. Operasi ini tidak dapat dibatalkan. Pastikan Anda telah mengunduh backup data terkini
+    sebelum melakukan restore.
 
 ## Hasil yang Diharapkan
 

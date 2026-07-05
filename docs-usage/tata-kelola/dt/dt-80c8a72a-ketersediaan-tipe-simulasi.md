@@ -45,11 +45,11 @@ tersedia (Ya) atau tidak (Tidak) bagi organisasi bertipe tersebut.
 | `allocation` — Alokasi Kontribusi | Tidak | Ya | Ya |
 | `depreciation` — Depresiasi | Ya | Ya | Ya |
 | `summary` — Ringkasan Anggaran | Ya | Ya | Ya |
-{.dense}
 
-> Kombinasi lengkap: setiap pasangan (tipe simulasi × tipe organisasi) memiliki tepat satu nilai
-> ketersediaan, tidak ada yang kontradiktif.
-{.is-warning}
+!!! warning
+
+    Kombinasi lengkap: setiap pasangan (tipe simulasi × tipe organisasi) memiliki tepat satu nilai
+    ketersediaan, tidak ada yang kontradiktif.
 
 ## Penjelasan Tindakan
 

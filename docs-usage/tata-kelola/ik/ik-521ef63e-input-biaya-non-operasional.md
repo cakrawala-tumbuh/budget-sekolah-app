@@ -72,9 +72,10 @@ Instruksi Kerja Input Biaya Non-Operasional dijalankan pada aplikasi Budget YPII
 Setelah Instruksi Kerja Input Biaya Non-Operasional selesai, seluruh entri biaya non-operasional
 tercatat di bawah kategori yang tepat dan tampil di halaman Summary sebagai komponen biaya terpisah.
 
-> Biaya non-operasional **tidak masuk** ke perhitungan tarif UP maupun US. Biaya ini tetap ditampilkan
-> di halaman Summary sebagai komponen biaya terpisah.
-{.is-info}
+!!! info
+
+    Biaya non-operasional **tidak masuk** ke perhitungan tarif UP maupun US. Biaya ini tetap ditampilkan
+    di halaman Summary sebagai komponen biaya terpisah.
 
 ## Troubleshooting
 

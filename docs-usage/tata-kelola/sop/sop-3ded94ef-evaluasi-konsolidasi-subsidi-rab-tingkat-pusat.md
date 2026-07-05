@@ -145,10 +145,11 @@ finalisasi siklus.
 **Akhir Proses (End Event)**: "RAB Pusat terkunci & seluruh unit tertangani" (seimbang atau
 disubsidi).
 
-> Pemilihan tuas di langkah 2 dan gerbang di langkah 5 mengikuti Decision Table `DT-e348eca6`, yang
-> menempatkan **subsidi sebagai tindakan prioritas terakhir**. Pengurangan kontribusi (langkah 4)
-> memakai tarif acuan `DT-e80fe01d`.
-{.is-info}
+!!! info
+
+    Pemilihan tuas di langkah 2 dan gerbang di langkah 5 mengikuti Decision Table `DT-e348eca6`, yang
+    menempatkan **subsidi sebagai tindakan prioritas terakhir**. Pengurangan kontribusi (langkah 4)
+    memakai tarif acuan `DT-e80fe01d`.
 
 ```mermaid
 flowchart TD

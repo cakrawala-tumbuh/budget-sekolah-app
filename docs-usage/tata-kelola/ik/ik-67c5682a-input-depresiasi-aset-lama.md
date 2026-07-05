@@ -67,10 +67,11 @@ Setelah Instruksi Kerja Input Depresiasi Aset Lama selesai, seluruh aset lama te
 Awal, Dep Th Ini, dan Nilai Buku Akhir. Nilai depresiasi aset lama muncul sebagai komponen terpisah di
 tab Depresiasi pada simulasi dan dapat dialokasikan ke komponen UP sesuai konfigurasi alokasi Cabang/Pusat.
 
-> Halaman Investasi menangani aset yang baru dibeli tahun ini dengan depresiasi dihitung otomatis (lihat
-> `OTS-9c82d229`). Halaman Depresiasi Aset Lama menangani aset lama, dan nilai depresiasinya diisi secara
-> manual.
-{.is-info}
+!!! info
+
+    Halaman Investasi menangani aset yang baru dibeli tahun ini dengan depresiasi dihitung otomatis (lihat
+    `OTS-9c82d229`). Halaman Depresiasi Aset Lama menangani aset lama, dan nilai depresiasinya diisi secara
+    manual.
 
 ## Troubleshooting
 

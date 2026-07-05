@@ -53,8 +53,10 @@ Halaman Manajemen Database menampilkan dua kartu, yaitu **Backup Database** dan 
 1. Tunggu browser mengunduh file dengan nama seperti `backup_budget_20250611_103000.db`.
 1. Simpan file tersebut di tempat yang aman.
 
-> File backup berisi seluruh data termasuk kata sandi terenkripsi. Jangan bagikan file backup kepada
-> pihak yang tidak berwenang. {.is-warning}
+!!! warning
+
+    File backup berisi seluruh data termasuk kata sandi terenkripsi. Jangan bagikan file backup kepada
+    pihak yang tidak berwenang.
 
 Biasakan mengunduh backup secara rutin, terutama sebelum melakukan perubahan data yang besar seperti
 reset database atau restore dari backup lama.

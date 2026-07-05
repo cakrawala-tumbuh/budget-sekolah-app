@@ -43,11 +43,11 @@ penerima, kolom terakhir adalah persentase default yang dipungut.
 | Uang Pangkal (UP) | Cabang | 12% |
 | Uang Sekolah (US) | Pusat | 5% |
 | Uang Sekolah (US) | Cabang | 10% |
-{.dense}
 
-> Nilai default ini dapat diubah melalui konfigurasi contribution rates. Kombinasi lengkap: setiap
-> pasangan (sumber × penerima) memiliki tepat satu tarif.
-{.is-warning}
+!!! warning
+
+    Nilai default ini dapat diubah melalui konfigurasi contribution rates. Kombinasi lengkap: setiap
+    pasangan (sumber × penerima) memiliki tepat satu tarif.
 
 ## Penjelasan Tindakan
 

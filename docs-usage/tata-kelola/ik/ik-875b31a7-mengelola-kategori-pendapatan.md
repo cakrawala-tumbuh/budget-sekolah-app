@@ -68,9 +68,11 @@ berikut.
 1. Isi **Urutan** — angka urutan tampil di halaman input pendapatan.
 1. Klik **Simpan**.
 
-> Daftar metode kalkulasi yang tersedia dan perilakunya bergantung pada konfigurasi instance
-> aplikasi. Verifikasi opsi yang muncul pada layar dan artinya bersama Bidang Keuangan Pusat sebelum
-> menyimpan kategori baru. {.is-info}
+!!! info
+
+    Daftar metode kalkulasi yang tersedia dan perilakunya bergantung pada konfigurasi instance
+    aplikasi. Verifikasi opsi yang muncul pada layar dan artinya bersama Bidang Keuangan Pusat sebelum
+    menyimpan kategori baru.
 
 ### 3. Mengedit kategori pendapatan
 
@@ -83,9 +85,10 @@ berikut.
 1. Klik ikon tempat sampah pada baris kategori yang ingin dihapus.
 1. Konfirmasi penghapusan pada dialog yang muncul.
 
-> Menghapus kategori pendapatan yang sudah memiliki entri atau menjadi tujuan mapping direct income
-> akan menyebabkan referensi terkait hilang. Sebaiknya jangan hapus kategori yang sudah digunakan.
-> {.is-danger}
+!!! danger
+
+    Menghapus kategori pendapatan yang sudah memiliki entri atau menjadi tujuan mapping direct income
+    akan menyebabkan referensi terkait hilang. Sebaiknya jangan hapus kategori yang sudah digunakan.
 
 ## Hasil yang Diharapkan
 

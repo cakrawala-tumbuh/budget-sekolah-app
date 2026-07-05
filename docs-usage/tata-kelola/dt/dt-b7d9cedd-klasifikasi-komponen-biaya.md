@@ -44,12 +44,12 @@ tepat satu hasil.
 | Tidak | Ya | — | Direct Income |
 | Tidak | Tidak | Ya | Komponen US |
 | Tidak | Tidak | Tidak | Beban Non-Operasional |
-{.dense}
 
-> Tanda "—" berarti nilai flag tidak memengaruhi hasil pada baris tersebut (sudah ditentukan flag di
-> kolom sebelumnya). Konfigurasikan flag kategori agar satu kategori memetakan ke satu bucket; urutan
-> prioritas di atas menjamin tabel tidak kontradiktif.
-{.is-warning}
+!!! warning
+
+    Tanda "—" berarti nilai flag tidak memengaruhi hasil pada baris tersebut (sudah ditentukan flag di
+    kolom sebelumnya). Konfigurasikan flag kategori agar satu kategori memetakan ke satu bucket; urutan
+    prioritas di atas menjamin tabel tidak kontradiktif.
 
 ## Penjelasan Tindakan
 

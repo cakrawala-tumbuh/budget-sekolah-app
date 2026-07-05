@@ -56,8 +56,10 @@ Halaman Pengguna menampilkan daftar semua akun yang terdaftar, baik akun Admin m
 1. Tutup dialog.
 1. Berikan password baru kepada pengguna organisasi tersebut secara langsung.
 
-> Setelah dialog reset password ditutup, password baru tidak dapat dilihat lagi dari sistem. Pastikan
-> Anda telah menyalinnya sebelum menutup dialog. {.is-danger}
+!!! danger
+
+    Setelah dialog reset password ditutup, password baru tidak dapat dilihat lagi dari sistem. Pastikan
+    Anda telah menyalinnya sebelum menutup dialog.
 
 ## Hasil yang Diharapkan
 

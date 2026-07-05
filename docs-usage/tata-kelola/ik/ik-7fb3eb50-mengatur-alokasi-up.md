@@ -71,10 +71,11 @@ Override memakai nilai override secara langsung, sedangkan unit tanpa Override m
 sisa (100% dikurangi total semua override) yang dibagi proporsional berdasarkan jumlah siswa baru unit
 dibanding unit lain yang juga tanpa override.
 
-> **Contoh perhitungan Alokasi UP:** Tiga unit dengan siswa baru — A (override 40%), B (100 siswa,
-> tanpa override), C (300 siswa, tanpa override). Sisa = 100% − 40% = 60%, total siswa auto = 400. B
-> mendapat 60% × 100/400 = 15%, C mendapat 60% × 300/400 = 45%. Total: 40% + 15% + 45% = 100%.
-{.is-info}
+!!! info
+
+    **Contoh perhitungan Alokasi UP:** Tiga unit dengan siswa baru — A (override 40%), B (100 siswa,
+    tanpa override), C (300 siswa, tanpa override). Sisa = 100% − 40% = 60%, total siswa auto = 400. B
+    mendapat 60% × 100/400 = 15%, C mendapat 60% × 300/400 = 45%. Total: 40% + 15% + 45% = 100%.
 
 ### 3. Menambah alokasi UP
 

@@ -52,8 +52,9 @@ dari tiga kartu: Sebaran Siswa per Kelas, Ringkasan Siswa & Staf, dan Override T
 1. Pada kartu **Sebaran Siswa per Kelas**, masukkan jumlah siswa untuk setiap tingkat kelas.
 1. Perhatikan total siswa yang dihitung otomatis di bagian bawah kartu.
 
-Nama tingkat kelas mengikuti konfigurasi pada halaman Label Kelas.
-{.is-tip}
+!!! tip
+
+    Nama tingkat kelas mengikuti konfigurasi pada halaman Label Kelas.
 
 ### 3. Mengisi ringkasan siswa & staf
 
@@ -68,9 +69,10 @@ Nama tingkat kelas mengikuti konfigurasi pada halaman Label Kelas.
 1. Isi **Override Tarif UP** dengan nominal (Rp) bila ingin memakai tarif UP tetap.
 1. Isi **Override Tarif US** dengan nominal (Rp/siswa/bulan) bila ingin memakai tarif US tetap.
 
-Bila override diisi, tarif yang dipakai dalam simulasi adalah nilai override tersebut, tanpa penambahan
-komponen depresiasi. Kosongkan kembali bidang override untuk kembali ke kalkulasi otomatis.
-{.is-warning}
+!!! warning
+
+    Bila override diisi, tarif yang dipakai dalam simulasi adalah nilai override tersebut, tanpa penambahan
+    komponen depresiasi. Kosongkan kembali bidang override untuk kembali ke kalkulasi otomatis.
 
 ### 5. Menyimpan data asumsi
 

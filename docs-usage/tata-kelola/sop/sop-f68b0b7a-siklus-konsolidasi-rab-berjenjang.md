@@ -221,10 +221,11 @@ kontribusi atau meminta pengurangan biaya unit, lalu memberikan subsidi sebagai 
 **Akhir Proses (End Event)**: "RAB Yayasan terkonsolidasi & final" (seluruh tingkat seimbang atau
 defisit tersisa telah disubsidi Pusat).
 
-> Langkah keputusan penanganan defisit multi-kondisi di tiap tingkat dirujuk ke Decision Table
-> `DT-e348eca6`. Langkah kalkulasi tarif & pengaliran alokasi dijalankan sistem — lihat
-> `OTS-6f1cf35a`.
-{.is-info}
+!!! info
+
+    Langkah keputusan penanganan defisit multi-kondisi di tiap tingkat dirujuk ke Decision Table
+    `DT-e348eca6`. Langkah kalkulasi tarif & pengaliran alokasi dijalankan sistem — lihat
+    `OTS-6f1cf35a`.
 
 ```mermaid
 flowchart TD

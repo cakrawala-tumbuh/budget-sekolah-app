@@ -39,4 +39,5 @@ Alur kerja umum untuk pengguna organisasi:
 4. **Input pendapatan** — Masukkan entri pendapatan non-UP/US.
 5. **Lihat Simulasi** — Klik tombol **Lihat Simulasi** untuk melihat hasil kalkulasi tarif UP/US dan proyeksi anggaran.
 
-Untuk panduan lengkap setiap langkah, lihat bagian [Panduan Fitur](../panduan-fitur/index.md).
+Untuk panduan lengkap setiap langkah, lihat [Daftar Instruksi Kerja](../tata-kelola/ik/index.md) pada
+bagian Tata Kelola.
