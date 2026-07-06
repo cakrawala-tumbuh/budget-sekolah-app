@@ -7,6 +7,8 @@ dan proyek ini menganut [Semantic Versioning](https://semver.org/lang/id/).
 
 ## [Unreleased]
 
+## [1.40.0] - 2026-07-07
+
 ### Ditambahkan
 - Halaman Laporan RAB ber-tema (`/organizations/[id]/laporan`) dengan cover,
   kartu KPI, tabel ringkasan Kas/Akrual, tabel konsolidasi (khusus
