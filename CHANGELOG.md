@@ -7,6 +7,8 @@ dan proyek ini menganut [Semantic Versioning](https://semver.org/lang/id/).
 
 ## [Unreleased]
 
+## [1.39.0] - 2026-07-07
+
 ### Diubah
 - Halaman Summary RAB: baris "Investasi" dipecah menjadi "Investasi Aset
   Tetap" dan "Investasi Keuangan" (sebelumnya digabung di bawah label
