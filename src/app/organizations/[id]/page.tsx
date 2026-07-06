@@ -23,6 +23,7 @@ import {
   Lock,
   LockOpen,
   PiggyBank,
+  FileText,
 } from "lucide-react";
 import {
   useOrganization,
@@ -172,6 +173,12 @@ export default function OrganizationDetailPage({ params }: Props) {
             <Link href={`/organizations/${org.id}/summary`}>
               <ClipboardList className="h-4 w-4" />
               Summary
+            </Link>
+          </Button>
+          <Button asChild variant="outline" size="sm">
+            <Link href={`/organizations/${org.id}/laporan`}>
+              <FileText className="h-4 w-4" />
+              Laporan RAB
             </Link>
           </Button>
           <Button asChild size="sm">

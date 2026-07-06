@@ -74,3 +74,45 @@ body {
 * {
   border-color: var(--border);
 }
+
+/* ── Print / PDF ──────────────────────────────────────────────────────────── */
+@media print {
+  @page {
+    size: A4;
+    margin: 14mm 12mm;
+  }
+  html,
+  body {
+    background: #ffffff !important;
+  }
+  /* Sembunyikan seluruh app-shell; hanya .print-root yang tampil */
+  body * {
+    visibility: hidden !important;
+  }
+  .print-root,
+  .print-root * {
+    visibility: visible !important;
+  }
+  .print-root {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+  }
+  .no-print {
+    display: none !important;
+  }
+  .print-break-before {
+    break-before: page;
+  }
+  .report-keep {
+    break-inside: avoid;
+  }
+}
+
+/* Fidelitas warna saat dicetak (juga aktif di layar tanpa efek visual) */
+.report-root,
+.report-root * {
+  -webkit-print-color-adjust: exact !important;
+  print-color-adjust: exact !important;
+}

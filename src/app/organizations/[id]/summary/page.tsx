@@ -9,66 +9,17 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { formatCurrency } from "@/lib/utils";
-import type { ExpenseItem, IncomeItem, DepreciationItem } from "@/lib/types";
 import { cn } from "@/lib/utils";
+import {
+  groupIncome,
+  buildExpenseGroup,
+  sumItems,
+  OP_EXPENSE_GROUPS,
+  NON_OP_EXPENSE_GROUPS,
+} from "@/lib/report";
 
 interface Props {
   params: Promise<{ id: string }>;
-}
-
-// ── helper ────────────────────────────────────────────────────────────────────
-
-function sumItems(items: IncomeItem[]): number {
-  return items.reduce((a, b) => a + b.total, 0);
-}
-
-function sumExpenseItems(items: ExpenseItem[]): number {
-  return items.reduce((a, b) => a + b.total, 0);
-}
-
-// Group income items into 4100-4499 (operasional) and 4500+ (non-operasional)
-function groupIncome(items: IncomeItem[]) {
-  const operasional = items.filter((i) => {
-    const prefix = parseInt(i.account_code.split(".")[0], 10);
-    return prefix >= 4100 && prefix < 4500;
-  });
-  const nonOperasional = items.filter((i) => {
-    const prefix = parseInt(i.account_code.split(".")[0], 10);
-    return prefix >= 4500;
-  });
-  return { operasional, nonOperasional };
-}
-
-// Map operational expense account codes to their group (5110 → 5110, etc.)
-const OP_EXPENSE_GROUPS = [
-  { code: "5110", label: "Biaya Gaji" },
-  { code: "5120", label: "Tenaga Ahli" },
-  { code: "5130", label: "Biaya Pengembangan Guru / Karyawan" },
-  { code: "5140", label: "Biaya Ulangan Umum / UAS / UN" },
-  { code: "5150", label: "Biaya Pendaftaran PSB" },
-  { code: "5160", label: "Biaya Operasional Sekolah" },
-  { code: "5170", label: "Biaya Kegiatan Siswa" },
-  { code: "5180", label: "Biaya Khusus" },
-  { code: "5190", label: "Biaya Administrasi dan Umum" },
-  { code: "5200", label: "Biaya Utilities" },
-  { code: "5210", label: "Biaya Transportasi" },
-  { code: "5220", label: "Biaya Asuransi" },
-  { code: "5230", label: "Biaya Sewa" },
-  { code: "5240", label: "Pajak" },
-  { code: "5250", label: "Biaya Pemeliharaan Aktiva Tetap" },
-];
-
-const NON_OP_EXPENSE_GROUPS = [
-  { code: "5510", label: "Biaya Kantin" },
-  { code: "5520", label: "Biaya Riso / Koperasi" },
-  { code: "5530", label: "Biaya Non Operasional Lain" },
-  { code: "5580", label: "Biaya Solidaritas" },
-  { code: "5590", label: "Pengeluaran Kontribusi" },
-];
-
-function matchGroupCode(code: string | undefined, groupCode: string): boolean {
-  if (!code) return false;
-  return code.startsWith(groupCode);
 }
 
 interface SummaryRowProps {
@@ -178,20 +129,6 @@ export default function SummaryPage({ params }: Props) {
   const totalIncomeOp = sumItems(incomeOp);
   const totalIncomeNonOp = sumItems(incomeNonOp);
   const totalIncome = summary.income.total;
-
-  // Build expense group totals
-  function buildExpenseGroup(
-    items: ExpenseItem[],
-    groups: { code: string; label: string }[],
-  ) {
-    return groups.map((g) => {
-      const matched = items.filter((item) =>
-        matchGroupCode(item.account_code, g.code),
-      );
-      const total = sumExpenseItems(matched);
-      return { ...g, total, matched };
-    });
-  }
 
   const opGroups = buildExpenseGroup(
     summary.expenses.operational,

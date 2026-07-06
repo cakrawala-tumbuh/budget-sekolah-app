@@ -7,6 +7,18 @@ dan proyek ini menganut [Semantic Versioning](https://semver.org/lang/id/).
 
 ## [Unreleased]
 
+### Ditambahkan
+- Halaman Laporan RAB ber-tema (`/organizations/[id]/laporan`) dengan cover,
+  kartu KPI, tabel ringkasan Kas/Akrual, tabel konsolidasi (khusus
+  CABANG/PUSAT), dan blok tanda tangan pengesahan (Disusun/Diperiksa/Disahkan).
+  Bisa diunduh sebagai **PDF** (print-to-PDF dengan `@page` A4 & warna
+  dipertahankan saat cetak) dan **Excel `.xls`** (tanpa dependency tambahan).
+
+### Diperbaiki
+- Kelas `no-print` di halaman Summary RAB sebelumnya tidak pernah
+  didefinisikan di CSS mana pun sehingga tombol/header aksi ikut tercetak;
+  kini benar-benar menyembunyikan elemen tersebut saat mencetak.
+
 ## [1.39.0] - 2026-07-07
 
 ### Diubah
