@@ -7,11 +7,24 @@ dan proyek ini menganut [Semantic Versioning](https://semver.org/lang/id/).
 
 ## [Unreleased]
 
+### Ditambahkan
+- Tabel "Rincian Beban Operasional — Unit vs Alokasi Induk" di halaman
+  Summary RAB dan Laporan RAB: tiap kelompok biaya kini menampilkan empat
+  nilai eksplisit (Biaya Unit, Alokasi Cabang, Alokasi Pusat, Total) agar
+  beban asli satuan pendidikan dapat dibedakan dari beban kontribusi
+  alokasi induk tanpa perlu perhitungan manual. Turut disertakan sebagai
+  section terpisah pada export Excel.
+
 ### Diperbaiki
 - Kartu KPI "Saldo Kas Akhir" di Laporan RAB selalu berwarna teal (warna
   "sehat") meskipun nilainya negatif, sehingga defisit kas tampak seolah
   positif/aman. Kini warna kartu mengikuti tanda nilai (merah bila negatif)
   dan disertai keterangan komposisi (saldo awal ± surplus/defisit).
+- Baris kelompok biaya operasional di Summary RAB sebelumnya tidak
+  menghitung beban yang dialokasikan dari Cabang/Pusat (kode akun
+  `ALLOC:*` tidak cocok dengan grup mana pun), sehingga jumlah baris yang
+  terlihat lebih kecil dari TOTAL BIAYA OPERASIONAL. Kini setiap baris
+  grup menampilkan total gabungan (beban unit + seluruh alokasi induk).
 
 ## [1.40.0] - 2026-07-07
 

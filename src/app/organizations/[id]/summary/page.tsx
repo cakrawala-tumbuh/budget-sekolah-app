@@ -12,10 +12,13 @@ import { formatCurrency } from "@/lib/utils";
 import { cn } from "@/lib/utils";
 import {
   groupIncome,
-  buildExpenseGroup,
+  buildExpenseGroupsDetailed,
+  buildExpenseBreakdown,
+  groupTotal,
   sumItems,
   OP_EXPENSE_GROUPS,
   NON_OP_EXPENSE_GROUPS,
+  type ExpenseGroupDetail,
 } from "@/lib/report";
 
 interface Props {
@@ -95,6 +98,17 @@ function SectionHeader({ label }: { label: string }) {
   );
 }
 
+/**
+ * Baris satu grup biaya: menampilkan TOTAL grup (beban unit + alokasi Cabang &
+ * Pusat). Uraian per komponen disajikan di tabel "Rincian Beban" terpisah. Grup
+ * tanpa aktivitas tidak dirender.
+ */
+function ExpenseGroupRows({ group }: { group: ExpenseGroupDetail }) {
+  const total = groupTotal(group);
+  if (total === 0) return null;
+  return <SummaryRow label={group.label} kas={total} akrual={total} indent />;
+}
+
 // ── main component ────────────────────────────────────────────────────────────
 
 export default function SummaryPage({ params }: Props) {
@@ -130,13 +144,17 @@ export default function SummaryPage({ params }: Props) {
   const totalIncomeNonOp = sumItems(incomeNonOp);
   const totalIncome = summary.income.total;
 
-  const opGroups = buildExpenseGroup(
+  const opGroups = buildExpenseGroupsDetailed(
     summary.expenses.operational,
     OP_EXPENSE_GROUPS,
   );
-  const nonOpGroups = buildExpenseGroup(
+  const nonOpGroups = buildExpenseGroupsDetailed(
     summary.expenses.non_operational,
     NON_OP_EXPENSE_GROUPS,
+  );
+  const opBreakdown = buildExpenseBreakdown(
+    summary.expenses.operational,
+    OP_EXPENSE_GROUPS,
   );
 
   const totalOp = summary.expenses.total_operational;
@@ -237,13 +255,7 @@ export default function SummaryPage({ params }: Props) {
             {/* BIAYA OPERASIONAL */}
             <SectionHeader label="Biaya Operasional" />
             {opGroups.map((g) => (
-              <SummaryRow
-                key={g.code}
-                label={g.label}
-                kas={g.total}
-                akrual={g.total}
-                indent
-              />
+              <ExpenseGroupRows key={g.code} group={g} />
             ))}
             <SummaryRow
               label="TOTAL BIAYA OPERASIONAL"
@@ -255,13 +267,7 @@ export default function SummaryPage({ params }: Props) {
             {/* BIAYA NON OPERASIONAL */}
             <SectionHeader label="Biaya Non Operasional" />
             {nonOpGroups.map((g) => (
-              <SummaryRow
-                key={g.code}
-                label={g.label}
-                kas={g.total}
-                akrual={g.total}
-                indent
-              />
+              <ExpenseGroupRows key={g.code} group={g} />
             ))}
             <SummaryRow
               label="TOTAL BIAYA NON OPERASIONAL"
@@ -356,6 +362,65 @@ export default function SummaryPage({ params }: Props) {
           </tbody>
         </table>
       </div>
+
+      {/* Rincian Beban Operasional — Unit vs Alokasi Induk */}
+      {opBreakdown.rows.length > 0 && (
+        <div className="mt-8">
+          <h2 className="text-base font-bold">Rincian Beban Operasional — Unit vs Alokasi Induk</h2>
+          <p className="mb-2 text-xs text-muted-foreground">
+            {opBreakdown.totalCabang !== 0 || opBreakdown.totalPusat !== 0
+              ? "Biaya Unit = beban asli satuan pendidikan. Alokasi Cabang/Pusat = kontribusi yang dibebankan dari induk."
+              : "Unit ini tidak menerima alokasi biaya dari Cabang/Pusat — seluruh beban adalah beban unit."}
+          </p>
+          <div className="overflow-x-auto rounded-lg border shadow-sm">
+            <table className="w-full border-collapse text-sm">
+              <thead>
+                <tr className="bg-slate-700 text-white">
+                  <th className="px-3 py-2 text-left font-semibold">Kelompok Biaya</th>
+                  <th className="px-3 py-2 text-right font-semibold">Biaya Unit</th>
+                  <th className="px-3 py-2 text-right font-semibold">Alokasi Cabang</th>
+                  <th className="px-3 py-2 text-right font-semibold">Alokasi Pusat</th>
+                  <th className="px-3 py-2 text-right font-semibold">Total</th>
+                </tr>
+              </thead>
+              <tbody>
+                {opBreakdown.rows.map((r) => (
+                  <tr key={r.label} className="border-b bg-white">
+                    <td className="px-3 py-1.5 text-sm">{r.label}</td>
+                    <td className="px-3 py-1.5 text-right tabular-nums text-sm">
+                      {formatCurrency(r.unit)}
+                    </td>
+                    <td className="px-3 py-1.5 text-right tabular-nums text-sm text-amber-700">
+                      {r.cabang !== 0 ? formatCurrency(r.cabang) : "—"}
+                    </td>
+                    <td className="px-3 py-1.5 text-right tabular-nums text-sm text-violet-700">
+                      {r.pusat !== 0 ? formatCurrency(r.pusat) : "—"}
+                    </td>
+                    <td className="px-3 py-1.5 text-right tabular-nums text-sm font-medium">
+                      {formatCurrency(r.total)}
+                    </td>
+                  </tr>
+                ))}
+                <tr className="bg-blue-100 font-semibold">
+                  <td className="px-3 py-2 text-sm">TOTAL BIAYA OPERASIONAL</td>
+                  <td className="px-3 py-2 text-right tabular-nums text-sm">
+                    {formatCurrency(opBreakdown.totalUnit)}
+                  </td>
+                  <td className="px-3 py-2 text-right tabular-nums text-sm text-amber-700">
+                    {formatCurrency(opBreakdown.totalCabang)}
+                  </td>
+                  <td className="px-3 py-2 text-right tabular-nums text-sm text-violet-700">
+                    {formatCurrency(opBreakdown.totalPusat)}
+                  </td>
+                  <td className="px-3 py-2 text-right tabular-nums text-sm">
+                    {formatCurrency(opBreakdown.total)}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
 
       {/* Catatan */}
       <div className="mt-6 text-xs text-muted-foreground space-y-1 border-t pt-4">

@@ -11,9 +11,10 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { ReportCover } from "@/components/report/ReportCover";
 import { ReportKpiCards } from "@/components/report/ReportKpiCards";
 import { ReportSummaryTable } from "@/components/report/ReportSummaryTable";
+import { ReportExpenseBreakdown } from "@/components/report/ReportExpenseBreakdown";
 import { ReportConsolidation } from "@/components/report/ReportConsolidation";
 import { ReportSignatures } from "@/components/report/ReportSignatures";
-import { buildReportRows } from "@/lib/report";
+import { buildReportRows, buildExpenseBreakdown, OP_EXPENSE_GROUPS } from "@/lib/report";
 import { downloadXls, type ExcelSection } from "@/lib/export/excel";
 import type { BudgetSummary, ComparativeSummary } from "@/lib/types";
 
@@ -29,6 +30,24 @@ function buildSummarySection(summary: BudgetSummary): ExcelSection {
     rows: rows
       .filter((r) => r.kind !== "section")
       .map((r) => [r.label, r.kas ?? "", r.akrual ?? ""]),
+  };
+}
+
+function buildExpenseBreakdownSection(summary: BudgetSummary): ExcelSection {
+  const breakdown = buildExpenseBreakdown(summary.expenses.operational, OP_EXPENSE_GROUPS);
+  return {
+    title: "Rincian Beban Operasional — Unit vs Alokasi Induk",
+    header: ["Kelompok Biaya", "Biaya Unit", "Alokasi Cabang", "Alokasi Pusat", "Total"],
+    rows: [
+      ...breakdown.rows.map((r) => [r.label, r.unit, r.cabang, r.pusat, r.total]),
+      [
+        "TOTAL BEBAN OPERASIONAL",
+        breakdown.totalUnit,
+        breakdown.totalCabang,
+        breakdown.totalPusat,
+        breakdown.total,
+      ],
+    ],
   };
 }
 
@@ -82,7 +101,10 @@ export default function LaporanPage({ params }: Props) {
 
   function handleExcel() {
     if (!org || !summary) return;
-    const sections: ExcelSection[] = [buildSummarySection(summary)];
+    const sections: ExcelSection[] = [
+      buildSummarySection(summary),
+      buildExpenseBreakdownSection(summary),
+    ];
     if (isParentOrg && comparative) {
       sections.push(buildConsolidationSection(comparative));
     }
@@ -124,6 +146,7 @@ export default function LaporanPage({ params }: Props) {
         />
         <ReportKpiCards summary={summary} />
         <ReportSummaryTable summary={summary} />
+        <ReportExpenseBreakdown summary={summary} />
         {isParentOrg && comparative && <ReportConsolidation data={comparative} />}
         <ReportSignatures />
 
