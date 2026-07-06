@@ -72,7 +72,6 @@ function matchGroupCode(code: string | undefined, groupCode: string): boolean {
 }
 
 interface SummaryRowProps {
-  code?: string;
   label: string;
   kas: number | null;
   akrual: number | null;
@@ -84,7 +83,6 @@ interface SummaryRowProps {
 }
 
 function SummaryRow({
-  code,
   label,
   kas,
   akrual,
@@ -109,15 +107,6 @@ function SummaryRow({
             : "bg-red-50 font-bold text-red-800"),
       )}
     >
-      <td
-        className={cn(
-          "px-3 py-1.5 font-mono text-xs w-20",
-          isHeader && "text-white",
-          !isHeader && "text-muted-foreground",
-        )}
-      >
-        {code ?? ""}
-      </td>
       <td
         className={cn(
           "px-3 py-1.5 text-sm",
@@ -148,7 +137,7 @@ function SummaryRow({
 function SectionHeader({ label }: { label: string }) {
   return (
     <tr className="bg-blue-800 text-white">
-      <td colSpan={5} className="px-3 py-2 font-semibold text-sm uppercase tracking-wide">
+      <td colSpan={4} className="px-3 py-2 font-semibold text-sm uppercase tracking-wide">
         {label}
       </td>
     </tr>
@@ -216,6 +205,8 @@ export default function SummaryPage({ params }: Props) {
   const totalOp = summary.expenses.total_operational;
   const totalNonOp = summary.expenses.total_non_operational;
   const totalDep = summary.depreciation.total_current_year_dep;
+  const totalPhysicalInvestments = summary.total_physical_investments;
+  const totalFinancialInvestments = summary.total_financial_investments;
   const totalInvestments = summary.total_investments;
 
   // Accrual: replaces investment cash cost with depreciation only
@@ -262,7 +253,6 @@ export default function SummaryPage({ params }: Props) {
         <table className="w-full border-collapse text-sm">
           <thead>
             <tr className="bg-slate-700 text-white">
-              <th className="px-3 py-2 text-left w-20 font-semibold">No. Akun</th>
               <th className="px-3 py-2 text-left font-semibold">Uraian</th>
               <th className="px-3 py-2 text-right w-44 font-semibold">Budget KAS</th>
               <th className="px-3 py-2 text-right w-44 font-semibold">Budget AKRUAL</th>
@@ -273,7 +263,6 @@ export default function SummaryPage({ params }: Props) {
             {/* PENDAPATAN */}
             <SectionHeader label="Pendapatan" />
             <SummaryRow
-              code="4100"
               label="Pendapatan Operasional"
               kas={totalIncomeOp}
               akrual={totalIncomeOp}
@@ -281,7 +270,6 @@ export default function SummaryPage({ params }: Props) {
             />
             {incomeOp.map((item) => (
               <tr key={item.account_code} className="border-b bg-white">
-                <td className="px-3 py-1 font-mono text-xs text-muted-foreground pl-6">{item.account_code}</td>
                 <td className="px-3 py-1 text-xs text-muted-foreground pl-12">{item.description}</td>
                 <td className="px-3 py-1 text-right tabular-nums text-xs">{formatCurrency(item.total)}</td>
                 <td className="px-3 py-1 text-right tabular-nums text-xs">{formatCurrency(item.total)}</td>
@@ -289,7 +277,6 @@ export default function SummaryPage({ params }: Props) {
               </tr>
             ))}
             <SummaryRow
-              code="4500"
               label="Pendapatan Non Operasional"
               kas={totalIncomeNonOp}
               akrual={totalIncomeNonOp}
@@ -297,7 +284,6 @@ export default function SummaryPage({ params }: Props) {
             />
             {incomeNonOp.map((item) => (
               <tr key={item.account_code} className="border-b bg-white">
-                <td className="px-3 py-1 font-mono text-xs text-muted-foreground pl-6">{item.account_code}</td>
                 <td className="px-3 py-1 text-xs text-muted-foreground pl-12">{item.description}</td>
                 <td className="px-3 py-1 text-right tabular-nums text-xs">{formatCurrency(item.total)}</td>
                 <td className="px-3 py-1 text-right tabular-nums text-xs">{formatCurrency(item.total)}</td>
@@ -305,7 +291,6 @@ export default function SummaryPage({ params }: Props) {
               </tr>
             ))}
             <SummaryRow
-              code="4000"
               label="TOTAL PENDAPATAN"
               kas={totalIncome}
               akrual={acrualIncome}
@@ -317,7 +302,6 @@ export default function SummaryPage({ params }: Props) {
             {opGroups.map((g) => (
               <SummaryRow
                 key={g.code}
-                code={g.code}
                 label={g.label}
                 kas={g.total}
                 akrual={g.total}
@@ -325,7 +309,6 @@ export default function SummaryPage({ params }: Props) {
               />
             ))}
             <SummaryRow
-              code="5100"
               label="TOTAL BIAYA OPERASIONAL"
               kas={totalOp}
               akrual={totalOp}
@@ -337,7 +320,6 @@ export default function SummaryPage({ params }: Props) {
             {nonOpGroups.map((g) => (
               <SummaryRow
                 key={g.code}
-                code={g.code}
                 label={g.label}
                 kas={g.total}
                 akrual={g.total}
@@ -345,7 +327,6 @@ export default function SummaryPage({ params }: Props) {
               />
             ))}
             <SummaryRow
-              code="5500"
               label="TOTAL BIAYA NON OPERASIONAL"
               kas={totalNonOp}
               akrual={totalNonOp}
@@ -355,14 +336,18 @@ export default function SummaryPage({ params }: Props) {
             {/* INVESTASI */}
             <SectionHeader label="Investasi" />
             <SummaryRow
-              code="1330"
-              label="Pembelian Inventaris / Aset Tetap Baru"
-              kas={totalInvestments}
+              label="Investasi Aset Tetap"
+              kas={totalPhysicalInvestments}
               akrual={totalDep}
               indent
             />
             <SummaryRow
-              code="1330"
+              label="Investasi Keuangan"
+              kas={totalFinancialInvestments}
+              akrual={0}
+              indent
+            />
+            <SummaryRow
               label="TOTAL INVESTASI"
               kas={totalInvestments}
               akrual={totalDep}
@@ -374,7 +359,6 @@ export default function SummaryPage({ params }: Props) {
               <>
                 <SectionHeader label="Depresiasi" />
                 <SummaryRow
-                  code=""
                   label="Total Penyusutan Aset (Baru + Lama)"
                   kas={0}
                   akrual={totalDep}
@@ -385,7 +369,6 @@ export default function SummaryPage({ params }: Props) {
 
             {/* SURPLUS / DEFISIT */}
             <tr className="border-t-2 border-slate-400">
-              <td />
               <td colSpan={4} />
             </tr>
             <SummaryRow
@@ -440,9 +423,9 @@ export default function SummaryPage({ params }: Props) {
       {/* Catatan */}
       <div className="mt-6 text-xs text-muted-foreground space-y-1 border-t pt-4">
         <p className="font-semibold">Catatan:</p>
-        <p>1. Budget KAS = Pendapatan − Biaya Operasional − Biaya Non Operasional − Total Investasi (harga beli)</p>
+        <p>1. Budget KAS = Pendapatan − Biaya Operasional − Biaya Non Operasional − Investasi Aset Tetap − Investasi Keuangan</p>
         <p>2. Budget AKRUAL = Pendapatan − Biaya Operasional − Biaya Non Operasional − Depresiasi (penyusutan tahun ini)</p>
-        <p>3. Selisih Kas−Akrual pada baris Investasi = Nilai Beli − Depresiasi Tahun Ini</p>
+        <p>3. Investasi Aset Tetap didepresiasi (kolom Akrual = penyusutan). Investasi Keuangan tidak didepresiasi (Akrual = 0).</p>
         <p>4. Saldo Kas Akhir (Budget Kas) = Saldo Kas Awal + Surplus/Defisit Kas Tahun Ini</p>
       </div>
     </div>

@@ -420,6 +420,8 @@ export interface BudgetSummary {
   total_cash_revenue_auto: number;
   total_cash_expenses: number;
   total_investments: number;
+  total_physical_investments: number;
+  total_financial_investments: number;
   cash_surplus_deficit: number;
   cash_surplus_deficit_auto: number;
   // Cash & cash equivalents position

@@ -7,6 +7,14 @@ dan proyek ini menganut [Semantic Versioning](https://semver.org/lang/id/).
 
 ## [Unreleased]
 
+### Diubah
+- Halaman Summary RAB: baris "Investasi" dipecah menjadi "Investasi Aset
+  Tetap" dan "Investasi Keuangan" (sebelumnya digabung di bawah label
+  "Pembelian Inventaris/Aset Tetap Baru", menyembunyikan investasi keuangan
+  CABANG/PUSAT). Kolom "No. Akun" dihapus dari seluruh tabel Summary karena
+  banyak baris (total, surplus/defisit, saldo kas) tidak memiliki kode akun
+  tunggal.
+
 ## [1.38.3] - 2026-07-05
 
 ### Diperbaiki
