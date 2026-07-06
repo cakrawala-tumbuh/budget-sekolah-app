@@ -7,6 +7,12 @@ dan proyek ini menganut [Semantic Versioning](https://semver.org/lang/id/).
 
 ## [Unreleased]
 
+### Diperbaiki
+- Kartu KPI "Saldo Kas Akhir" di Laporan RAB selalu berwarna teal (warna
+  "sehat") meskipun nilainya negatif, sehingga defisit kas tampak seolah
+  positif/aman. Kini warna kartu mengikuti tanda nilai (merah bila negatif)
+  dan disertai keterangan komposisi (saldo awal ± surplus/defisit).
+
 ## [1.40.0] - 2026-07-07
 
 ### Ditambahkan

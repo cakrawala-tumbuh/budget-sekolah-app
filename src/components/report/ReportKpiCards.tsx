@@ -10,11 +10,13 @@ function KpiCard({
   value,
   textColor,
   bgColor,
+  caption,
 }: {
   label: string;
   value: number;
   textColor: string;
   bgColor: string;
+  caption?: string;
 }) {
   return (
     <div
@@ -25,12 +27,14 @@ function KpiCard({
       <p className={cn("mt-1 text-lg font-bold tabular-nums", textColor)}>
         {formatCurrency(value)}
       </p>
+      {caption && <p className="mt-1 text-[10px] leading-tight text-[#475569]">{caption}</p>}
     </div>
   );
 }
 
 export function ReportKpiCards({ summary }: ReportKpiCardsProps) {
   const cashPositive = summary.cash_surplus_deficit >= 0;
+  const endingPositive = summary.ending_cash_balance >= 0;
 
   return (
     <div className="grid grid-cols-2 gap-3 px-8 py-6 md:grid-cols-4">
@@ -55,8 +59,11 @@ export function ReportKpiCards({ summary }: ReportKpiCardsProps) {
       <KpiCard
         label="Saldo Kas Akhir"
         value={summary.ending_cash_balance}
-        textColor="text-[#0f766e]"
-        bgColor="bg-[#f0fdfa]"
+        textColor={endingPositive ? "text-[#0f766e]" : "text-[#b91c1c]"}
+        bgColor={endingPositive ? "bg-[#f0fdfa]" : "bg-[#fef2f2]"}
+        caption={`Saldo awal ${formatCurrency(summary.opening_cash_balance)} ${
+          summary.cash_surplus_deficit >= 0 ? "+ surplus" : "− defisit"
+        }`}
       />
     </div>
   );
