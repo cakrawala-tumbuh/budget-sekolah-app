@@ -7,6 +7,8 @@ dan proyek ini menganut [Semantic Versioning](https://semver.org/lang/id/).
 
 ## [Unreleased]
 
+## [1.41.0] - 2026-07-07
+
 ### Ditambahkan
 - Tabel "Rincian Beban Operasional — Unit vs Alokasi Induk" di halaman
   Summary RAB dan Laporan RAB: tiap kelompok biaya kini menampilkan empat
