@@ -14,11 +14,15 @@ import {
   groupIncome,
   buildExpenseGroupsDetailed,
   buildExpenseBreakdown,
+  buildInvestmentDepreciationBreakdown,
+  sumDepreciationBySource,
   groupTotal,
   sumItems,
   OP_EXPENSE_GROUPS,
   NON_OP_EXPENSE_GROUPS,
   type ExpenseGroupDetail,
+  type ExpenseBreakdown,
+  type SingleItemBreakdown,
 } from "@/lib/report";
 
 interface Props {
@@ -109,6 +113,128 @@ function ExpenseGroupRows({ group }: { group: ExpenseGroupDetail }) {
   return <SummaryRow label={group.label} kas={total} akrual={total} indent />;
 }
 
+/** Tabel rincian Unit vs Alokasi Cabang/Pusat, dipakai untuk biaya operasional & non-operasional. */
+function ExpenseBreakdownTable({
+  title,
+  totalLabel,
+  breakdown,
+}: {
+  title: string;
+  totalLabel: string;
+  breakdown: ExpenseBreakdown;
+}) {
+  if (breakdown.rows.length === 0) return null;
+  const hasAllocation = breakdown.totalCabang !== 0 || breakdown.totalPusat !== 0;
+
+  return (
+    <div className="mt-8">
+      <h2 className="text-base font-bold">{title}</h2>
+      <p className="mb-2 text-xs text-muted-foreground">
+        {hasAllocation
+          ? "Biaya Unit = beban asli satuan pendidikan. Alokasi Cabang/Pusat = kontribusi yang dibebankan dari induk."
+          : "Unit ini tidak menerima alokasi biaya dari Cabang/Pusat — seluruh beban adalah beban unit."}
+      </p>
+      <div className="overflow-x-auto rounded-lg border shadow-sm">
+        <table className="w-full border-collapse text-sm">
+          <thead>
+            <tr className="bg-slate-700 text-white">
+              <th className="px-3 py-2 text-left font-semibold">Kelompok Biaya</th>
+              <th className="px-3 py-2 text-right font-semibold">Biaya Unit</th>
+              <th className="px-3 py-2 text-right font-semibold">Alokasi Cabang</th>
+              <th className="px-3 py-2 text-right font-semibold">Alokasi Pusat</th>
+              <th className="px-3 py-2 text-right font-semibold">Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            {breakdown.rows.map((r) => (
+              <tr key={r.label} className="border-b bg-white">
+                <td className="px-3 py-1.5 text-sm">{r.label}</td>
+                <td className="px-3 py-1.5 text-right tabular-nums text-sm">
+                  {formatCurrency(r.unit)}
+                </td>
+                <td className="px-3 py-1.5 text-right tabular-nums text-sm text-amber-700">
+                  {r.cabang !== 0 ? formatCurrency(r.cabang) : "—"}
+                </td>
+                <td className="px-3 py-1.5 text-right tabular-nums text-sm text-violet-700">
+                  {r.pusat !== 0 ? formatCurrency(r.pusat) : "—"}
+                </td>
+                <td className="px-3 py-1.5 text-right tabular-nums text-sm font-medium">
+                  {formatCurrency(r.total)}
+                </td>
+              </tr>
+            ))}
+            <tr className="bg-blue-100 font-semibold">
+              <td className="px-3 py-2 text-sm">{totalLabel}</td>
+              <td className="px-3 py-2 text-right tabular-nums text-sm">
+                {formatCurrency(breakdown.totalUnit)}
+              </td>
+              <td className="px-3 py-2 text-right tabular-nums text-sm text-amber-700">
+                {formatCurrency(breakdown.totalCabang)}
+              </td>
+              <td className="px-3 py-2 text-right tabular-nums text-sm text-violet-700">
+                {formatCurrency(breakdown.totalPusat)}
+              </td>
+              <td className="px-3 py-2 text-right tabular-nums text-sm">
+                {formatCurrency(breakdown.total)}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+}
+
+/** Tabel rincian Unit vs Alokasi Cabang/Pusat untuk investasi & depresiasi (agregat, tanpa rincian per aset). */
+function InvestmentDepreciationBreakdownTable({ rows }: { rows: SingleItemBreakdown[] }) {
+  if (rows.length === 0) return null;
+
+  return (
+    <div className="mt-8">
+      <h2 className="text-base font-bold">
+        Rincian Investasi &amp; Depresiasi — Unit vs Alokasi Induk
+      </h2>
+      <p className="mb-2 text-xs text-muted-foreground">
+        Investasi Aset Tetap adalah pembelian aset milik unit sendiri (tidak menerima
+        alokasi induk). Investasi Keuangan dan Depresiasi dapat berasal dari unit sendiri
+        maupun alokasi kontribusi Cabang/Pusat.
+      </p>
+      <div className="overflow-x-auto rounded-lg border shadow-sm">
+        <table className="w-full border-collapse text-sm">
+          <thead>
+            <tr className="bg-slate-700 text-white">
+              <th className="px-3 py-2 text-left font-semibold">Uraian</th>
+              <th className="px-3 py-2 text-right font-semibold">Unit</th>
+              <th className="px-3 py-2 text-right font-semibold">Alokasi Cabang</th>
+              <th className="px-3 py-2 text-right font-semibold">Alokasi Pusat</th>
+              <th className="px-3 py-2 text-right font-semibold">Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            {rows.map((r) => (
+              <tr key={r.label} className="border-b bg-white">
+                <td className="px-3 py-1.5 text-sm">{r.label}</td>
+                <td className="px-3 py-1.5 text-right tabular-nums text-sm">
+                  {formatCurrency(r.unit)}
+                </td>
+                <td className="px-3 py-1.5 text-right tabular-nums text-sm text-amber-700">
+                  {r.cabang !== 0 ? formatCurrency(r.cabang) : "—"}
+                </td>
+                <td className="px-3 py-1.5 text-right tabular-nums text-sm text-violet-700">
+                  {r.pusat !== 0 ? formatCurrency(r.pusat) : "—"}
+                </td>
+                <td className="px-3 py-1.5 text-right tabular-nums text-sm font-medium">
+                  {formatCurrency(r.total)}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+}
+
 // ── main component ────────────────────────────────────────────────────────────
 
 export default function SummaryPage({ params }: Props) {
@@ -156,13 +282,21 @@ export default function SummaryPage({ params }: Props) {
     summary.expenses.operational,
     OP_EXPENSE_GROUPS,
   );
+  const nonOpBreakdown = buildExpenseBreakdown(
+    summary.expenses.non_operational,
+    NON_OP_EXPENSE_GROUPS,
+  );
+  const invDepRows = buildInvestmentDepreciationBreakdown(summary).filter(
+    (r) => r.unit !== 0 || r.cabang !== 0 || r.pusat !== 0,
+  );
 
   const totalOp = summary.expenses.total_operational;
   const totalNonOp = summary.expenses.total_non_operational;
   const totalDep = summary.depreciation.total_current_year_dep;
   const totalPhysicalInvestments = summary.total_physical_investments;
   const totalFinancialInvestments = summary.total_financial_investments;
-  const totalInvestments = summary.total_investments;
+  const newAssetDep = sumDepreciationBySource(summary.depreciation.items, "new");
+  const oldAssetDep = sumDepreciationBySource(summary.depreciation.items, "existing");
 
   // Accrual: replaces investment cash cost with depreciation only
   const acrualIncome = totalIncome;
@@ -276,36 +410,45 @@ export default function SummaryPage({ params }: Props) {
               isTotal
             />
 
-            {/* INVESTASI */}
-            <SectionHeader label="Investasi" />
+            {/* INVESTASI ASET TETAP, INVESTASI KEUANGAN, DEPRESIASI BARU/LAMA —
+                masing-masing section terpisah, tidak digabung. Rincian Unit vs
+                Alokasi Cabang/Pusat tersedia di tabel di bawah tabel utama. */}
+            <SectionHeader label="Investasi Aset Tetap" />
             <SummaryRow
-              label="Investasi Aset Tetap"
+              label="TOTAL INVESTASI ASET TETAP"
               kas={totalPhysicalInvestments}
-              akrual={totalDep}
-              indent
-            />
-            <SummaryRow
-              label="Investasi Keuangan"
-              kas={totalFinancialInvestments}
-              akrual={0}
-              indent
-            />
-            <SummaryRow
-              label="TOTAL INVESTASI"
-              kas={totalInvestments}
-              akrual={totalDep}
+              akrual={newAssetDep}
               isTotal
             />
 
-            {/* DEPRESIASI ASET LAMA (only shows in accrual) */}
-            {totalDep > 0 && (
+            <SectionHeader label="Investasi Keuangan" />
+            <SummaryRow
+              label="TOTAL INVESTASI KEUANGAN"
+              kas={totalFinancialInvestments}
+              akrual={0}
+              isTotal
+            />
+
+            {newAssetDep > 0 && (
               <>
-                <SectionHeader label="Depresiasi" />
+                <SectionHeader label="Depresiasi Aset Baru" />
                 <SummaryRow
-                  label="Total Penyusutan Aset (Baru + Lama)"
+                  label="TOTAL DEPRESIASI ASET BARU"
                   kas={0}
-                  akrual={totalDep}
-                  indent
+                  akrual={newAssetDep}
+                  isTotal
+                />
+              </>
+            )}
+
+            {oldAssetDep > 0 && (
+              <>
+                <SectionHeader label="Depresiasi Aset Lama" />
+                <SummaryRow
+                  label="TOTAL DEPRESIASI ASET LAMA"
+                  kas={0}
+                  akrual={oldAssetDep}
+                  isTotal
                 />
               </>
             )}
@@ -364,63 +507,21 @@ export default function SummaryPage({ params }: Props) {
       </div>
 
       {/* Rincian Beban Operasional — Unit vs Alokasi Induk */}
-      {opBreakdown.rows.length > 0 && (
-        <div className="mt-8">
-          <h2 className="text-base font-bold">Rincian Beban Operasional — Unit vs Alokasi Induk</h2>
-          <p className="mb-2 text-xs text-muted-foreground">
-            {opBreakdown.totalCabang !== 0 || opBreakdown.totalPusat !== 0
-              ? "Biaya Unit = beban asli satuan pendidikan. Alokasi Cabang/Pusat = kontribusi yang dibebankan dari induk."
-              : "Unit ini tidak menerima alokasi biaya dari Cabang/Pusat — seluruh beban adalah beban unit."}
-          </p>
-          <div className="overflow-x-auto rounded-lg border shadow-sm">
-            <table className="w-full border-collapse text-sm">
-              <thead>
-                <tr className="bg-slate-700 text-white">
-                  <th className="px-3 py-2 text-left font-semibold">Kelompok Biaya</th>
-                  <th className="px-3 py-2 text-right font-semibold">Biaya Unit</th>
-                  <th className="px-3 py-2 text-right font-semibold">Alokasi Cabang</th>
-                  <th className="px-3 py-2 text-right font-semibold">Alokasi Pusat</th>
-                  <th className="px-3 py-2 text-right font-semibold">Total</th>
-                </tr>
-              </thead>
-              <tbody>
-                {opBreakdown.rows.map((r) => (
-                  <tr key={r.label} className="border-b bg-white">
-                    <td className="px-3 py-1.5 text-sm">{r.label}</td>
-                    <td className="px-3 py-1.5 text-right tabular-nums text-sm">
-                      {formatCurrency(r.unit)}
-                    </td>
-                    <td className="px-3 py-1.5 text-right tabular-nums text-sm text-amber-700">
-                      {r.cabang !== 0 ? formatCurrency(r.cabang) : "—"}
-                    </td>
-                    <td className="px-3 py-1.5 text-right tabular-nums text-sm text-violet-700">
-                      {r.pusat !== 0 ? formatCurrency(r.pusat) : "—"}
-                    </td>
-                    <td className="px-3 py-1.5 text-right tabular-nums text-sm font-medium">
-                      {formatCurrency(r.total)}
-                    </td>
-                  </tr>
-                ))}
-                <tr className="bg-blue-100 font-semibold">
-                  <td className="px-3 py-2 text-sm">TOTAL BIAYA OPERASIONAL</td>
-                  <td className="px-3 py-2 text-right tabular-nums text-sm">
-                    {formatCurrency(opBreakdown.totalUnit)}
-                  </td>
-                  <td className="px-3 py-2 text-right tabular-nums text-sm text-amber-700">
-                    {formatCurrency(opBreakdown.totalCabang)}
-                  </td>
-                  <td className="px-3 py-2 text-right tabular-nums text-sm text-violet-700">
-                    {formatCurrency(opBreakdown.totalPusat)}
-                  </td>
-                  <td className="px-3 py-2 text-right tabular-nums text-sm">
-                    {formatCurrency(opBreakdown.total)}
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      )}
+      <ExpenseBreakdownTable
+        title="Rincian Beban Operasional — Unit vs Alokasi Induk"
+        totalLabel="TOTAL BEBAN OPERASIONAL"
+        breakdown={opBreakdown}
+      />
+
+      {/* Rincian Beban Non Operasional — Unit vs Alokasi Induk */}
+      <ExpenseBreakdownTable
+        title="Rincian Beban Non Operasional — Unit vs Alokasi Induk"
+        totalLabel="TOTAL BEBAN NON OPERASIONAL"
+        breakdown={nonOpBreakdown}
+      />
+
+      {/* Rincian Investasi & Depresiasi — Unit vs Alokasi Induk */}
+      <InvestmentDepreciationBreakdownTable rows={invDepRows} />
 
       {/* Catatan */}
       <div className="mt-6 text-xs text-muted-foreground space-y-1 border-t pt-4">

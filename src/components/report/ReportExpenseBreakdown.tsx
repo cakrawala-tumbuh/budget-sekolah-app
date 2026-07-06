@@ -1,19 +1,26 @@
-import { buildExpenseBreakdown, OP_EXPENSE_GROUPS } from "@/lib/report";
+import { buildExpenseBreakdown } from "@/lib/report";
 import { formatCurrency } from "@/lib/utils";
-import type { BudgetSummary } from "@/lib/types";
+import type { ExpenseItem } from "@/lib/types";
 
 interface ReportExpenseBreakdownProps {
-  summary: BudgetSummary;
+  items: ExpenseItem[];
+  groups: { code: string; label: string }[];
+  title: string;
+  totalLabel: string;
 }
 
 /**
- * Rincian beban operasional dengan empat nilai eksplisit per biaya:
- * Total, Biaya Unit, Alokasi Cabang, dan Alokasi Pusat — sehingga pengguna tak
- * perlu menghitung sendiri. Beban non-operasional sepenuhnya milik unit (tidak
- * ada alokasi induk) sehingga tidak diuraikan di sini.
+ * Rincian beban (operasional atau non-operasional) dengan empat nilai eksplisit
+ * per kelompok biaya: Biaya Unit, Alokasi Cabang, Alokasi Pusat, dan Total —
+ * sehingga pengguna tak perlu menghitung sendiri kontribusi induk.
  */
-export function ReportExpenseBreakdown({ summary }: ReportExpenseBreakdownProps) {
-  const breakdown = buildExpenseBreakdown(summary.expenses.operational, OP_EXPENSE_GROUPS);
+export function ReportExpenseBreakdown({
+  items,
+  groups,
+  title,
+  totalLabel,
+}: ReportExpenseBreakdownProps) {
+  const breakdown = buildExpenseBreakdown(items, groups);
   if (breakdown.rows.length === 0) return null;
 
   const hasAllocation = breakdown.totalCabang !== 0 || breakdown.totalPusat !== 0;
@@ -21,7 +28,7 @@ export function ReportExpenseBreakdown({ summary }: ReportExpenseBreakdownProps)
   return (
     <div className="report-keep px-8 py-4">
       <h2 className="mb-1 text-sm font-semibold uppercase tracking-wide text-[#134e4a]">
-        Rincian Beban Operasional — Unit vs Alokasi Induk
+        {title}
       </h2>
       <p className="mb-3 text-xs text-[#475569]">
         {hasAllocation
@@ -58,7 +65,7 @@ export function ReportExpenseBreakdown({ summary }: ReportExpenseBreakdownProps)
               </tr>
             ))}
             <tr className="bg-[#ccfbf1] font-semibold">
-              <td className="px-3 py-2 text-sm">TOTAL BEBAN OPERASIONAL</td>
+              <td className="px-3 py-2 text-sm">{totalLabel}</td>
               <td className="px-3 py-2 text-right text-sm tabular-nums">
                 {formatCurrency(breakdown.totalUnit)}
               </td>

@@ -1,7 +1,7 @@
 // Helper murni untuk menyusun data Laporan RAB (dipakai oleh halaman summary,
 // halaman laporan ber-tema, dan export Excel) — satu sumber kebenaran untuk
 // pengelompokan & urutan baris laporan.
-import type { BudgetSummary, ExpenseItem, IncomeItem } from "@/lib/types";
+import type { BudgetSummary, DepreciationItem, ExpenseItem, IncomeItem } from "@/lib/types";
 
 export function sumItems(items: IncomeItem[]): number {
   return items.reduce((a, b) => a + b.total, 0);
@@ -198,6 +198,78 @@ export function buildExpenseBreakdown(
   };
 }
 
+// ── Rincian investasi & depresiasi (Unit vs Alokasi Cabang/Pusat) ──────────────
+//
+// Depresiasi induk (investasi baru & aset lama) dan investasi keuangan induk yang
+// dialokasikan ke unit tersimpan sebagai ExpenseItem beracount_code "ALLOC:DEP-INV-*"/
+// "ALLOC:DEP-OLD-*"/"ALLOC:FIN-INV-*" di dalam expenses.operational (lihat
+// simulate_expenses di backend). Fungsi ini mengekstraknya untuk ditampilkan
+// sebagai rincian Unit vs Alokasi Cabang/Pusat, tanpa merinci per item/aset.
+
+function allocAmount(items: ExpenseItem[], code: string): number {
+  return items
+    .filter((item) => item.account_code === code)
+    .reduce((a, item) => a + item.total, 0);
+}
+
+export function sumDepreciationBySource(
+  items: DepreciationItem[],
+  source: "new" | "existing",
+): number {
+  return items
+    .filter((item) => item.source === source)
+    .reduce((a, item) => a + item.current_year_dep, 0);
+}
+
+export interface SingleItemBreakdown {
+  label: string;
+  unit: number;
+  cabang: number;
+  pusat: number;
+  total: number;
+}
+
+function singleItemBreakdown(
+  label: string,
+  unit: number,
+  cabang: number,
+  pusat: number,
+): SingleItemBreakdown {
+  return { label, unit, cabang, pusat, total: unit + cabang + pusat };
+}
+
+/**
+ * Rincian Unit vs Alokasi Cabang/Pusat untuk investasi aset tetap, investasi
+ * keuangan, depresiasi aset baru, dan depresiasi aset lama — masing-masing
+ * sebagai baris terpisah (agregat, tanpa rincian per item/aset).
+ */
+export function buildInvestmentDepreciationBreakdown(
+  summary: BudgetSummary,
+): SingleItemBreakdown[] {
+  const op = summary.expenses.operational;
+  return [
+    singleItemBreakdown("Investasi Aset Tetap", summary.total_physical_investments, 0, 0),
+    singleItemBreakdown(
+      "Investasi Keuangan",
+      summary.total_financial_investments,
+      allocAmount(op, "ALLOC:FIN-INV-CBG"),
+      allocAmount(op, "ALLOC:FIN-INV-PST"),
+    ),
+    singleItemBreakdown(
+      "Depresiasi Aset Baru",
+      sumDepreciationBySource(summary.depreciation.items, "new"),
+      allocAmount(op, "ALLOC:DEP-INV-CBG"),
+      allocAmount(op, "ALLOC:DEP-INV-PST"),
+    ),
+    singleItemBreakdown(
+      "Depresiasi Aset Lama",
+      sumDepreciationBySource(summary.depreciation.items, "existing"),
+      allocAmount(op, "ALLOC:DEP-OLD-CBG"),
+      allocAmount(op, "ALLOC:DEP-OLD-PST"),
+    ),
+  ];
+}
+
 // ── Baris laporan terpadu (dipakai layar, cetak, dan Excel) ────────────────────
 
 export interface ReportRow {
@@ -223,8 +295,9 @@ function pushExpenseGroupRows(rows: ReportRow[], details: ExpenseGroupDetail[]):
 /**
  * Membangun seluruh baris Laporan RAB dari BudgetSummary, dengan urutan:
  * Pendapatan (operasional + non-operasional + detail item) → Biaya Operasional →
- * Biaya Non Operasional → Investasi → Depresiasi (bila ada) → Surplus/Defisit →
- * Saldo Kas & Setara Kas.
+ * Biaya Non Operasional → Investasi Aset Tetap → Investasi Keuangan →
+ * Depresiasi Aset Baru (bila ada) → Depresiasi Aset Lama (bila ada) →
+ * Surplus/Defisit → Saldo Kas & Setara Kas.
  */
 export function buildReportRows(summary: BudgetSummary): ReportRow[] {
   const { operasional: incomeOp, nonOperasional: incomeNonOp } = groupIncome(
@@ -245,10 +318,10 @@ export function buildReportRows(summary: BudgetSummary): ReportRow[] {
 
   const totalOp = summary.expenses.total_operational;
   const totalNonOp = summary.expenses.total_non_operational;
-  const totalDep = summary.depreciation.total_current_year_dep;
   const totalPhysicalInvestments = summary.total_physical_investments;
   const totalFinancialInvestments = summary.total_financial_investments;
-  const totalInvestments = summary.total_investments;
+  const newAssetDep = sumDepreciationBySource(summary.depreciation.items, "new");
+  const oldAssetDep = sumDepreciationBySource(summary.depreciation.items, "existing");
 
   // Accrual: replaces investment cash cost with depreciation only
   const acrualIncome = totalIncome;
@@ -299,33 +372,43 @@ export function buildReportRows(summary: BudgetSummary): ReportRow[] {
     kind: "total",
   });
 
-  rows.push({ label: "Investasi", kas: null, akrual: null, kind: "section" });
+  // Investasi Aset Tetap, Investasi Keuangan, Depresiasi Aset Baru, dan Depresiasi
+  // Aset Lama ditampilkan sebagai section terpisah (tidak digabung menjadi satu
+  // baris "Investasi"/"Depresiasi") — rincian Unit vs Alokasi Cabang/Pusat untuk
+  // masing-masing tersedia lewat buildInvestmentDepreciationBreakdown.
+  rows.push({ label: "Investasi Aset Tetap", kas: null, akrual: null, kind: "section" });
   rows.push({
-    label: "Investasi Aset Tetap",
+    label: "TOTAL INVESTASI ASET TETAP",
     kas: totalPhysicalInvestments,
-    akrual: totalDep,
-    kind: "sub",
-  });
-  rows.push({
-    label: "Investasi Keuangan",
-    kas: totalFinancialInvestments,
-    akrual: 0,
-    kind: "sub",
-  });
-  rows.push({
-    label: "TOTAL INVESTASI",
-    kas: totalInvestments,
-    akrual: totalDep,
+    akrual: newAssetDep,
     kind: "total",
   });
 
-  if (totalDep > 0) {
-    rows.push({ label: "Depresiasi", kas: null, akrual: null, kind: "section" });
+  rows.push({ label: "Investasi Keuangan", kas: null, akrual: null, kind: "section" });
+  rows.push({
+    label: "TOTAL INVESTASI KEUANGAN",
+    kas: totalFinancialInvestments,
+    akrual: 0,
+    kind: "total",
+  });
+
+  if (newAssetDep > 0) {
+    rows.push({ label: "Depresiasi Aset Baru", kas: null, akrual: null, kind: "section" });
     rows.push({
-      label: "Total Penyusutan Aset (Baru + Lama)",
+      label: "TOTAL DEPRESIASI ASET BARU",
       kas: 0,
-      akrual: totalDep,
-      kind: "sub",
+      akrual: newAssetDep,
+      kind: "total",
+    });
+  }
+
+  if (oldAssetDep > 0) {
+    rows.push({ label: "Depresiasi Aset Lama", kas: null, akrual: null, kind: "section" });
+    rows.push({
+      label: "TOTAL DEPRESIASI ASET LAMA",
+      kas: 0,
+      akrual: oldAssetDep,
+      kind: "total",
     });
   }
 

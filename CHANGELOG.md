@@ -7,6 +7,20 @@ dan proyek ini menganut [Semantic Versioning](https://semver.org/lang/id/).
 
 ## [Unreleased]
 
+## [1.42.0] - 2026-07-07
+
+### Ditambahkan
+- Rincian Investasi Aset Tetap, Investasi Keuangan, Depresiasi Aset Baru, dan
+  Depresiasi Aset Lama di Summary RAB dan Laporan RAB kini masing-masing
+  tampil sebagai section terpisah (sebelumnya digabung menjadi satu baris
+  "Investasi" dan satu baris "Depresiasi"), dilengkapi tabel rincian Unit vs
+  Alokasi Cabang/Pusat sejajar dengan tabel rincian biaya operasional
+  (agregat, tanpa rincian per aset/item).
+- Tabel "Rincian Beban Non Operasional — Unit vs Alokasi Induk" di Summary
+  RAB dan Laporan RAB, melengkapi tabel rincian biaya operasional yang sudah
+  ada sebelumnya. Turut disertakan sebagai section terpisah pada export
+  Excel.
+
 ## [1.41.0] - 2026-07-07
 
 ### Ditambahkan

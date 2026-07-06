@@ -4,6 +4,8 @@ import {
   buildExpenseGroupsDetailed,
   buildExpenseBreakdown,
   buildReportRows,
+  sumDepreciationBySource,
+  buildInvestmentDepreciationBreakdown,
   sumItems,
   sumExpenseItems,
   matchGroupCode,
@@ -11,7 +13,7 @@ import {
   contributionScope,
   OP_EXPENSE_GROUPS,
 } from "@/lib/report";
-import type { BudgetSummary, ExpenseItem, IncomeItem } from "@/lib/types";
+import type { BudgetSummary, DepreciationItem, ExpenseItem, IncomeItem } from "@/lib/types";
 
 describe("groupIncome", () => {
   it("memisahkan item 4100-4499 sebagai operasional dan >=4500 sebagai non-operasional", () => {
@@ -189,24 +191,55 @@ describe("buildReportRows", () => {
     expect(rows.find((r) => r.label === "TOTAL PENDAPATAN")?.kas).toBe(1_000_000);
     expect(rows.find((r) => r.label === "TOTAL BIAYA OPERASIONAL")?.kas).toBe(500_000);
     expect(rows.find((r) => r.label === "TOTAL BIAYA NON OPERASIONAL")?.kas).toBe(200_000);
-    expect(rows.find((r) => r.label === "TOTAL INVESTASI")?.kas).toBe(100_000);
+    expect(rows.find((r) => r.label === "TOTAL INVESTASI ASET TETAP")?.kas).toBe(80_000);
+    expect(rows.find((r) => r.label === "TOTAL INVESTASI KEUANGAN")?.kas).toBe(20_000);
     expect(rows.find((r) => r.label === "SURPLUS (Budget KAS)")?.kas).toBe(200_000);
     expect(rows.find((r) => r.label === "SALDO KAS AKHIR (Budget Kas)")?.kas).toBe(250_000);
   });
 
-  it("tidak menampilkan baris Depresiasi ketika total_current_year_dep = 0", () => {
+  it("Investasi Aset Tetap dan Investasi Keuangan ditampilkan sebagai section terpisah, tidak digabung", () => {
     const rows = buildReportRows(makeSummary());
-    expect(rows.some((r) => r.label === "Depresiasi")).toBe(false);
+    expect(rows.some((r) => r.label === "Investasi Aset Tetap" && r.kind === "section")).toBe(true);
+    expect(rows.some((r) => r.label === "Investasi Keuangan" && r.kind === "section")).toBe(true);
+    expect(rows.some((r) => r.label === "TOTAL INVESTASI")).toBe(false);
   });
 
-  it("menampilkan baris Depresiasi ketika total_current_year_dep > 0", () => {
+  it("tidak menampilkan section Depresiasi Aset Baru/Lama ketika tidak ada depresiasi", () => {
+    const rows = buildReportRows(makeSummary());
+    expect(rows.some((r) => r.label === "Depresiasi Aset Baru")).toBe(false);
+    expect(rows.some((r) => r.label === "Depresiasi Aset Lama")).toBe(false);
+  });
+
+  it("menampilkan Depresiasi Aset Baru dan Depresiasi Aset Lama sebagai section terpisah", () => {
+    const depItems: DepreciationItem[] = [
+      {
+        asset_code: "INV-01",
+        asset_name: "Laptop",
+        acquisition_cost: 150_000,
+        useful_life: 5,
+        dep_per_year: 30_000,
+        current_year_dep: 30_000,
+        book_value: 120_000,
+        source: "new",
+      },
+      {
+        asset_code: "OLD-01",
+        asset_name: "Meja",
+        acquisition_cost: 100_000,
+        useful_life: 5,
+        dep_per_year: 20_000,
+        current_year_dep: 20_000,
+        book_value: 60_000,
+        source: "existing",
+      },
+    ];
     const rows = buildReportRows(
-      makeSummary({ depreciation: { items: [], total_current_year_dep: 50_000 } }),
+      makeSummary({ depreciation: { items: depItems, total_current_year_dep: 50_000 } }),
     );
-    expect(rows.some((r) => r.label === "Depresiasi")).toBe(true);
-    expect(
-      rows.find((r) => r.label === "Total Penyusutan Aset (Baru + Lama)")?.akrual,
-    ).toBe(50_000);
+    expect(rows.some((r) => r.label === "Depresiasi Aset Baru" && r.kind === "section")).toBe(true);
+    expect(rows.some((r) => r.label === "Depresiasi Aset Lama" && r.kind === "section")).toBe(true);
+    expect(rows.find((r) => r.label === "TOTAL DEPRESIASI ASET BARU")?.akrual).toBe(30_000);
+    expect(rows.find((r) => r.label === "TOTAL DEPRESIASI ASET LAMA")?.akrual).toBe(20_000);
   });
 
   it("label surplus mencerminkan DEFISIT ketika cash_surplus_deficit negatif", () => {
@@ -263,5 +296,126 @@ describe("buildExpenseBreakdown", () => {
     const breakdown = buildExpenseBreakdown([], OP_EXPENSE_GROUPS);
     expect(breakdown.rows).toHaveLength(0);
     expect(breakdown.total).toBe(0);
+  });
+});
+
+describe("sumDepreciationBySource", () => {
+  it("menjumlahkan current_year_dep per source (new/existing)", () => {
+    const items: DepreciationItem[] = [
+      {
+        asset_code: "INV-01",
+        asset_name: "Laptop",
+        acquisition_cost: 150_000,
+        useful_life: 5,
+        dep_per_year: 30_000,
+        current_year_dep: 30_000,
+        book_value: 120_000,
+        source: "new",
+      },
+      {
+        asset_code: "INV-02",
+        asset_name: "Proyektor",
+        acquisition_cost: 50_000,
+        useful_life: 5,
+        dep_per_year: 10_000,
+        current_year_dep: 10_000,
+        book_value: 40_000,
+        source: "new",
+      },
+      {
+        asset_code: "OLD-01",
+        asset_name: "Meja",
+        acquisition_cost: 100_000,
+        useful_life: 5,
+        dep_per_year: 20_000,
+        current_year_dep: 20_000,
+        book_value: 60_000,
+        source: "existing",
+      },
+    ];
+
+    expect(sumDepreciationBySource(items, "new")).toBe(40_000);
+    expect(sumDepreciationBySource(items, "existing")).toBe(20_000);
+  });
+});
+
+describe("buildInvestmentDepreciationBreakdown", () => {
+  it("mengembalikan 4 baris terpisah (investasi aset tetap, investasi keuangan, depresiasi baru, depresiasi lama)", () => {
+    const summary = makeSummary({
+      total_physical_investments: 80_000,
+      total_financial_investments: 20_000,
+      expenses: {
+        operational: [
+          { account_code: "5110.01", description: "Gaji Guru", total_yayasan: 500_000, total_bos: 0, total: 500_000 },
+          { account_code: "ALLOC:DEP-INV-CBG", description: "[Alokasi Cabang] Depresiasi investasi baru", total_yayasan: 5_000, total_bos: 0, total: 5_000 },
+          { account_code: "ALLOC:DEP-INV-PST", description: "[Alokasi Pusat] Depresiasi investasi baru", total_yayasan: 3_000, total_bos: 0, total: 3_000 },
+          { account_code: "ALLOC:DEP-OLD-CBG", description: "[Alokasi Cabang] Depresiasi aset lama", total_yayasan: 2_000, total_bos: 0, total: 2_000 },
+          { account_code: "ALLOC:DEP-OLD-PST", description: "[Alokasi Pusat] Depresiasi aset lama", total_yayasan: 1_000, total_bos: 0, total: 1_000 },
+          { account_code: "ALLOC:FIN-INV-CBG", description: "[Alokasi Cabang] Investasi Keuangan", total_yayasan: 4_000, total_bos: 0, total: 4_000 },
+          { account_code: "ALLOC:FIN-INV-PST", description: "[Alokasi Pusat] Investasi Keuangan", total_yayasan: 6_000, total_bos: 0, total: 6_000 },
+        ],
+        non_operational: [],
+        total_operational: 521_000,
+        total_non_operational: 0,
+        total: 521_000,
+      },
+      depreciation: {
+        items: [
+          {
+            asset_code: "INV-01",
+            asset_name: "Laptop",
+            acquisition_cost: 150_000,
+            useful_life: 5,
+            dep_per_year: 30_000,
+            current_year_dep: 30_000,
+            book_value: 120_000,
+            source: "new",
+          },
+          {
+            asset_code: "OLD-01",
+            asset_name: "Meja",
+            acquisition_cost: 100_000,
+            useful_life: 5,
+            dep_per_year: 20_000,
+            current_year_dep: 20_000,
+            book_value: 60_000,
+            source: "existing",
+          },
+        ],
+        total_current_year_dep: 50_000,
+      },
+    });
+
+    const rows = buildInvestmentDepreciationBreakdown(summary);
+    expect(rows.map((r) => r.label)).toEqual([
+      "Investasi Aset Tetap",
+      "Investasi Keuangan",
+      "Depresiasi Aset Baru",
+      "Depresiasi Aset Lama",
+    ]);
+
+    const physical = rows.find((r) => r.label === "Investasi Aset Tetap")!;
+    expect(physical.unit).toBe(80_000);
+    expect(physical.cabang).toBe(0);
+    expect(physical.pusat).toBe(0);
+    expect(physical.total).toBe(80_000);
+
+    const financial = rows.find((r) => r.label === "Investasi Keuangan")!;
+    expect(financial.unit).toBe(20_000);
+    expect(financial.cabang).toBe(4_000);
+    expect(financial.pusat).toBe(6_000);
+    expect(financial.total).toBe(30_000);
+
+    const newDep = rows.find((r) => r.label === "Depresiasi Aset Baru")!;
+    expect(newDep.unit).toBe(30_000);
+    expect(newDep.cabang).toBe(5_000);
+    expect(newDep.pusat).toBe(3_000);
+    expect(newDep.total).toBe(38_000);
+
+    const oldDep = rows.find((r) => r.label === "Depresiasi Aset Lama")!;
+    expect(oldDep.unit).toBe(20_000);
+    expect(oldDep.cabang).toBe(2_000);
+    expect(oldDep.pusat).toBe(1_000);
+    expect(oldDep.total).toBe(23_000);
   });
 });

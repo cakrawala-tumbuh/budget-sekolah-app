@@ -12,11 +12,18 @@ import { ReportCover } from "@/components/report/ReportCover";
 import { ReportKpiCards } from "@/components/report/ReportKpiCards";
 import { ReportSummaryTable } from "@/components/report/ReportSummaryTable";
 import { ReportExpenseBreakdown } from "@/components/report/ReportExpenseBreakdown";
+import { ReportInvestmentDepreciationBreakdown } from "@/components/report/ReportInvestmentDepreciationBreakdown";
 import { ReportConsolidation } from "@/components/report/ReportConsolidation";
 import { ReportSignatures } from "@/components/report/ReportSignatures";
-import { buildReportRows, buildExpenseBreakdown, OP_EXPENSE_GROUPS } from "@/lib/report";
+import {
+  buildReportRows,
+  buildExpenseBreakdown,
+  buildInvestmentDepreciationBreakdown,
+  OP_EXPENSE_GROUPS,
+  NON_OP_EXPENSE_GROUPS,
+} from "@/lib/report";
 import { downloadXls, type ExcelSection } from "@/lib/export/excel";
-import type { BudgetSummary, ComparativeSummary } from "@/lib/types";
+import type { BudgetSummary, ComparativeSummary, ExpenseItem } from "@/lib/types";
 
 interface Props {
   params: Promise<{ id: string }>;
@@ -33,21 +40,29 @@ function buildSummarySection(summary: BudgetSummary): ExcelSection {
   };
 }
 
-function buildExpenseBreakdownSection(summary: BudgetSummary): ExcelSection {
-  const breakdown = buildExpenseBreakdown(summary.expenses.operational, OP_EXPENSE_GROUPS);
+function buildExpenseBreakdownSection(
+  items: ExpenseItem[],
+  groups: { code: string; label: string }[],
+  title: string,
+  totalLabel: string,
+): ExcelSection {
+  const breakdown = buildExpenseBreakdown(items, groups);
   return {
-    title: "Rincian Beban Operasional — Unit vs Alokasi Induk",
+    title,
     header: ["Kelompok Biaya", "Biaya Unit", "Alokasi Cabang", "Alokasi Pusat", "Total"],
     rows: [
       ...breakdown.rows.map((r) => [r.label, r.unit, r.cabang, r.pusat, r.total]),
-      [
-        "TOTAL BEBAN OPERASIONAL",
-        breakdown.totalUnit,
-        breakdown.totalCabang,
-        breakdown.totalPusat,
-        breakdown.total,
-      ],
+      [totalLabel, breakdown.totalUnit, breakdown.totalCabang, breakdown.totalPusat, breakdown.total],
     ],
+  };
+}
+
+function buildInvestmentDepreciationSection(summary: BudgetSummary): ExcelSection {
+  const rows = buildInvestmentDepreciationBreakdown(summary);
+  return {
+    title: "Rincian Investasi & Depresiasi — Unit vs Alokasi Induk",
+    header: ["Uraian", "Unit", "Alokasi Cabang", "Alokasi Pusat", "Total"],
+    rows: rows.map((r) => [r.label, r.unit, r.cabang, r.pusat, r.total]),
   };
 }
 
@@ -103,7 +118,19 @@ export default function LaporanPage({ params }: Props) {
     if (!org || !summary) return;
     const sections: ExcelSection[] = [
       buildSummarySection(summary),
-      buildExpenseBreakdownSection(summary),
+      buildExpenseBreakdownSection(
+        summary.expenses.operational,
+        OP_EXPENSE_GROUPS,
+        "Rincian Beban Operasional — Unit vs Alokasi Induk",
+        "TOTAL BEBAN OPERASIONAL",
+      ),
+      buildExpenseBreakdownSection(
+        summary.expenses.non_operational,
+        NON_OP_EXPENSE_GROUPS,
+        "Rincian Beban Non Operasional — Unit vs Alokasi Induk",
+        "TOTAL BEBAN NON OPERASIONAL",
+      ),
+      buildInvestmentDepreciationSection(summary),
     ];
     if (isParentOrg && comparative) {
       sections.push(buildConsolidationSection(comparative));
@@ -146,7 +173,19 @@ export default function LaporanPage({ params }: Props) {
         />
         <ReportKpiCards summary={summary} />
         <ReportSummaryTable summary={summary} />
-        <ReportExpenseBreakdown summary={summary} />
+        <ReportExpenseBreakdown
+          items={summary.expenses.operational}
+          groups={OP_EXPENSE_GROUPS}
+          title="Rincian Beban Operasional — Unit vs Alokasi Induk"
+          totalLabel="TOTAL BEBAN OPERASIONAL"
+        />
+        <ReportExpenseBreakdown
+          items={summary.expenses.non_operational}
+          groups={NON_OP_EXPENSE_GROUPS}
+          title="Rincian Beban Non Operasional — Unit vs Alokasi Induk"
+          totalLabel="TOTAL BEBAN NON OPERASIONAL"
+        />
+        <ReportInvestmentDepreciationBreakdown summary={summary} />
         {isParentOrg && comparative && <ReportConsolidation data={comparative} />}
         <ReportSignatures />
 
