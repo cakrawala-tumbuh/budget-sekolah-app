@@ -286,17 +286,24 @@ export default function SummaryPage({ params }: Props) {
     summary.expenses.non_operational,
     NON_OP_EXPENSE_GROUPS,
   );
-  const invDepRows = buildInvestmentDepreciationBreakdown(summary).filter(
+  const [investasiAsetTetap, investasiKeuangan, depresiasiBaru, depresiasiLama] =
+    buildInvestmentDepreciationBreakdown(summary);
+  const invDepRows = [investasiAsetTetap, investasiKeuangan, depresiasiBaru, depresiasiLama].filter(
     (r) => r.unit !== 0 || r.cabang !== 0 || r.pusat !== 0,
   );
+  const allocOnly = (r: SingleItemBreakdown) => r.cabang + r.pusat;
 
-  const totalOp = summary.expenses.total_operational;
   const totalNonOp = summary.expenses.total_non_operational;
   const totalDep = summary.depreciation.total_current_year_dep;
-  const totalPhysicalInvestments = summary.total_physical_investments;
-  const totalFinancialInvestments = summary.total_financial_investments;
+  const totalPhysicalInvestments = investasiAsetTetap.total;
   const newAssetDep = sumDepreciationBySource(summary.depreciation.items, "new");
-  const oldAssetDep = sumDepreciationBySource(summary.depreciation.items, "existing");
+
+  // Alokasi depresiasi & investasi keuangan induk (Cabang/Pusat) digabung ke total
+  // Investasi Keuangan/Depresiasi Aset Baru/Depresiasi Aset Lama masing-masing,
+  // bukan lagi baris "Lainnya" di Biaya Operasional — TOTAL BIAYA OPERASIONAL
+  // dikurangi sebesar alokasi yang dipindah agar tetap rekonsiliasi.
+  const allocMoved = allocOnly(investasiKeuangan) + allocOnly(depresiasiBaru) + allocOnly(depresiasiLama);
+  const totalOp = summary.expenses.total_operational - allocMoved;
 
   // Accrual: replaces investment cash cost with depreciation only
   const acrualIncome = totalIncome;
@@ -424,30 +431,30 @@ export default function SummaryPage({ params }: Props) {
             <SectionHeader label="Investasi Keuangan" />
             <SummaryRow
               label="TOTAL INVESTASI KEUANGAN"
-              kas={totalFinancialInvestments}
-              akrual={0}
+              kas={investasiKeuangan.total}
+              akrual={allocOnly(investasiKeuangan)}
               isTotal
             />
 
-            {newAssetDep > 0 && (
+            {depresiasiBaru.total > 0 && (
               <>
                 <SectionHeader label="Depresiasi Aset Baru" />
                 <SummaryRow
                   label="TOTAL DEPRESIASI ASET BARU"
-                  kas={0}
-                  akrual={newAssetDep}
+                  kas={allocOnly(depresiasiBaru)}
+                  akrual={depresiasiBaru.total}
                   isTotal
                 />
               </>
             )}
 
-            {oldAssetDep > 0 && (
+            {depresiasiLama.total > 0 && (
               <>
                 <SectionHeader label="Depresiasi Aset Lama" />
                 <SummaryRow
                   label="TOTAL DEPRESIASI ASET LAMA"
-                  kas={0}
-                  akrual={oldAssetDep}
+                  kas={allocOnly(depresiasiLama)}
+                  akrual={depresiasiLama.total}
                   isTotal
                 />
               </>

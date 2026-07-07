@@ -92,6 +92,22 @@ function baseGroupCode(item: ExpenseItem): string {
     : item.account_code;
 }
 
+/**
+ * Kode alokasi depresiasi & investasi keuangan induk (Cabang/Pusat). Item ini
+ * SENGAJA dikecualikan dari pengelompokan biaya 5xxx — bukan biaya operasional
+ * bergrup, melainkan digabungkan ke section Investasi Keuangan/Depresiasi Aset
+ * Baru/Depresiasi Aset Lama masing-masing (lihat buildInvestmentDepreciationBreakdown
+ * & buildReportRows) agar konsisten dengan penyajian unit+alokasi di section lain.
+ */
+const INVESTMENT_DEPRECIATION_ALLOC_CODES = new Set([
+  "ALLOC:DEP-INV-CBG",
+  "ALLOC:DEP-INV-PST",
+  "ALLOC:DEP-OLD-CBG",
+  "ALLOC:DEP-OLD-PST",
+  "ALLOC:FIN-INV-CBG",
+  "ALLOC:FIN-INV-PST",
+]);
+
 export interface ExpenseGroupDetail {
   code: string;
   label: string;
@@ -105,9 +121,11 @@ export interface ExpenseGroupDetail {
 
 /**
  * Mengelompokkan item biaya per grup 5xxx sambil MEMISAHKAN beban asli unit dari
- * beban kontribusi (alokasi Cabang/Pusat). Item alokasi yang tak memetakan ke grup
- * mana pun (mis. depresiasi & investasi induk) ditampung di bucket "Lainnya" agar
- * total tetap terekonsiliasi (jumlah semua baris = total operasional/non-operasional).
+ * beban kontribusi (alokasi Cabang/Pusat). Alokasi depresiasi & investasi keuangan
+ * induk (INVESTMENT_DEPRECIATION_ALLOC_CODES) dikecualikan di sini — ditampilkan
+ * lewat buildInvestmentDepreciationBreakdown. Item lain yang tak memetakan ke grup
+ * mana pun ditampung di bucket "Lainnya" sebagai jaring pengaman agar total tetap
+ * terekonsiliasi (jumlah semua baris = total operasional/non-operasional).
  */
 export function buildExpenseGroupsDetailed(
   items: ExpenseItem[],
@@ -122,13 +140,14 @@ export function buildExpenseGroupsDetailed(
   }));
   const other: ExpenseGroupDetail = {
     code: "LAIN",
-    label: "Lainnya (termasuk alokasi depresiasi & investasi induk)",
+    label: "Lainnya",
     ownTotal: 0,
     contribCabang: 0,
     contribPusat: 0,
   };
 
   for (const item of items) {
+    if (INVESTMENT_DEPRECIATION_ALLOC_CODES.has(item.account_code)) continue;
     const base = baseGroupCode(item);
     const target = details.find((g) => matchGroupCode(base, g.code)) ?? other;
     if (isContributionItem(item)) {
@@ -292,12 +311,24 @@ function pushExpenseGroupRows(rows: ReportRow[], details: ExpenseGroupDetail[]):
   }
 }
 
+/** Jumlah alokasi Cabang + Pusat saja (tanpa porsi unit) pada satu baris rincian. */
+function allocOnlyTotal(row: SingleItemBreakdown): number {
+  return row.cabang + row.pusat;
+}
+
 /**
  * Membangun seluruh baris Laporan RAB dari BudgetSummary, dengan urutan:
  * Pendapatan (operasional + non-operasional + detail item) → Biaya Operasional →
  * Biaya Non Operasional → Investasi Aset Tetap → Investasi Keuangan →
  * Depresiasi Aset Baru (bila ada) → Depresiasi Aset Lama (bila ada) →
  * Surplus/Defisit → Saldo Kas & Setara Kas.
+ *
+ * Alokasi depresiasi & investasi keuangan induk (Cabang/Pusat) digabung ke total
+ * Investasi Keuangan/Depresiasi Aset Baru/Depresiasi Aset Lama masing-masing
+ * (konsisten dengan grup 5xxx lain yang juga total = unit + alokasi Cabang + Pusat),
+ * bukan lagi ditampung sebagai baris "Lainnya" generik di Biaya Operasional. Karena
+ * itu, TOTAL BIAYA OPERASIONAL yang ditampilkan dikurangi sebesar alokasi yang
+ * dipindah agar tetap rekonsiliasi dengan jumlah baris grup di atasnya.
  */
 export function buildReportRows(summary: BudgetSummary): ReportRow[] {
   const { operasional: incomeOp, nonOperasional: incomeNonOp } = groupIncome(
@@ -316,12 +347,15 @@ export function buildReportRows(summary: BudgetSummary): ReportRow[] {
     NON_OP_EXPENSE_GROUPS,
   );
 
-  const totalOp = summary.expenses.total_operational;
+  const [investasiAsetTetap, investasiKeuangan, depresiasiBaru, depresiasiLama] =
+    buildInvestmentDepreciationBreakdown(summary);
+  const allocMoved =
+    allocOnlyTotal(investasiKeuangan) + allocOnlyTotal(depresiasiBaru) + allocOnlyTotal(depresiasiLama);
+
+  const totalOp = summary.expenses.total_operational - allocMoved;
   const totalNonOp = summary.expenses.total_non_operational;
-  const totalPhysicalInvestments = summary.total_physical_investments;
-  const totalFinancialInvestments = summary.total_financial_investments;
+  const totalPhysicalInvestments = investasiAsetTetap.total;
   const newAssetDep = sumDepreciationBySource(summary.depreciation.items, "new");
-  const oldAssetDep = sumDepreciationBySource(summary.depreciation.items, "existing");
 
   // Accrual: replaces investment cash cost with depreciation only
   const acrualIncome = totalIncome;
@@ -372,10 +406,11 @@ export function buildReportRows(summary: BudgetSummary): ReportRow[] {
     kind: "total",
   });
 
-  // Investasi Aset Tetap, Investasi Keuangan, Depresiasi Aset Baru, dan Depresiasi
-  // Aset Lama ditampilkan sebagai section terpisah (tidak digabung menjadi satu
-  // baris "Investasi"/"Depresiasi") — rincian Unit vs Alokasi Cabang/Pusat untuk
-  // masing-masing tersedia lewat buildInvestmentDepreciationBreakdown.
+  // Investasi Aset Tetap tidak menerima alokasi Cabang/Pusat (hanya beban unit).
+  // Investasi Keuangan, Depresiasi Aset Baru, dan Depresiasi Aset Lama masing-masing
+  // menggabungkan beban unit + alokasi Cabang + alokasi Pusat dalam satu total —
+  // rincian per komponen (unit vs Cabang vs Pusat) tersedia lewat
+  // buildInvestmentDepreciationBreakdown.
   rows.push({ label: "Investasi Aset Tetap", kas: null, akrual: null, kind: "section" });
   rows.push({
     label: "TOTAL INVESTASI ASET TETAP",
@@ -387,27 +422,27 @@ export function buildReportRows(summary: BudgetSummary): ReportRow[] {
   rows.push({ label: "Investasi Keuangan", kas: null, akrual: null, kind: "section" });
   rows.push({
     label: "TOTAL INVESTASI KEUANGAN",
-    kas: totalFinancialInvestments,
-    akrual: 0,
+    kas: investasiKeuangan.total,
+    akrual: allocOnlyTotal(investasiKeuangan),
     kind: "total",
   });
 
-  if (newAssetDep > 0) {
+  if (depresiasiBaru.total > 0) {
     rows.push({ label: "Depresiasi Aset Baru", kas: null, akrual: null, kind: "section" });
     rows.push({
       label: "TOTAL DEPRESIASI ASET BARU",
-      kas: 0,
-      akrual: newAssetDep,
+      kas: allocOnlyTotal(depresiasiBaru),
+      akrual: depresiasiBaru.total,
       kind: "total",
     });
   }
 
-  if (oldAssetDep > 0) {
+  if (depresiasiLama.total > 0) {
     rows.push({ label: "Depresiasi Aset Lama", kas: null, akrual: null, kind: "section" });
     rows.push({
       label: "TOTAL DEPRESIASI ASET LAMA",
-      kas: 0,
-      akrual: oldAssetDep,
+      kas: allocOnlyTotal(depresiasiLama),
+      akrual: depresiasiLama.total,
       kind: "total",
     });
   }

@@ -94,7 +94,6 @@ describe("buildExpenseGroupsDetailed", () => {
       { account_code: "5110.01", description: "Gaji", total_yayasan: 900, total_bos: 0, total: 900 },
       { account_code: "ALLOC:5110.01", description: "[Alokasi Cabang] Gaji", total_yayasan: 100, total_bos: 0, total: 100 },
       { account_code: "ALLOC:5110.02", description: "[Alokasi Pusat] Honor", total_yayasan: 50, total_bos: 0, total: 50 },
-      { account_code: "ALLOC:DEP-OLD-CBG", description: "[Alokasi Cabang] Depresiasi aset lama", total_yayasan: 30, total_bos: 0, total: 30 },
     ];
 
     const details = buildExpenseGroupsDetailed(items, [{ code: "5110", label: "Biaya Gaji" }]);
@@ -104,16 +103,44 @@ describe("buildExpenseGroupsDetailed", () => {
     expect(gaji.contribCabang).toBe(100);
     expect(gaji.contribPusat).toBe(50);
 
-    // Item alokasi yang tak memetakan ke grup 5xxx ditampung di bucket LAIN.
-    const other = details.find((d) => d.code === "LAIN")!;
-    expect(other.contribCabang).toBe(30);
-
     // Rekonsiliasi: jumlah semua baris = jumlah semua item.
     const grand = details.reduce(
       (a, d) => a + d.ownTotal + d.contribCabang + d.contribPusat,
       0,
     );
-    expect(grand).toBe(1080);
+    expect(grand).toBe(1050);
+  });
+
+  it("mengecualikan alokasi depresiasi & investasi keuangan induk (ditampilkan lewat buildInvestmentDepreciationBreakdown, bukan bucket Lainnya)", () => {
+    const items: ExpenseItem[] = [
+      { account_code: "5110.01", description: "Gaji", total_yayasan: 900, total_bos: 0, total: 900 },
+      { account_code: "ALLOC:DEP-INV-CBG", description: "[Alokasi Cabang] Depresiasi investasi baru", total_yayasan: 10, total_bos: 0, total: 10 },
+      { account_code: "ALLOC:DEP-OLD-PST", description: "[Alokasi Pusat] Depresiasi aset lama", total_yayasan: 20, total_bos: 0, total: 20 },
+      { account_code: "ALLOC:FIN-INV-CBG", description: "[Alokasi Cabang] Investasi Keuangan", total_yayasan: 30, total_bos: 0, total: 30 },
+    ];
+
+    const details = buildExpenseGroupsDetailed(items, [{ code: "5110", label: "Biaya Gaji" }]);
+
+    // Tidak ada bucket "LAIN" — item alokasi depresiasi/investasi induk dikecualikan sepenuhnya.
+    expect(details.find((d) => d.code === "LAIN")).toBeUndefined();
+
+    const grand = details.reduce(
+      (a, d) => a + d.ownTotal + d.contribCabang + d.contribPusat,
+      0,
+    );
+    expect(grand).toBe(900);
+  });
+
+  it("tetap menampung item alokasi yang benar-benar tak memetakan ke grup manapun sebagai jaring pengaman", () => {
+    const items: ExpenseItem[] = [
+      { account_code: "5110.01", description: "Gaji", total_yayasan: 900, total_bos: 0, total: 900 },
+      { account_code: "ALLOC:9999.01", description: "[Alokasi Cabang] Kode tak dikenal", total_yayasan: 15, total_bos: 0, total: 15 },
+    ];
+
+    const details = buildExpenseGroupsDetailed(items, [{ code: "5110", label: "Biaya Gaji" }]);
+
+    const other = details.find((d) => d.code === "LAIN")!;
+    expect(other.contribCabang).toBe(15);
   });
 });
 
@@ -245,6 +272,64 @@ describe("buildReportRows", () => {
   it("label surplus mencerminkan DEFISIT ketika cash_surplus_deficit negatif", () => {
     const rows = buildReportRows(makeSummary({ cash_surplus_deficit: -50_000 }));
     expect(rows.some((r) => r.label === "DEFISIT (Budget KAS)")).toBe(true);
+  });
+
+  it("menggabungkan alokasi depresiasi & investasi keuangan induk ke section masing-masing, bukan baris Lainnya", () => {
+    const summary = makeSummary({
+      total_physical_investments: 80_000,
+      total_financial_investments: 20_000,
+      expenses: {
+        operational: [
+          { account_code: "5110.01", description: "Gaji Guru", total_yayasan: 500_000, total_bos: 0, total: 500_000 },
+          { account_code: "ALLOC:DEP-INV-CBG", description: "[Alokasi Cabang] Depresiasi investasi baru", total_yayasan: 5_000, total_bos: 0, total: 5_000 },
+          { account_code: "ALLOC:DEP-INV-PST", description: "[Alokasi Pusat] Depresiasi investasi baru", total_yayasan: 3_000, total_bos: 0, total: 3_000 },
+          { account_code: "ALLOC:DEP-OLD-CBG", description: "[Alokasi Cabang] Depresiasi aset lama", total_yayasan: 2_000, total_bos: 0, total: 2_000 },
+          { account_code: "ALLOC:FIN-INV-PST", description: "[Alokasi Pusat] Investasi Keuangan", total_yayasan: 6_000, total_bos: 0, total: 6_000 },
+        ],
+        non_operational: [],
+        total_operational: 516_000,
+        total_non_operational: 0,
+        total: 516_000,
+      },
+      depreciation: {
+        items: [
+          {
+            asset_code: "INV-01",
+            asset_name: "Laptop",
+            acquisition_cost: 150_000,
+            useful_life: 5,
+            dep_per_year: 30_000,
+            current_year_dep: 30_000,
+            book_value: 120_000,
+            source: "new",
+          },
+        ],
+        total_current_year_dep: 30_000,
+      },
+    });
+
+    const rows = buildReportRows(summary);
+
+    // Tidak ada lagi baris "Lainnya" di Biaya Operasional.
+    expect(rows.some((r) => r.label.startsWith("Lainnya"))).toBe(false);
+
+    // TOTAL BIAYA OPERASIONAL = 516_000 dikurangi 16_000 alokasi yang dipindah (5_000+3_000+2_000+6_000).
+    expect(rows.find((r) => r.label === "TOTAL BIAYA OPERASIONAL")?.kas).toBe(500_000);
+
+    // Investasi Keuangan = unit (20_000) + alokasi Pusat (6_000).
+    const investasiKeuangan = rows.find((r) => r.label === "TOTAL INVESTASI KEUANGAN")!;
+    expect(investasiKeuangan.kas).toBe(26_000);
+    expect(investasiKeuangan.akrual).toBe(6_000);
+
+    // Depresiasi Aset Baru = unit (30_000 akrual) + alokasi Cabang/Pusat (5_000+3_000=8_000).
+    const depresiasiBaru = rows.find((r) => r.label === "TOTAL DEPRESIASI ASET BARU")!;
+    expect(depresiasiBaru.kas).toBe(8_000);
+    expect(depresiasiBaru.akrual).toBe(38_000);
+
+    // Depresiasi Aset Lama = unit (0, tak ada aset lama) + alokasi Cabang (2_000).
+    const depresiasiLama = rows.find((r) => r.label === "TOTAL DEPRESIASI ASET LAMA")!;
+    expect(depresiasiLama.kas).toBe(2_000);
+    expect(depresiasiLama.akrual).toBe(2_000);
   });
 
   it("baris grup biaya menampilkan TOTAL (beban unit + alokasi Cabang & Pusat)", () => {

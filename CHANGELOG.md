@@ -7,6 +7,18 @@ dan proyek ini menganut [Semantic Versioning](https://semver.org/lang/id/).
 
 ## [Unreleased]
 
+## [1.42.1] - 2026-07-07
+
+### Diperbaiki
+- Baris "Lainnya (termasuk alokasi depresiasi & investasi induk)" yang tampil
+  generik di kelompok Biaya Operasional (Summary RAB & Laporan RAB) kini
+  digabungkan ke total Investasi Keuangan/Depresiasi Aset Baru/Depresiasi
+  Aset Lama masing-masing — konsisten dengan kelompok biaya 5xxx lain yang
+  selalu menjumlahkan beban unit + alokasi Cabang + alokasi Pusat dalam satu
+  baris. TOTAL BIAYA OPERASIONAL yang ditampilkan disesuaikan (dikurangi
+  sebesar alokasi yang dipindah) agar tetap rekonsiliasi dengan jumlah baris
+  kelompok biaya di atasnya.
+
 ## [1.42.0] - 2026-07-07
 
 ### Ditambahkan
