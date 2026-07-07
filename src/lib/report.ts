@@ -169,6 +169,48 @@ export function groupTotal(g: ExpenseGroupDetail): number {
   return g.ownTotal + g.contribCabang + g.contribPusat;
 }
 
+const ALLOC_LABEL_PREFIX_RE = /^\[Alokasi (Cabang|Pusat)\]\s*/;
+
+/**
+ * Mengelompokkan item biaya PER AKUN (bukan per grup induk 5xxx) sambil tetap
+ * memisahkan beban asli unit dari beban kontribusi (alokasi Cabang/Pusat). Item
+ * alokasi (ALLOC:xxx) digabung ke baris akun aslinya via baseGroupCode karena
+ * mewakili beban pada akun yang sama, hanya dibebankan dari induk. Alokasi
+ * depresiasi & investasi keuangan induk tetap dikecualikan (lihat
+ * buildInvestmentDepreciationBreakdown). Label diambil dari deskripsi item asli
+ * unit bila ada; bila akun hanya punya alokasi, label diambil dari deskripsi
+ * alokasi dengan prefix "[Alokasi Cabang/Pusat]" dilepas.
+ */
+export function buildExpenseAccountsDetailed(items: ExpenseItem[]): ExpenseGroupDetail[] {
+  const order: string[] = [];
+  const byCode = new Map<string, ExpenseGroupDetail>();
+
+  for (const item of items) {
+    if (INVESTMENT_DEPRECIATION_ALLOC_CODES.has(item.account_code)) continue;
+    const code = baseGroupCode(item);
+    let detail = byCode.get(code);
+    if (!detail) {
+      detail = { code, label: code, ownTotal: 0, contribCabang: 0, contribPusat: 0 };
+      byCode.set(code, detail);
+      order.push(code);
+    }
+    if (isContributionItem(item)) {
+      if (contributionScope(item) === "pusat") detail.contribPusat += item.total;
+      else detail.contribCabang += item.total;
+      if (detail.ownTotal === 0) {
+        detail.label = item.description.replace(ALLOC_LABEL_PREFIX_RE, "");
+      }
+    } else {
+      detail.ownTotal += item.total;
+      detail.label = item.description;
+    }
+  }
+
+  return order
+    .map((code) => byCode.get(code)!)
+    .sort((a, b) => a.code.localeCompare(b.code));
+}
+
 export interface ExpenseBreakdownRow {
   label: string;
   /** Biaya asli unit. */
@@ -189,16 +231,7 @@ export interface ExpenseBreakdown {
   total: number;
 }
 
-/**
- * Rincian beban per grup dengan empat nilai eksplisit: biaya unit, alokasi Cabang,
- * alokasi Pusat, dan total. Hanya grup dengan aktivitas yang disertakan; baris
- * subtotal (`total*`) terekonsiliasi dengan total operasional/non-operasional.
- */
-export function buildExpenseBreakdown(
-  items: ExpenseItem[],
-  groups: { code: string; label: string }[],
-): ExpenseBreakdown {
-  const details = buildExpenseGroupsDetailed(items, groups);
+function detailsToBreakdown(details: ExpenseGroupDetail[]): ExpenseBreakdown {
   const rows: ExpenseBreakdownRow[] = details
     .filter((g) => g.ownTotal !== 0 || g.contribCabang !== 0 || g.contribPusat !== 0)
     .map((g) => ({
@@ -215,6 +248,27 @@ export function buildExpenseBreakdown(
     totalPusat: rows.reduce((a, r) => a + r.pusat, 0),
     total: rows.reduce((a, r) => a + r.total, 0),
   };
+}
+
+/**
+ * Rincian beban per grup dengan empat nilai eksplisit: biaya unit, alokasi Cabang,
+ * alokasi Pusat, dan total. Hanya grup dengan aktivitas yang disertakan; baris
+ * subtotal (`total*`) terekonsiliasi dengan total operasional/non-operasional.
+ */
+export function buildExpenseBreakdown(
+  items: ExpenseItem[],
+  groups: { code: string; label: string }[],
+): ExpenseBreakdown {
+  return detailsToBreakdown(buildExpenseGroupsDetailed(items, groups));
+}
+
+/**
+ * Rincian beban PER AKUN (bukan per grup induk 5xxx) dengan empat nilai eksplisit:
+ * biaya unit, alokasi Cabang, alokasi Pusat, dan total. Dipakai Laporan RAB agar
+ * beban ditampilkan per akun asli, bukan digabung ke akun induk.
+ */
+export function buildExpenseBreakdownPerAccount(items: ExpenseItem[]): ExpenseBreakdown {
+  return detailsToBreakdown(buildExpenseAccountsDetailed(items));
 }
 
 // ── Rincian investasi & depresiasi (Unit vs Alokasi Cabang/Pusat) ──────────────
@@ -299,15 +353,16 @@ export interface ReportRow {
 }
 
 /**
- * Menambahkan satu baris per grup biaya berisi TOTAL grup (beban unit + alokasi
- * Cabang + alokasi Pusat). Rincian per komponen disajikan terpisah lewat
- * buildExpenseBreakdown. Total seluruh baris ini = total operasional/non-operasional.
+ * Menambahkan satu baris PER AKUN biaya (bukan per akun induk) berisi TOTAL akun
+ * (beban unit + alokasi Cabang + alokasi Pusat). Rincian per komponen disajikan
+ * terpisah lewat buildExpenseBreakdownPerAccount. Total seluruh baris ini = total
+ * operasional/non-operasional.
  */
-function pushExpenseGroupRows(rows: ReportRow[], details: ExpenseGroupDetail[]): void {
+function pushExpenseAccountRows(rows: ReportRow[], details: ExpenseGroupDetail[]): void {
   for (const g of details) {
     const total = groupTotal(g);
     if (total === 0) continue;
-    rows.push({ label: g.label, kas: total, akrual: total, kind: "sub" });
+    rows.push({ label: g.label, kas: total, akrual: total, kind: "line" });
   }
 }
 
@@ -338,14 +393,8 @@ export function buildReportRows(summary: BudgetSummary): ReportRow[] {
   const totalIncomeNonOp = sumItems(incomeNonOp);
   const totalIncome = summary.income.total;
 
-  const opGroups = buildExpenseGroupsDetailed(
-    summary.expenses.operational,
-    OP_EXPENSE_GROUPS,
-  );
-  const nonOpGroups = buildExpenseGroupsDetailed(
-    summary.expenses.non_operational,
-    NON_OP_EXPENSE_GROUPS,
-  );
+  const opAccounts = buildExpenseAccountsDetailed(summary.expenses.operational);
+  const nonOpAccounts = buildExpenseAccountsDetailed(summary.expenses.non_operational);
 
   const [investasiAsetTetap, investasiKeuangan, depresiasiBaru, depresiasiLama] =
     buildInvestmentDepreciationBreakdown(summary);
@@ -389,7 +438,7 @@ export function buildReportRows(summary: BudgetSummary): ReportRow[] {
   });
 
   rows.push({ label: "Biaya Operasional", kas: null, akrual: null, kind: "section" });
-  pushExpenseGroupRows(rows, opGroups);
+  pushExpenseAccountRows(rows, opAccounts);
   rows.push({
     label: "TOTAL BIAYA OPERASIONAL",
     kas: totalOp,
@@ -398,7 +447,7 @@ export function buildReportRows(summary: BudgetSummary): ReportRow[] {
   });
 
   rows.push({ label: "Biaya Non Operasional", kas: null, akrual: null, kind: "section" });
-  pushExpenseGroupRows(rows, nonOpGroups);
+  pushExpenseAccountRows(rows, nonOpAccounts);
   rows.push({
     label: "TOTAL BIAYA NON OPERASIONAL",
     kas: totalNonOp,

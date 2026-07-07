@@ -1,26 +1,25 @@
-import { buildExpenseBreakdown } from "@/lib/report";
+import { buildExpenseBreakdownPerAccount } from "@/lib/report";
 import { formatCurrency } from "@/lib/utils";
 import type { ExpenseItem } from "@/lib/types";
 
 interface ReportExpenseBreakdownProps {
   items: ExpenseItem[];
-  groups: { code: string; label: string }[];
   title: string;
   totalLabel: string;
 }
 
 /**
- * Rincian beban (operasional atau non-operasional) dengan empat nilai eksplisit
- * per kelompok biaya: Biaya Unit, Alokasi Cabang, Alokasi Pusat, dan Total —
- * sehingga pengguna tak perlu menghitung sendiri kontribusi induk.
+ * Rincian beban (operasional atau non-operasional) PER AKUN dengan empat nilai
+ * eksplisit: Biaya Unit, Alokasi Cabang, Alokasi Pusat, dan Total — sehingga
+ * pengguna tak perlu menghitung sendiri kontribusi induk dan tidak perlu
+ * membuka akun induk untuk melihat rincian per akun.
  */
 export function ReportExpenseBreakdown({
   items,
-  groups,
   title,
   totalLabel,
 }: ReportExpenseBreakdownProps) {
-  const breakdown = buildExpenseBreakdown(items, groups);
+  const breakdown = buildExpenseBreakdownPerAccount(items);
   if (breakdown.rows.length === 0) return null;
 
   const hasAllocation = breakdown.totalCabang !== 0 || breakdown.totalPusat !== 0;
@@ -39,7 +38,7 @@ export function ReportExpenseBreakdown({
         <table className="w-full border-collapse text-sm">
           <thead>
             <tr className="bg-[#134e4a] text-white">
-              <th className="px-3 py-2 text-left font-semibold">Kelompok Biaya</th>
+              <th className="px-3 py-2 text-left font-semibold">Akun Biaya</th>
               <th className="px-3 py-2 text-right font-semibold">Biaya Unit</th>
               <th className="px-3 py-2 text-right font-semibold">Alokasi Cabang</th>
               <th className="px-3 py-2 text-right font-semibold">Alokasi Pusat</th>

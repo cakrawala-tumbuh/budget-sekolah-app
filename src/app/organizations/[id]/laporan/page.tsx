@@ -17,10 +17,8 @@ import { ReportConsolidation } from "@/components/report/ReportConsolidation";
 import { ReportSignatures } from "@/components/report/ReportSignatures";
 import {
   buildReportRows,
-  buildExpenseBreakdown,
+  buildExpenseBreakdownPerAccount,
   buildInvestmentDepreciationBreakdown,
-  OP_EXPENSE_GROUPS,
-  NON_OP_EXPENSE_GROUPS,
 } from "@/lib/report";
 import { downloadXls, type ExcelSection } from "@/lib/export/excel";
 import type { BudgetSummary, ComparativeSummary, ExpenseItem } from "@/lib/types";
@@ -42,14 +40,13 @@ function buildSummarySection(summary: BudgetSummary): ExcelSection {
 
 function buildExpenseBreakdownSection(
   items: ExpenseItem[],
-  groups: { code: string; label: string }[],
   title: string,
   totalLabel: string,
 ): ExcelSection {
-  const breakdown = buildExpenseBreakdown(items, groups);
+  const breakdown = buildExpenseBreakdownPerAccount(items);
   return {
     title,
-    header: ["Kelompok Biaya", "Biaya Unit", "Alokasi Cabang", "Alokasi Pusat", "Total"],
+    header: ["Akun Biaya", "Biaya Unit", "Alokasi Cabang", "Alokasi Pusat", "Total"],
     rows: [
       ...breakdown.rows.map((r) => [r.label, r.unit, r.cabang, r.pusat, r.total]),
       [totalLabel, breakdown.totalUnit, breakdown.totalCabang, breakdown.totalPusat, breakdown.total],
@@ -120,13 +117,11 @@ export default function LaporanPage({ params }: Props) {
       buildSummarySection(summary),
       buildExpenseBreakdownSection(
         summary.expenses.operational,
-        OP_EXPENSE_GROUPS,
         "Rincian Beban Operasional — Unit vs Alokasi Induk",
         "TOTAL BEBAN OPERASIONAL",
       ),
       buildExpenseBreakdownSection(
         summary.expenses.non_operational,
-        NON_OP_EXPENSE_GROUPS,
         "Rincian Beban Non Operasional — Unit vs Alokasi Induk",
         "TOTAL BEBAN NON OPERASIONAL",
       ),
@@ -175,13 +170,11 @@ export default function LaporanPage({ params }: Props) {
         <ReportSummaryTable summary={summary} />
         <ReportExpenseBreakdown
           items={summary.expenses.operational}
-          groups={OP_EXPENSE_GROUPS}
           title="Rincian Beban Operasional — Unit vs Alokasi Induk"
           totalLabel="TOTAL BEBAN OPERASIONAL"
         />
         <ReportExpenseBreakdown
           items={summary.expenses.non_operational}
-          groups={NON_OP_EXPENSE_GROUPS}
           title="Rincian Beban Non Operasional — Unit vs Alokasi Induk"
           totalLabel="TOTAL BEBAN NON OPERASIONAL"
         />

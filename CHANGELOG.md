@@ -7,6 +7,16 @@ dan proyek ini menganut [Semantic Versioning](https://semver.org/lang/id/).
 
 ## [Unreleased]
 
+## [1.42.2] - 2026-07-07
+
+### Diperbaiki
+- Rincian beban operasional & non-operasional di Laporan RAB (tabel ringkasan
+  dan tabel "Rincian Beban — Unit vs Alokasi Induk", termasuk export Excel)
+  sebelumnya digabungkan ke akun induk (mis. seluruh akun `5110.xx` dijumlahkan
+  menjadi satu baris "Biaya Gaji"). Kini setiap baris menampilkan akun aslinya
+  masing-masing (per akun), tetap menjumlahkan beban unit + alokasi Cabang +
+  alokasi Pusat pada akun yang sama, tanpa mengubah total keseluruhan.
+
 ## [1.42.1] - 2026-07-07
 
 ### Diperbaiki

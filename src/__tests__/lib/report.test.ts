@@ -3,6 +3,8 @@ import {
   buildExpenseGroup,
   buildExpenseGroupsDetailed,
   buildExpenseBreakdown,
+  buildExpenseAccountsDetailed,
+  buildExpenseBreakdownPerAccount,
   buildReportRows,
   sumDepreciationBySource,
   buildInvestmentDepreciationBreakdown,
@@ -141,6 +143,73 @@ describe("buildExpenseGroupsDetailed", () => {
 
     const other = details.find((d) => d.code === "LAIN")!;
     expect(other.contribCabang).toBe(15);
+  });
+});
+
+describe("buildExpenseAccountsDetailed", () => {
+  it("membuat satu baris per akun asli, TIDAK digabung ke akun induk", () => {
+    const items: ExpenseItem[] = [
+      { account_code: "5110.01", description: "Gaji Guru", total_yayasan: 500, total_bos: 0, total: 500 },
+      { account_code: "5110.02", description: "Gaji Staf", total_yayasan: 300, total_bos: 0, total: 300 },
+    ];
+
+    const details = buildExpenseAccountsDetailed(items);
+
+    expect(details).toHaveLength(2);
+    expect(details.find((d) => d.code === "5110.01")?.label).toBe("Gaji Guru");
+    expect(details.find((d) => d.code === "5110.02")?.label).toBe("Gaji Staf");
+  });
+
+  it("menggabungkan beban unit & alokasi Cabang/Pusat yang berada di akun yang sama", () => {
+    const items: ExpenseItem[] = [
+      { account_code: "5110.01", description: "Gaji", total_yayasan: 900, total_bos: 0, total: 900 },
+      { account_code: "ALLOC:5110.01", description: "[Alokasi Cabang] Gaji", total_yayasan: 100, total_bos: 0, total: 100 },
+      { account_code: "ALLOC:5110.01", description: "[Alokasi Pusat] Gaji", total_yayasan: 50, total_bos: 0, total: 50 },
+    ];
+
+    const details = buildExpenseAccountsDetailed(items);
+
+    expect(details).toHaveLength(1);
+    expect(details[0].ownTotal).toBe(900);
+    expect(details[0].contribCabang).toBe(100);
+    expect(details[0].contribPusat).toBe(50);
+  });
+
+  it("memakai label dari deskripsi alokasi (prefix dilepas) bila akun tak punya beban unit", () => {
+    const items: ExpenseItem[] = [
+      { account_code: "ALLOC:5130.01", description: "[Alokasi Cabang] Biaya Pengembangan Guru", total_yayasan: 40, total_bos: 0, total: 40 },
+    ];
+
+    const details = buildExpenseAccountsDetailed(items);
+
+    expect(details[0].label).toBe("Biaya Pengembangan Guru");
+    expect(details[0].contribCabang).toBe(40);
+  });
+
+  it("mengecualikan alokasi depresiasi & investasi keuangan induk", () => {
+    const items: ExpenseItem[] = [
+      { account_code: "5110.01", description: "Gaji", total_yayasan: 900, total_bos: 0, total: 900 },
+      { account_code: "ALLOC:DEP-INV-CBG", description: "[Alokasi Cabang] Depresiasi investasi baru", total_yayasan: 10, total_bos: 0, total: 10 },
+    ];
+
+    const details = buildExpenseAccountsDetailed(items);
+
+    expect(details).toHaveLength(1);
+    expect(details[0].code).toBe("5110.01");
+  });
+});
+
+describe("buildExpenseBreakdownPerAccount", () => {
+  it("menghasilkan baris per akun (rekonsiliasi total)", () => {
+    const items: ExpenseItem[] = [
+      { account_code: "5110.01", description: "Gaji Guru", total_yayasan: 500, total_bos: 0, total: 500 },
+      { account_code: "5120.01", description: "Tenaga Ahli", total_yayasan: 100, total_bos: 0, total: 100 },
+    ];
+
+    const breakdown = buildExpenseBreakdownPerAccount(items);
+
+    expect(breakdown.rows.map((r) => r.label)).toEqual(["Gaji Guru", "Tenaga Ahli"]);
+    expect(breakdown.total).toBe(600);
   });
 });
 
@@ -332,13 +401,13 @@ describe("buildReportRows", () => {
     expect(depresiasiLama.akrual).toBe(2_000);
   });
 
-  it("baris grup biaya menampilkan TOTAL (beban unit + alokasi Cabang & Pusat)", () => {
+  it("baris PER AKUN biaya (bukan akun induk) menampilkan TOTAL (beban unit + alokasi Cabang & Pusat)", () => {
     const summary = makeSummary({
       expenses: {
         operational: [
           { account_code: "5110.01", description: "Gaji", total_yayasan: 900, total_bos: 0, total: 900 },
           { account_code: "ALLOC:5110.01", description: "[Alokasi Cabang] Gaji", total_yayasan: 100, total_bos: 0, total: 100 },
-          { account_code: "ALLOC:5110.02", description: "[Alokasi Pusat] Gaji", total_yayasan: 50, total_bos: 0, total: 50 },
+          { account_code: "ALLOC:5110.01", description: "[Alokasi Pusat] Gaji", total_yayasan: 50, total_bos: 0, total: 50 },
         ],
         non_operational: [],
         total_operational: 1050,
@@ -348,9 +417,30 @@ describe("buildReportRows", () => {
     });
 
     const rows = buildReportRows(summary);
-    // Grup "Biaya Gaji" menampilkan total 900+100+50 = 1050, bukan hanya beban unit.
-    const gaji = rows.find((r) => r.kind === "sub" && r.label === "Biaya Gaji");
+    // Baris akun "Gaji" (per akun 5110.01) menampilkan total 900+100+50 = 1050,
+    // sebagai baris "line" (bukan subtotal akun induk "Biaya Gaji").
+    expect(rows.some((r) => r.label === "Biaya Gaji")).toBe(false);
+    const gaji = rows.find((r) => r.kind === "line" && r.label === "Gaji");
     expect(gaji?.kas).toBe(1050);
+  });
+
+  it("menampilkan baris terpisah per akun, bukan digabung ke akun induk yang sama", () => {
+    const summary = makeSummary({
+      expenses: {
+        operational: [
+          { account_code: "5110.01", description: "Gaji Guru", total_yayasan: 500, total_bos: 0, total: 500 },
+          { account_code: "5110.02", description: "Gaji Staf", total_yayasan: 300, total_bos: 0, total: 300 },
+        ],
+        non_operational: [],
+        total_operational: 800,
+        total_non_operational: 0,
+        total: 800,
+      },
+    });
+
+    const rows = buildReportRows(summary);
+    expect(rows.some((r) => r.kind === "line" && r.label === "Gaji Guru" && r.kas === 500)).toBe(true);
+    expect(rows.some((r) => r.kind === "line" && r.label === "Gaji Staf" && r.kas === 300)).toBe(true);
   });
 });
 
