@@ -10,10 +10,10 @@ dan proyek ini menganut [Semantic Versioning](https://semver.org/lang/id/).
 ### Ditambahkan
 - Halaman **Laporan RAB Summary** (`/organizations/<id>/laporan-rab-summary`),
   diakses lewat tombol baru di halaman detail organisasi. Menampilkan
-  kerangka Laporan RAB berisi baris kelompok saja (tanpa baris detail akun),
-  berhenti di baris "Pendapatan Operasional" — potongan pertama dari
-  rangkaian laporan ringkas; kelompok sesudahnya menyusul di item backlog
-  berikutnya. Kolom nilai pada iterasi ini ditampilkan `—` untuk semua baris.
+  kerangka Laporan RAB berisi seluruh baris kelompok (tanpa baris detail akun),
+  dari "Pendapatan" sampai "Saldo Kas & Setara Kas". Kolom nilai pada iterasi
+  ini ditampilkan `—` untuk semua baris; pengisian angka menyusul di item
+  backlog berikutnya.
 
 ## [1.44.0] - 2026-09-10
 

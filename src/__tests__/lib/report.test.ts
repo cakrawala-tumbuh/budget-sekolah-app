@@ -15,7 +15,6 @@ import {
   isContributionItem,
   contributionScope,
   OP_EXPENSE_GROUPS,
-  type ReportRow,
 } from "@/lib/report";
 import type { BudgetSummary, DepreciationItem, ExpenseItem, IncomeItem } from "@/lib/types";
 
@@ -447,30 +446,85 @@ describe("buildReportRows", () => {
 });
 
 describe("buildRabSummaryRows", () => {
-  it("mengembalikan tepat dua baris berlabel Pendapatan lalu Pendapatan Operasional, berurutan", () => {
-    const rows = buildRabSummaryRows(makeSummary());
+  function makeFullSummary(): BudgetSummary {
+    return makeSummary({
+      depreciation: {
+        items: [
+          {
+            asset_code: "AST-01",
+            asset_name: "Komputer Baru",
+            acquisition_cost: 300_000,
+            useful_life: 5,
+            dep_per_year: 60_000,
+            current_year_dep: 30_000,
+            book_value: 270_000,
+            source: "new",
+          },
+          {
+            asset_code: "AST-02",
+            asset_name: "Meja Lama",
+            acquisition_cost: 100_000,
+            useful_life: 5,
+            dep_per_year: 20_000,
+            current_year_dep: 10_000,
+            book_value: 90_000,
+            source: "existing",
+          },
+        ],
+        total_current_year_dep: 40_000,
+      },
+    });
+  }
 
-    expect(rows).toHaveLength(2);
-    expect(rows[0]).toMatchObject({ label: "Pendapatan", kind: "section" });
-    expect(rows[1]).toMatchObject({ label: "Pendapatan Operasional", kind: "sub" });
+  it("mengembalikan seluruh label kelompok Laporan RAB, berurutan sesuai buildReportRows", () => {
+    const summary = makeFullSummary();
+    const rows = buildRabSummaryRows(summary);
+
+    expect(rows.map((r) => r.label)).toEqual([
+      "Pendapatan",
+      "Pendapatan Operasional",
+      "Pendapatan Non Operasional",
+      "Biaya Operasional",
+      "Biaya Non Operasional",
+      "Investasi Aset Tetap",
+      "Investasi Keuangan",
+      "Depresiasi Aset Baru",
+      "Depresiasi Aset Lama",
+      "Saldo Kas & Setara Kas",
+      "Saldo Kas Awal",
+      "Surplus Kas Tahun Ini",
+    ]);
+  });
+
+  it("jumlah barisnya sama dengan jumlah baris ber-kind section/sub pada buildReportRows", () => {
+    const summary = makeFullSummary();
+    const expectedCount = buildReportRows(summary).filter(
+      (r) => r.kind === "section" || r.kind === "sub",
+    ).length;
+
+    expect(buildRabSummaryRows(summary)).toHaveLength(expectedCount);
   });
 
   it("tidak memuat satu pun baris ber-kind line/total/surplus", () => {
-    const rows = buildRabSummaryRows(makeSummary());
+    const rows = buildRabSummaryRows(makeFullSummary());
 
     expect(rows.every((r) => r.kind === "section" || r.kind === "sub")).toBe(true);
   });
 
-  it("mengembalikan array kosong tanpa melempar exception bila baris Pendapatan Operasional tidak ditemukan", () => {
-    const rowsWithoutCutoff: ReportRow[] = [
-      { label: "Pendapatan", kas: null, akrual: null, kind: "section" },
-      { label: "Pendapatan Non Operasional", kas: null, akrual: null, kind: "sub" },
-    ];
+  it("BudgetSummary tanpa investasi/depresiasi tetap menghasilkan daftar kelompok valid tanpa baris kosong", () => {
+    const summary = makeSummary({
+      total_physical_investments: 0,
+      total_financial_investments: 0,
+      depreciation: { items: [], total_current_year_dep: 0 },
+    });
 
-    expect(() =>
-      buildRabSummaryRows(makeSummary(), () => rowsWithoutCutoff),
-    ).not.toThrow();
-    expect(buildRabSummaryRows(makeSummary(), () => rowsWithoutCutoff)).toEqual([]);
+    expect(() => buildRabSummaryRows(summary)).not.toThrow();
+    const rows = buildRabSummaryRows(summary);
+
+    expect(rows.length).toBeGreaterThan(0);
+    expect(rows.every((r) => r.label.trim().length > 0)).toBe(true);
+    expect(rows.some((r) => r.label === "Depresiasi Aset Baru")).toBe(false);
+    expect(rows.some((r) => r.label === "Depresiasi Aset Lama")).toBe(false);
   });
 });
 

@@ -536,33 +536,20 @@ export function buildReportRows(summary: BudgetSummary): ReportRow[] {
   return rows;
 }
 
-/** Label baris `buildReportRows` tempat kerangka Laporan RAB Summary berhenti dipotong. */
-const RAB_SUMMARY_CUTOFF_LABEL = "Pendapatan Operasional";
-
 /**
- * Membangun kerangka Laporan RAB Summary: hanya baris kelompok (`kind` `"section"`
- * dan `"sub"`) dari `buildReportRows`, tanpa satu pun baris detail akun, dipotong
- * TEPAT SESUDAH baris berlabel "Pendapatan Operasional". Ini adalah potongan
- * pertama dari rangkaian Laporan RAB Summary (issue #3) — kelompok sesudahnya
- * (Pendapatan Non Operasional, Biaya, Investasi, Depresiasi, Saldo Kas) menyusul
- * di item backlog berikutnya dan sengaja belum disertakan di sini.
+ * Membangun kerangka Laporan RAB Summary: seluruh baris kelompok (`kind`
+ * `"section"` dan `"sub"`) dari `buildReportRows`, dalam urutan asli, tanpa satu
+ * pun baris detail akun (`"line"`, `"total"`, `"surplus"`). Mencakup seluruh
+ * kelompok laporan — Pendapatan, Biaya Operasional/Non Operasional, Investasi
+ * Aset Tetap, Investasi Keuangan, Depresiasi Aset Baru/Lama (bila ada), sampai
+ * Saldo Kas & Setara Kas.
  *
  * @param summary - Data ringkasan RAB satu organisasi (`GET /simulation/summary`).
- * @param rowsBuilder - Pembangun baris laporan penuh; default `buildReportRows`.
- *   Parameter ini hanya untuk keterujian (menyuntik baris tanpa harus mengubah
- *   `BudgetSummary` sungguhan) — pemanggil produksi selalu memakai default.
- * @returns Baris kelompok dari "Pendapatan" sampai "Pendapatan Operasional". Bila
- *   baris "Pendapatan Operasional" tidak ditemukan pada hasil `rowsBuilder`,
- *   mengembalikan array kosong tanpa melempar exception.
+ * @returns Seluruh baris ber-`kind` `"section"`/`"sub"` dari `buildReportRows(summary)`,
+ *   berurutan sesuai keluaran aslinya.
  */
-export function buildRabSummaryRows(
-  summary: BudgetSummary,
-  rowsBuilder: (summary: BudgetSummary) => ReportRow[] = buildReportRows,
-): ReportRow[] {
-  const sectionRows = rowsBuilder(summary).filter(
+export function buildRabSummaryRows(summary: BudgetSummary): ReportRow[] {
+  return buildReportRows(summary).filter(
     (row) => row.kind === "section" || row.kind === "sub",
   );
-  const cutoffIndex = sectionRows.findIndex((row) => row.label === RAB_SUMMARY_CUTOFF_LABEL);
-  if (cutoffIndex === -1) return [];
-  return sectionRows.slice(0, cutoffIndex + 1);
 }

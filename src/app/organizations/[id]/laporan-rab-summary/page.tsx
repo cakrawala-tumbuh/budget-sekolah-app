@@ -16,11 +16,11 @@ interface Props {
 }
 
 /**
- * Halaman Laporan RAB Summary — kerangka Laporan RAB berisi baris kelompok saja,
- * berhenti di "Pendapatan Operasional" (potongan pertama, lihat issue #3;
- * kelompok sesudahnya menyusul di item backlog berikutnya). Mengikuti pola
- * `LaporanPage`: `use(params)`, `useOrganization` + `useBudgetSummary`, tautan
- * kembali ke halaman detail organisasi.
+ * Halaman Laporan RAB Summary — kerangka Laporan RAB berisi seluruh baris
+ * kelompok, dari Pendapatan sampai Saldo Kas & Setara Kas (lihat issue #3/#4;
+ * pengisian angka menyusul di #5). Mengikuti pola `LaporanPage`: `use(params)`,
+ * `useOrganization` + `useBudgetSummary`, tautan kembali ke halaman detail
+ * organisasi.
  */
 export default function LaporanRabSummaryPage({ params }: Props) {
   const { id } = use(params);

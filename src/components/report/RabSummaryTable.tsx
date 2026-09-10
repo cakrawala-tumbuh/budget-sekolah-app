@@ -26,12 +26,13 @@ function Row({ row }: { row: ReportRow }) {
 
 /**
  * Tabel kerangka Laporan RAB Summary — presentational murni, tidak memanggil API
- * sendiri (mengikuti pola `ReportSummaryTable`). Menerima baris yang SUDAH
- * dipotong lewat `buildRabSummaryRows`, jadi hanya berisi baris kelompok
- * (`kind` `"section"`/`"sub"`). Kolom nilai (`Budget KAS`/`Budget AKRUAL`)
- * sengaja dirender `—` untuk semua baris pada iterasi ini (Keputusan Desain
- * issue #3) — angka menyusul di item backlog berikutnya. Bila `rows` kosong,
- * menampilkan pesan kosong alih-alih tabel tanpa baris.
+ * sendiri (mengikuti pola `ReportSummaryTable`). Menerima seluruh baris kelompok
+ * dari `buildRabSummaryRows` (`kind` `"section"`/`"sub"`), dari Pendapatan sampai
+ * Saldo Kas & Setara Kas, tanpa satu pun baris detail akun. Kolom nilai
+ * (`Budget KAS`/`Budget AKRUAL`) sengaja dirender `—` untuk semua baris pada
+ * iterasi ini (Keputusan Desain issue #3/#4) — angka menyusul di item backlog
+ * berikutnya (#5). Bila `rows` kosong, menampilkan pesan kosong alih-alih tabel
+ * tanpa baris.
  */
 export function RabSummaryTable({ rows }: RabSummaryTableProps) {
   if (rows.length === 0) {
