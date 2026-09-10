@@ -3,7 +3,6 @@
 import { use } from "react";
 import Link from "next/link";
 import { ArrowLeft, PrinterIcon } from "lucide-react";
-import { useOrganization } from "@/hooks/useOrganizations";
 import { useBudgetSummary } from "@/hooks/useSimulation";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -237,11 +236,16 @@ function InvestmentDepreciationBreakdownTable({ rows }: { rows: SingleItemBreakd
 
 // ── main component ────────────────────────────────────────────────────────────
 
+/**
+ * Halaman Summary RAB — ringkasan keuangan interaktif di layar (Budget KAS &
+ * AKRUAL per grup akun). Tombol "Cetak" TIDAK memanggil `window.print()` di
+ * sini; ia menavigasi ke `/organizations/{orgId}/laporan`, satu-satunya
+ * jalur cetak print-oriented aplikasi ini.
+ */
 export default function SummaryPage({ params }: Props) {
   const { id } = use(params);
   const orgId = Number(id);
 
-  const { data: org } = useOrganization(orgId);
   const { data: summary, isLoading, isError } = useBudgetSummary(orgId);
 
   if (isLoading) {
@@ -324,24 +328,12 @@ export default function SummaryPage({ params }: Props) {
             {summary.organization_name} · {summary.budget_year}
           </p>
         </div>
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => window.print()}
-          className="no-print"
-        >
-          <PrinterIcon className="h-4 w-4 mr-2" />
-          Cetak
+        <Button asChild variant="outline" size="sm" className="no-print">
+          <Link href={`/organizations/${orgId}/laporan`}>
+            <PrinterIcon className="h-4 w-4 mr-2" />
+            Cetak
+          </Link>
         </Button>
-      </div>
-
-      {/* Print Header */}
-      <div className="text-center mb-4 hidden print:block">
-        <p className="font-bold text-base">SUMMARY RAB — RINGKASAN KEUANGAN (BUDGET KAS &amp; AKRUAL)</p>
-        <p className="text-sm">YAYASAN PENYELENGGARAAN ILAHI INDONESIA (YPII) | Tahun Anggaran {summary.budget_year}</p>
-        <p className="text-sm">
-          {org?.name} · {org?.city}
-        </p>
       </div>
 
       {/* Summary Table */}

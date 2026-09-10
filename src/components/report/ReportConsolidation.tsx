@@ -49,6 +49,13 @@ function ConsolidationRow({ row, isParent }: { row: OrgSummaryRow; isParent?: bo
   );
 }
 
+/**
+ * Tabel konsolidasi seluruh unit di bawah organisasi Cabang/Pusat. Selalu
+ * dimulai di halaman baru (`print-break-before`); kelas semantik
+ * `report-section`/`report-section-title`/`report-table-wrap`/`report-table`
+ * menjadi kontrak paginasi tabel yang disasar `@media print` di
+ * `globals.css` (lihat `ReportExpenseBreakdown` untuk pola yang sama).
+ */
 export function ReportConsolidation({ data }: ReportConsolidationProps) {
   const totalRevenue =
     data.organization.summary_with_allocation.total_cash_revenue +
@@ -64,12 +71,15 @@ export function ReportConsolidation({ data }: ReportConsolidationProps) {
     data.units.reduce((a, u) => a + u.summary_with_allocation.accrual_surplus_deficit, 0);
 
   return (
-    <div className="print-break-before px-8 py-6">
-      <h2 className="mb-3 text-sm font-semibold uppercase tracking-wide text-[#134e4a]">
+    <div className="report-section print-break-before px-8 py-6">
+      <h2 className="report-section-title mb-3 text-sm font-semibold uppercase tracking-wide text-[#134e4a]">
         Konsolidasi Seluruh Unit
       </h2>
-      <div className="overflow-x-auto rounded-lg border" style={{ borderColor: "#e2e8f0" }}>
-        <table className="w-full border-collapse text-sm">
+      <div
+        className="report-table-wrap overflow-x-auto rounded-lg border"
+        style={{ borderColor: "#e2e8f0" }}
+      >
+        <table className="report-table w-full border-collapse text-sm">
           <thead>
             <tr className="bg-[#134e4a] text-white">
               <th className="px-3 py-2 text-left font-semibold">Organisasi</th>

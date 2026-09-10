@@ -11,6 +11,11 @@ interface ReportInvestmentDepreciationBreakdownProps {
  * keuangan, depresiasi aset baru, dan depresiasi aset lama — masing-masing
  * ditampilkan sebagai baris tersendiri (bukan digabung menjadi satu angka),
  * tanpa rincian per item/aset.
+ *
+ * Kelas semantik `report-section`/`report-section-title`/`report-table-wrap`/
+ * `report-table` menjadi kontrak yang disasar `@media print` di
+ * `globals.css` — tabel ini boleh terpecah antar halaman cetak dengan
+ * `thead` berulang, sehingga `report-keep` sengaja TIDAK dipasang di sini.
  */
 export function ReportInvestmentDepreciationBreakdown({
   summary,
@@ -21,8 +26,8 @@ export function ReportInvestmentDepreciationBreakdown({
   if (rows.length === 0) return null;
 
   return (
-    <div className="report-keep px-8 py-4">
-      <h2 className="mb-1 text-sm font-semibold uppercase tracking-wide text-[#134e4a]">
+    <div className="report-section px-8 py-4">
+      <h2 className="report-section-title mb-1 text-sm font-semibold uppercase tracking-wide text-[#134e4a]">
         Rincian Investasi &amp; Depresiasi — Unit vs Alokasi Induk
       </h2>
       <p className="mb-3 text-xs text-[#475569]">
@@ -30,8 +35,11 @@ export function ReportInvestmentDepreciationBreakdown({
         menerima alokasi induk). Investasi Keuangan dan Depresiasi dapat berasal
         dari unit sendiri maupun alokasi kontribusi Cabang/Pusat.
       </p>
-      <div className="overflow-x-auto rounded-lg border" style={{ borderColor: "#e2e8f0" }}>
-        <table className="w-full border-collapse text-sm">
+      <div
+        className="report-table-wrap overflow-x-auto rounded-lg border"
+        style={{ borderColor: "#e2e8f0" }}
+      >
+        <table className="report-table w-full border-collapse text-sm">
           <thead>
             <tr className="bg-[#134e4a] text-white">
               <th className="px-3 py-2 text-left font-semibold">Uraian</th>

@@ -7,6 +7,21 @@ dan proyek ini menganut [Semantic Versioning](https://semver.org/lang/id/).
 
 ## [Unreleased]
 
+### Diubah
+- Cetak Laporan RAB (`/organizations/<id>/laporan`) kini benar-benar
+  berorientasi kertas: kepadatan A4 dipadatkan (kop, KPI, dan Ringkasan RAB
+  selesai di halaman pertama), tabel panjang terpecah rapi antar halaman
+  dengan baris judul kolom (`thead`) berulang, dan setiap halaman cetak
+  bertanda kop nama organisasi + tahun anggaran. Hack isolasi cetak lama
+  (`visibility: hidden` + `.print-root { position: absolute }`, yang membuat
+  paginasi Chrome tak andal di luar halaman pertama) diganti mekanisme
+  `display: none` pada elemen non-cetak. Tampilan layar `/laporan` dan
+  `/summary` tidak berubah — seluruh kepadatan cetak hidup hanya di
+  `@media print`.
+- Tombol cetak di `/summary` tidak lagi memanggil `window.print()` langsung;
+  kini menavigasi ke `/organizations/<id>/laporan`, satu-satunya jalur cetak
+  aplikasi ini.
+
 ## [1.42.2] - 2026-07-07
 
 ### Diperbaiki

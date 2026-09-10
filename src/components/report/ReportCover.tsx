@@ -10,9 +10,14 @@ interface ReportCoverProps {
 
 const YAYASAN_NAME = "YAYASAN PENYELENGGARAAN ILAHI INDONESIA (YPII)";
 
+/**
+ * Kop sampul Laporan RAB — kartu bertema gradien di layar, diratakan jadi
+ * teks polos + garis hairline saat cetak (kelas semantik `report-cover`,
+ * aturan skalanya ada di `@media print` pada `globals.css`).
+ */
 export function ReportCover({ orgName, city, orgType, budgetYear }: ReportCoverProps) {
   return (
-    <div className="report-keep border-b-2 border-[#b45309] bg-gradient-to-br from-[#0f766e] to-[#134e4a] px-8 py-8 text-white">
+    <div className="report-cover report-keep border-b-2 border-[#b45309] bg-gradient-to-br from-[#0f766e] to-[#134e4a] px-8 py-8 text-white">
       <p className="text-xs font-medium uppercase tracking-widest text-teal-100">
         {YAYASAN_NAME}
       </p>

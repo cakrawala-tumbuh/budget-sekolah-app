@@ -5,6 +5,11 @@ interface ReportKpiCardsProps {
   summary: BudgetSummary;
 }
 
+/**
+ * Satu kartu KPI (Total Pendapatan/Beban/Surplus/Saldo Kas). Kelas semantik
+ * `report-kpi-item` menjadi target skala & pemadatan cetak (padding
+ * dipadatkan, latar pastel dibuang) — lihat `@media print` di `globals.css`.
+ */
 function KpiCard({
   label,
   value,
@@ -20,7 +25,7 @@ function KpiCard({
 }) {
   return (
     <div
-      className={cn("report-keep rounded-lg border p-4", bgColor)}
+      className={cn("report-keep report-kpi-item rounded-lg border p-4", bgColor)}
       style={{ borderColor: "#e2e8f0" }}
     >
       <p className="text-xs font-medium uppercase tracking-wide text-[#475569]">{label}</p>
@@ -32,12 +37,17 @@ function KpiCard({
   );
 }
 
+/**
+ * Grid empat kartu KPI (Total Pendapatan, Total Beban, Surplus/Defisit Kas,
+ * Saldo Kas Akhir). Kelas semantik `report-kpi` dipaksa 4 kolom saat cetak
+ * (breakpoint `md:` Tailwind berbasis viewport tidak andal di halaman cetak).
+ */
 export function ReportKpiCards({ summary }: ReportKpiCardsProps) {
   const cashPositive = summary.cash_surplus_deficit >= 0;
   const endingPositive = summary.ending_cash_balance >= 0;
 
   return (
-    <div className="grid grid-cols-2 gap-3 px-8 py-6 md:grid-cols-4">
+    <div className="report-kpi grid grid-cols-2 gap-3 px-8 py-6 md:grid-cols-4">
       <KpiCard
         label="Total Pendapatan"
         value={summary.total_cash_revenue}

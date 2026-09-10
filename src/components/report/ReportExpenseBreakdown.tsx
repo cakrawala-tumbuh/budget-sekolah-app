@@ -13,6 +13,11 @@ interface ReportExpenseBreakdownProps {
  * eksplisit: Biaya Unit, Alokasi Cabang, Alokasi Pusat, dan Total — sehingga
  * pengguna tak perlu menghitung sendiri kontribusi induk dan tidak perlu
  * membuka akun induk untuk melihat rincian per akun.
+ *
+ * Kelas semantik `report-section`/`report-section-title`/`report-table-wrap`/
+ * `report-table` menjadi kontrak yang disasar `@media print` di
+ * `globals.css` — tabel ini boleh terpecah antar halaman cetak dengan
+ * `thead` berulang, sehingga `report-keep` sengaja TIDAK dipasang di sini.
  */
 export function ReportExpenseBreakdown({
   items,
@@ -25,8 +30,8 @@ export function ReportExpenseBreakdown({
   const hasAllocation = breakdown.totalCabang !== 0 || breakdown.totalPusat !== 0;
 
   return (
-    <div className="report-keep px-8 py-4">
-      <h2 className="mb-1 text-sm font-semibold uppercase tracking-wide text-[#134e4a]">
+    <div className="report-section px-8 py-4">
+      <h2 className="report-section-title mb-1 text-sm font-semibold uppercase tracking-wide text-[#134e4a]">
         {title}
       </h2>
       <p className="mb-3 text-xs text-[#475569]">
@@ -34,8 +39,11 @@ export function ReportExpenseBreakdown({
           ? "Beban unit adalah biaya asli satuan pendidikan; alokasi Cabang/Pusat adalah kontribusi yang dibebankan dari induk."
           : "Unit ini tidak menerima alokasi biaya dari Cabang/Pusat — seluruh beban adalah beban unit."}
       </p>
-      <div className="overflow-x-auto rounded-lg border" style={{ borderColor: "#e2e8f0" }}>
-        <table className="w-full border-collapse text-sm">
+      <div
+        className="report-table-wrap overflow-x-auto rounded-lg border"
+        style={{ borderColor: "#e2e8f0" }}
+      >
+        <table className="report-table w-full border-collapse text-sm">
           <thead>
             <tr className="bg-[#134e4a] text-white">
               <th className="px-3 py-2 text-left font-semibold">Akun Biaya</th>

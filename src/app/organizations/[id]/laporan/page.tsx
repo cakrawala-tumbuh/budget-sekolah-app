@@ -81,6 +81,16 @@ function buildConsolidationSection(data: ComparativeSummary): ExcelSection {
   };
 }
 
+/**
+ * Halaman Laporan RAB — satu-satunya jalur cetak print-oriented aplikasi ini
+ * (tombol Cetak di `/summary` menavigasi ke sini alih-alih memanggil
+ * `window.print()` langsung). `.print-root` membungkus kop, KPI, Ringkasan
+ * RAB, rincian beban/investasi/depresiasi, konsolidasi (organisasi
+ * Cabang/Pusat), tanda tangan, dan `report-running-head` (kop berulang tiap
+ * halaman cetak) — kepadatan & paginasi cetaknya diatur lewat kelas semantik
+ * kontrak (`report-section`, `report-table-wrap`, dst.) di `@media print`
+ * pada `globals.css`; tampilan layar tidak terpengaruh.
+ */
 export default function LaporanPage({ params }: Props) {
   const { id } = use(params);
   const orgId = Number(id);
@@ -160,6 +170,11 @@ export default function LaporanPage({ params }: Props) {
 
       {/* Halaman laporan ber-tema — ikut tercetak */}
       <div className="print-root report-root overflow-hidden rounded-lg border shadow-sm">
+        {/* Kop berulang — tersembunyi di layar, tampil di setiap halaman cetak
+            (posisi fixed diatur lewat kelas report-running-head di globals.css) */}
+        <div className="report-running-head">
+          {org.name} · RAB {summary.budget_year}
+        </div>
         <ReportCover
           orgName={org.name}
           city={org.city}

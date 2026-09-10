@@ -76,37 +76,133 @@ body {
 }
 
 /* ── Print / PDF ──────────────────────────────────────────────────────────── */
+/* Kop berulang: elemen tersembunyi di layar, ditampilkan hanya saat cetak
+ * (lihat aturan di dalam @media print di bawah). */
+.report-running-head {
+  display: none;
+}
+
 @media print {
   @page {
-    size: A4;
-    margin: 14mm 12mm;
+    size: A4 portrait;
+    /* Margin atas dilebihkan sebagai ruang kop berulang (.report-running-head). */
+    margin: 18mm 12mm 14mm;
   }
   html,
   body {
     background: #ffffff !important;
   }
-  /* Sembunyikan seluruh app-shell; hanya .print-root yang tampil */
-  body * {
-    visibility: hidden !important;
-  }
-  .print-root,
-  .print-root * {
-    visibility: visible !important;
-  }
-  .print-root {
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
-  }
+
+  /* Sembunyikan app-shell (sidebar <aside>, topbar mobile <header>) dan
+   * elemen bertanda .no-print — TANPA hack visibility: elemen non-cetak
+   * dihilangkan lewat display: none, .print-root tetap di alur dokumen
+   * normal (lihat aturan .print-root di bawah). */
+  aside,
+  header,
   .no-print {
     display: none !important;
   }
+
+  /* AppShell layar memakai h-screen/overflow-hidden/overflow-y-auto agar
+   * sidebar+topbar tetap terkunci di viewport. Constraint itu membuat Chrome
+   * hanya memaginasi halaman pertama dengan andal saat dicetak — lepaskan
+   * untuk SELURUH keturunan body supaya konten mengalir bebas antar halaman. */
+  body * {
+    overflow: visible !important;
+    height: auto !important;
+    max-height: none !important;
+  }
+
+  .print-root {
+    position: static;
+    width: auto;
+  }
+
   .print-break-before {
     break-before: page;
   }
   .report-keep {
     break-inside: avoid;
+  }
+
+  /* ── Skala cetak ── */
+  .print-root {
+    font-size: 9.5pt;
+    line-height: 1.25;
+  }
+
+  .report-section {
+    padding: 0 0 4mm !important;
+  }
+  .report-section-title {
+    break-after: avoid;
+    margin: 0 0 1mm;
+  }
+  .report-section p {
+    margin: 0 0 1mm;
+  }
+
+  /* Cover: gradien & badge pill diganti teks polos + garis hairline. */
+  .report-cover {
+    padding: 3mm 4mm !important;
+    background: #ffffff !important;
+    background-image: none !important;
+    border-bottom: 0.75pt solid #94a3b8 !important;
+  }
+  .report-cover,
+  .report-cover * {
+    color: #0f172a !important;
+  }
+  .report-cover span {
+    background: none !important;
+    border: none !important;
+    border-radius: 0 !important;
+    padding: 0 !important;
+  }
+  .report-cover h1 {
+    margin-top: 1mm;
+    font-size: 12pt;
+  }
+
+  /* KPI: 4 kolom dipaksa (breakpoint md: berbasis viewport tidak andal di
+   * halaman cetak), padding dipadatkan. */
+  .report-kpi {
+    display: grid !important;
+    grid-template-columns: repeat(4, 1fr) !important;
+    padding: 2mm 4mm !important;
+    gap: 2mm !important;
+  }
+  .report-kpi-item {
+    padding: 1.5mm 2mm !important;
+    background: none !important;
+  }
+
+  /* ── Paginasi tabel ── */
+  .report-table-wrap {
+    overflow: visible;
+  }
+  .report-table thead {
+    display: table-header-group;
+  }
+  .report-table tr {
+    break-inside: avoid;
+  }
+
+  /* Kop berulang — muncul di setiap halaman cetak. */
+  .report-running-head {
+    display: block !important;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 8mm;
+    line-height: 8mm;
+    padding: 0 12mm;
+    margin: 0;
+    border-bottom: 0.5pt solid #94a3b8;
+    font-size: 8pt;
+    color: #475569;
+    background: #ffffff;
   }
 }
 

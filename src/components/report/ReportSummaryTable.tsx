@@ -61,13 +61,22 @@ function Row({ row }: { row: ReportRow }) {
   );
 }
 
+/**
+ * Tabel Ringkasan RAB (Budget KAS vs AKRUAL per baris). Kelas semantik
+ * `report-section` (bukan `report-keep`) sengaja dipasang di sini — tabel ini
+ * boleh terpecah antar halaman cetak dengan `thead` berulang
+ * (`report-table-wrap`/`report-table`), lihat `@media print` di `globals.css`.
+ */
 export function ReportSummaryTable({ summary }: ReportSummaryTableProps) {
   const rows = buildReportRows(summary);
 
   return (
-    <div className="report-keep px-8 py-2">
-      <div className="overflow-x-auto rounded-lg border" style={{ borderColor: "#e2e8f0" }}>
-        <table className="w-full border-collapse text-sm">
+    <div className="report-section px-8 py-2">
+      <div
+        className="report-table-wrap overflow-x-auto rounded-lg border"
+        style={{ borderColor: "#e2e8f0" }}
+      >
+        <table className="report-table w-full border-collapse text-sm">
           <thead>
             <tr className="bg-[#134e4a] text-white">
               <th className="px-3 py-2 text-left font-semibold">Uraian</th>
