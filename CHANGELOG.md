@@ -7,6 +7,8 @@ dan proyek ini menganut [Semantic Versioning](https://semver.org/lang/id/).
 
 ## [Unreleased]
 
+## [1.43.0] - 2026-09-10
+
 ### Diubah
 - Cetak Laporan RAB (`/organizations/<id>/laporan`) kini benar-benar
   berorientasi kertas: kepadatan A4 dipadatkan (kop, KPI, dan Ringkasan RAB
@@ -515,7 +517,8 @@ dan proyek ini menganut [Semantic Versioning](https://semver.org/lang/id/).
   nilai BoS ditampilkan dengan warna biru sebagai penanda visual, dan total
   Dana BoS muncul di footer tabel. Mengikuti fitur backend v1.18.0.
 
-[Unreleased]: https://github.com/cakrawala-tumbuh/budget-sekolah-app/compare/v1.25.1...HEAD
+[Unreleased]: https://github.com/cakrawala-tumbuh/budget-sekolah-app/compare/v1.43.0...HEAD
+[1.43.0]: https://github.com/cakrawala-tumbuh/budget-sekolah-app/compare/v1.42.2...v1.43.0
 [1.25.1]: https://github.com/cakrawala-tumbuh/budget-sekolah-app/compare/v1.25.0...v1.25.1
 [1.19.0]: https://github.com/cakrawala-tumbuh/budget-sekolah-app/releases/tag/v1.19.0
 [1.18.0]: https://github.com/cakrawala-tumbuh/budget-sekolah-app/releases/tag/v1.18.0
