@@ -6,6 +6,7 @@ import {
   buildExpenseAccountsDetailed,
   buildExpenseBreakdownPerAccount,
   buildReportRows,
+  buildRabSummaryRows,
   sumDepreciationBySource,
   buildInvestmentDepreciationBreakdown,
   sumItems,
@@ -14,6 +15,7 @@ import {
   isContributionItem,
   contributionScope,
   OP_EXPENSE_GROUPS,
+  type ReportRow,
 } from "@/lib/report";
 import type { BudgetSummary, DepreciationItem, ExpenseItem, IncomeItem } from "@/lib/types";
 
@@ -441,6 +443,34 @@ describe("buildReportRows", () => {
     const rows = buildReportRows(summary);
     expect(rows.some((r) => r.kind === "line" && r.label === "Gaji Guru" && r.kas === 500)).toBe(true);
     expect(rows.some((r) => r.kind === "line" && r.label === "Gaji Staf" && r.kas === 300)).toBe(true);
+  });
+});
+
+describe("buildRabSummaryRows", () => {
+  it("mengembalikan tepat dua baris berlabel Pendapatan lalu Pendapatan Operasional, berurutan", () => {
+    const rows = buildRabSummaryRows(makeSummary());
+
+    expect(rows).toHaveLength(2);
+    expect(rows[0]).toMatchObject({ label: "Pendapatan", kind: "section" });
+    expect(rows[1]).toMatchObject({ label: "Pendapatan Operasional", kind: "sub" });
+  });
+
+  it("tidak memuat satu pun baris ber-kind line/total/surplus", () => {
+    const rows = buildRabSummaryRows(makeSummary());
+
+    expect(rows.every((r) => r.kind === "section" || r.kind === "sub")).toBe(true);
+  });
+
+  it("mengembalikan array kosong tanpa melempar exception bila baris Pendapatan Operasional tidak ditemukan", () => {
+    const rowsWithoutCutoff: ReportRow[] = [
+      { label: "Pendapatan", kas: null, akrual: null, kind: "section" },
+      { label: "Pendapatan Non Operasional", kas: null, akrual: null, kind: "sub" },
+    ];
+
+    expect(() =>
+      buildRabSummaryRows(makeSummary(), () => rowsWithoutCutoff),
+    ).not.toThrow();
+    expect(buildRabSummaryRows(makeSummary(), () => rowsWithoutCutoff)).toEqual([]);
   });
 });
 
