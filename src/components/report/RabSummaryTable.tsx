@@ -1,7 +1,22 @@
 import type { ReportRow } from "@/lib/report";
+import { formatCurrency } from "@/lib/utils";
 
 interface RabSummaryTableProps {
   rows: ReportRow[];
+}
+
+/**
+ * Merender satu sel nilai (`Budget KAS`/`Budget AKRUAL`) memakai `formatCurrency`
+ * saat `value` bukan `null`, atau `—` saat `value` memang `null`. Sengaja
+ * membandingkan dengan `!== null` (bukan uji `falsy`) agar nilai `0` tetap
+ * dirender sebagai angka nol berformat rupiah, bukan tertukar sebagai kosong.
+ */
+function ValueCell({ value }: { value: number | null }) {
+  return (
+    <td className="w-44 px-3 py-1.5 text-right text-sm tabular-nums">
+      {value !== null ? formatCurrency(value) : "—"}
+    </td>
+  );
 }
 
 function Row({ row }: { row: ReportRow }) {
@@ -18,8 +33,8 @@ function Row({ row }: { row: ReportRow }) {
   return (
     <tr className="border-b bg-[#f0fdfa] font-medium" style={{ borderColor: "#e2e8f0" }}>
       <td className="px-3 py-1.5 text-sm">{row.label}</td>
-      <td className="w-44 px-3 py-1.5 text-right text-sm tabular-nums">—</td>
-      <td className="w-44 px-3 py-1.5 text-right text-sm tabular-nums">—</td>
+      <ValueCell value={row.kas} />
+      <ValueCell value={row.akrual} />
     </tr>
   );
 }
@@ -29,9 +44,13 @@ function Row({ row }: { row: ReportRow }) {
  * sendiri (mengikuti pola `ReportSummaryTable`). Menerima seluruh baris kelompok
  * dari `buildRabSummaryRows` (`kind` `"section"`/`"sub"`), dari Pendapatan sampai
  * Saldo Kas & Setara Kas, tanpa satu pun baris detail akun. Kolom nilai
- * (`Budget KAS`/`Budget AKRUAL`) sengaja dirender `—` untuk semua baris pada
- * iterasi ini (Keputusan Desain issue #3/#4) — angka menyusul di item backlog
- * berikutnya (#5). Bila `rows` kosong, menampilkan pesan kosong alih-alih tabel
+ * (`Budget KAS`/`Budget AKRUAL`) menampilkan `formatCurrency(row.kas)` /
+ * `formatCurrency(row.akrual)` saat nilainya bukan `null` (Keputusan Desain
+ * issue #5) — baris `kind` `"section"` tetap `—` karena `kas`/`akrual`-nya
+ * memang `null` di `buildReportRows`, tanpa perlakuan khusus. Ini sengaja
+ * BERBEDA dari `ReportSummaryTable`, yang merender string kosong untuk nilai
+ * `null`: di sini `—` adalah penanda sengaja-kosong, bukan kelalaian — jangan
+ * diseragamkan. Bila `rows` kosong, menampilkan pesan kosong alih-alih tabel
  * tanpa baris.
  */
 export function RabSummaryTable({ rows }: RabSummaryTableProps) {
