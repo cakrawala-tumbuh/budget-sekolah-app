@@ -7,6 +7,20 @@ dan proyek ini menganut [Semantic Versioning](https://semver.org/lang/id/).
 
 ## [Unreleased]
 
+## [1.44.0] - 2026-09-10
+
+### Diubah
+- Blok tanda tangan pada Laporan RAB (`/organizations/<id>/laporan`) kini
+  memuat empat jalur persetujuan berurutan — **Disusun Oleh** (Kepala
+  Sekolah), **Ditinjau Oleh** (Penanggung Jawab Cabang), **Disetujui Oleh**
+  (Ketua Yayasan), dan **Disahkan Oleh** (Pembina) — menggantikan tiga blok
+  sebelumnya (Disusun oleh / Diperiksa oleh / Disahkan oleh dengan jabatan
+  Kepala Unit-Bendahara, Kepala Cabang, dan Pengurus-Pembina Yayasan).
+  Peran "ditinjau" dan "disetujui" yang sebelumnya menyatu kini terpisah
+  sehingga jalur persetujuan pada dokumen cetak dapat ditelusuri. Tata letak
+  menjadi empat kolom pada layar lebar (dua kolom pada layar sempit) dan blok
+  tetap utuh dalam satu halaman saat dicetak.
+
 ## [1.43.0] - 2026-09-10
 
 ### Diubah
@@ -517,7 +531,8 @@ dan proyek ini menganut [Semantic Versioning](https://semver.org/lang/id/).
   nilai BoS ditampilkan dengan warna biru sebagai penanda visual, dan total
   Dana BoS muncul di footer tabel. Mengikuti fitur backend v1.18.0.
 
-[Unreleased]: https://github.com/cakrawala-tumbuh/budget-sekolah-app/compare/v1.43.0...HEAD
+[Unreleased]: https://github.com/cakrawala-tumbuh/budget-sekolah-app/compare/v1.44.0...HEAD
+[1.44.0]: https://github.com/cakrawala-tumbuh/budget-sekolah-app/compare/v1.43.0...v1.44.0
 [1.43.0]: https://github.com/cakrawala-tumbuh/budget-sekolah-app/compare/v1.42.2...v1.43.0
 [1.25.1]: https://github.com/cakrawala-tumbuh/budget-sekolah-app/compare/v1.25.0...v1.25.1
 [1.19.0]: https://github.com/cakrawala-tumbuh/budget-sekolah-app/releases/tag/v1.19.0
