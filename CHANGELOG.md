@@ -7,13 +7,17 @@ dan proyek ini menganut [Semantic Versioning](https://semver.org/lang/id/).
 
 ## [Unreleased]
 
+## [1.45.0] - 2026-09-11
+
 ### Ditambahkan
 - Halaman **Laporan RAB Summary** (`/organizations/<id>/laporan-rab-summary`),
-  diakses lewat tombol baru di halaman detail organisasi. Menampilkan
-  kerangka Laporan RAB berisi seluruh baris kelompok (tanpa baris detail akun),
-  dari "Pendapatan" sampai "Saldo Kas & Setara Kas". Kolom nilai pada iterasi
-  ini ditampilkan `—` untuk semua baris; pengisian angka menyusul di item
-  backlog berikutnya.
+  diakses lewat tombol baru di halaman detail organisasi. Menampilkan kerangka
+  Laporan RAB berisi baris kelompok saja (tanpa baris detail akun), dari
+  "Pendapatan" sampai "Saldo Kas & Setara Kas", beserta nilai **Budget KAS** dan
+  **Budget AKRUAL** per baris dalam format rupiah. Baris kelompok yang memang
+  tidak bernilai ditampilkan `—`, sedangkan nilai nol ditampilkan sebagai angka
+  nol. Baris total tidak ditampilkan di halaman ini — total tetap tersedia di
+  Laporan RAB.
 
 ## [1.44.0] - 2026-09-10
 
@@ -539,7 +543,8 @@ dan proyek ini menganut [Semantic Versioning](https://semver.org/lang/id/).
   nilai BoS ditampilkan dengan warna biru sebagai penanda visual, dan total
   Dana BoS muncul di footer tabel. Mengikuti fitur backend v1.18.0.
 
-[Unreleased]: https://github.com/cakrawala-tumbuh/budget-sekolah-app/compare/v1.44.0...HEAD
+[Unreleased]: https://github.com/cakrawala-tumbuh/budget-sekolah-app/compare/v1.45.0...HEAD
+[1.45.0]: https://github.com/cakrawala-tumbuh/budget-sekolah-app/compare/v1.44.0...v1.45.0
 [1.44.0]: https://github.com/cakrawala-tumbuh/budget-sekolah-app/compare/v1.43.0...v1.44.0
 [1.43.0]: https://github.com/cakrawala-tumbuh/budget-sekolah-app/compare/v1.42.2...v1.43.0
 [1.25.1]: https://github.com/cakrawala-tumbuh/budget-sekolah-app/compare/v1.25.0...v1.25.1
