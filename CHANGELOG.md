@@ -7,6 +7,16 @@ dan proyek ini menganut [Semantic Versioning](https://semver.org/lang/id/).
 
 ## [Unreleased]
 
+### Diperbaiki
+- `groupIncome` (Laporan RAB & Laporan RAB Summary) kini mengelompokkan
+  pendapatan berdasarkan penanda `is_operational` dari kategori sumbernya,
+  bukan menguraikan rentang `account_code` (`4100`–`4499` operasional,
+  `>=4500` non-operasional). Kode akun non-numerik seperti `TEMP.001` tidak
+  lagi hilang dari kedua kelompok — sebelumnya menyebabkan pendapatan senilai
+  Rp 81.000.000 milik Cabang Bandung tidak tertampil di laporan mana pun.
+  Sampai kategori pendapatan disetel manual lewat MCP, seluruh pendapatan
+  untuk sementara tampil sebagai operasional (nilai migrasi awal backend).
+
 ## [1.45.0] - 2026-09-11
 
 ### Ditambahkan

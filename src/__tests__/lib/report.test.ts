@@ -19,18 +19,61 @@ import {
 import type { BudgetSummary, DepreciationItem, ExpenseItem, IncomeItem } from "@/lib/types";
 
 describe("groupIncome", () => {
-  it("memisahkan item 4100-4499 sebagai operasional dan >=4500 sebagai non-operasional", () => {
+  it("memisahkan item berdasarkan is_operational: true ke operasional, false ke non-operasional", () => {
     const items: IncomeItem[] = [
-      { account_code: "4100.01", description: "UP", total: 1000, auto_total: 1000 },
-      { account_code: "4499.01", description: "Batas atas operasional", total: 200, auto_total: 200 },
-      { account_code: "4500.01", description: "Non Op", total: 300, auto_total: 300 },
-      { account_code: "4600.01", description: "Non Op lain", total: 400, auto_total: 400 },
+      { account_code: "4100.01", description: "UP", total: 1000, auto_total: 1000, is_operational: true },
+      { account_code: "4499.01", description: "Item operasional lain", total: 200, auto_total: 200, is_operational: true },
+      { account_code: "4500.01", description: "Non Op", total: 300, auto_total: 300, is_operational: false },
+      { account_code: "4600.01", description: "Non Op lain", total: 400, auto_total: 400, is_operational: false },
     ];
 
     const { operasional, nonOperasional } = groupIncome(items);
 
     expect(operasional.map((i) => i.account_code)).toEqual(["4100.01", "4499.01"]);
     expect(nonOperasional.map((i) => i.account_code)).toEqual(["4500.01", "4600.01"]);
+  });
+
+  it("kode akun non-numerik (mis. TEMP.001) berpenanda is_operational: true masuk kelompok operasional", () => {
+    const items: IncomeItem[] = [
+      { account_code: "TEMP.001", description: "Pendapatan Kantin", total: 81_000_000, auto_total: 81_000_000, is_operational: true },
+    ];
+
+    const { operasional, nonOperasional } = groupIncome(items);
+
+    expect(operasional.map((i) => i.account_code)).toEqual(["TEMP.001"]);
+    expect(nonOperasional).toHaveLength(0);
+  });
+
+  it("kode akun di rentang lama non-operasional (4600.01) berpenanda is_operational: true tetap masuk kelompok operasional — rentang kode lama tidak lagi dipakai", () => {
+    const items: IncomeItem[] = [
+      { account_code: "4600.01", description: "Non Op lama, sekarang operasional", total: 500, auto_total: 500, is_operational: true },
+    ];
+
+    const { operasional, nonOperasional } = groupIncome(items);
+
+    expect(operasional.map((i) => i.account_code)).toEqual(["4600.01"]);
+    expect(nonOperasional).toHaveLength(0);
+  });
+
+  it("rekonsiliasi: jumlah anggota kedua kelompok sama dengan jumlah seluruh item, untuk daftar item acak", () => {
+    const items: IncomeItem[] = [
+      { account_code: "4100.01", description: "A", total: 10, auto_total: 10, is_operational: true },
+      { account_code: "TEMP.001", description: "B", total: 20, auto_total: 20, is_operational: false },
+      { account_code: "4500.01", description: "C", total: 30, auto_total: 30, is_operational: true },
+      { account_code: "9999.99", description: "D", total: 40, auto_total: 40, is_operational: false },
+      { account_code: "4600.01", description: "E", total: 50, auto_total: 50, is_operational: true },
+    ];
+
+    const { operasional, nonOperasional } = groupIncome(items);
+
+    expect(operasional.length + nonOperasional.length).toBe(items.length);
+  });
+
+  it("daftar item kosong menghasilkan dua kelompok kosong tanpa melempar exception", () => {
+    expect(() => groupIncome([])).not.toThrow();
+    const { operasional, nonOperasional } = groupIncome([]);
+    expect(operasional).toEqual([]);
+    expect(nonOperasional).toEqual([]);
   });
 });
 
@@ -217,8 +260,8 @@ describe("buildExpenseBreakdownPerAccount", () => {
 describe("sumItems / sumExpenseItems", () => {
   it("menjumlahkan field total dari daftar item", () => {
     const incomeItems: IncomeItem[] = [
-      { account_code: "4100.01", description: "A", total: 100, auto_total: 100 },
-      { account_code: "4100.02", description: "B", total: 200, auto_total: 200 },
+      { account_code: "4100.01", description: "A", total: 100, auto_total: 100, is_operational: true },
+      { account_code: "4100.02", description: "B", total: 200, auto_total: 200, is_operational: true },
     ];
     expect(sumItems(incomeItems)).toBe(300);
 
@@ -254,8 +297,8 @@ function makeSummary(overrides: Partial<BudgetSummary> = {}): BudgetSummary {
     accrual_surplus_deficit_auto: 250_000,
     income: {
       items: [
-        { account_code: "4100.01", description: "Uang Pangkal", total: 600_000, auto_total: 600_000 },
-        { account_code: "4500.01", description: "Sumbangan", total: 400_000, auto_total: 400_000 },
+        { account_code: "4100.01", description: "Uang Pangkal", total: 600_000, auto_total: 600_000, is_operational: true },
+        { account_code: "4500.01", description: "Sumbangan", total: 400_000, auto_total: 400_000, is_operational: false },
       ],
       total: 1_000_000,
       total_auto: 1_000_000,

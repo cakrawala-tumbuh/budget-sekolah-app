@@ -350,6 +350,13 @@ export interface IncomeItem {
   description: string;
   total: number;
   auto_total: number;
+  /**
+   * Penanda operasional/non-operasional dari kategori sumbernya
+   * (`IncomeCategory.is_operational`), dikirim backend pada tiap item
+   * `GET /organizations/{id}/simulation/income`. Dasar pengelompokan
+   * `groupIncome` — bukan penguraian `account_code`.
+   */
+  is_operational: boolean;
 }
 
 export interface IncomeSimulation {

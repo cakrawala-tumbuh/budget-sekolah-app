@@ -60,7 +60,7 @@ function makeSummary(): BudgetSummary {
     accrual_surplus_deficit_auto: 250_000,
     income: {
       items: [
-        { account_code: "4100.01", description: "Uang Pangkal", total: 1_000_000, auto_total: 1_000_000 },
+        { account_code: "4100.01", description: "Uang Pangkal", total: 1_000_000, auto_total: 1_000_000, is_operational: true },
       ],
       total: 1_000_000,
       total_auto: 1_000_000,

@@ -11,16 +11,22 @@ export function sumExpenseItems(items: ExpenseItem[]): number {
   return items.reduce((a, b) => a + b.total, 0);
 }
 
-// Group income items into 4100-4499 (operasional) and 4500+ (non-operasional)
+/**
+ * Mengelompokkan item pendapatan menjadi operasional dan non-operasional
+ * berdasarkan penanda `item.is_operational` (dari `IncomeCategory.is_operational`
+ * di backend) — BUKAN dengan menguraikan `account_code`. Karena `is_operational`
+ * adalah boolean, setiap item selalu jatuh ke salah satu dari dua kelompok;
+ * tidak ada kode akun (termasuk yang non-numerik) yang bisa hilang di luar
+ * keduanya seperti pada pendekatan lama berbasis rentang kode.
+ *
+ * @param items - Daftar item pendapatan dari `GET /simulation/income`.
+ * @returns `operasional` (item ber-`is_operational: true`) dan `nonOperasional`
+ *   (item ber-`is_operational: false`); `operasional.length + nonOperasional.length`
+ *   selalu sama dengan `items.length`.
+ */
 export function groupIncome(items: IncomeItem[]) {
-  const operasional = items.filter((i) => {
-    const prefix = parseInt(i.account_code.split(".")[0], 10);
-    return prefix >= 4100 && prefix < 4500;
-  });
-  const nonOperasional = items.filter((i) => {
-    const prefix = parseInt(i.account_code.split(".")[0], 10);
-    return prefix >= 4500;
-  });
+  const operasional = items.filter((i) => i.is_operational);
+  const nonOperasional = items.filter((i) => !i.is_operational);
   return { operasional, nonOperasional };
 }
 

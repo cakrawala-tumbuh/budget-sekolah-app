@@ -45,8 +45,8 @@ function makeSummary(overrides: Partial<BudgetSummary> = {}): BudgetSummary {
     accrual_surplus_deficit_auto: 250_000,
     income: {
       items: [
-        { account_code: "4100.01", description: "Uang Pangkal", total: 600_000, auto_total: 600_000 },
-        { account_code: "4500.01", description: "Sumbangan", total: 400_000, auto_total: 400_000 },
+        { account_code: "4100.01", description: "Uang Pangkal", total: 600_000, auto_total: 600_000, is_operational: true },
+        { account_code: "4500.01", description: "Sumbangan", total: 400_000, auto_total: 400_000, is_operational: false },
       ],
       total: 1_000_000,
       total_auto: 1_000_000,
